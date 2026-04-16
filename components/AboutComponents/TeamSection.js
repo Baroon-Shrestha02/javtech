@@ -82,6 +82,8 @@ function TeamScrollRow({ teamMembers }) {
                   src={member.img}
                   alt={member.name}
                   className="w-full h-full object-cover transition-all duration-500 group-hover/card:scale-110"
+                  width={320}
+                  height={288}
                   loading="lazy"
                   onError={(e) => {
                     e.target.style.display = "none";
@@ -192,6 +194,8 @@ export default function TeamSection() {
                   alt={leader.name}
                   className="w-full h-full object-cover object-center transition-all duration-700 group-hover:scale-110 group-hover:brightness-75"
                   loading="lazy"
+                  width={400}
+                  height={320}
                 />
                 {/* Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
