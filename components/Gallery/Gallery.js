@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, ZoomIn, ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { X, ZoomIn, ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
 
 // Sample gallery data - replace with your actual images
 const galleryData = [
@@ -9,102 +10,103 @@ const galleryData = [
     title: "Web Development Project",
     category: "web",
     img: "/gallery/web1.jpg",
-    description: "Modern responsive website design"
+    description: "Modern responsive website design",
   },
   {
     id: 2,
     title: "Mobile App Design",
     category: "mobile",
     img: "/gallery/mobile1.jpg",
-    description: "User-friendly mobile application"
+    description: "User-friendly mobile application",
   },
   {
     id: 3,
     title: "E-commerce Platform",
     category: "web",
     img: "/gallery/web2.jpg",
-    description: "Full-featured online store"
+    description: "Full-featured online store",
   },
   {
     id: 4,
     title: "Brand Identity",
     category: "design",
     img: "/gallery/design1.jpg",
-    description: "Complete branding solution"
+    description: "Complete branding solution",
   },
   {
     id: 5,
     title: "Dashboard UI",
     category: "web",
     img: "/gallery/web3.jpg",
-    description: "Analytics dashboard interface"
+    description: "Analytics dashboard interface",
   },
   {
     id: 6,
     title: "iOS Application",
     category: "mobile",
     img: "/gallery/mobile2.jpg",
-    description: "Native iOS app development"
+    description: "Native iOS app development",
   },
   {
     id: 7,
     title: "Logo Design",
     category: "design",
     img: "/gallery/design2.jpg",
-    description: "Creative logo concepts"
+    description: "Creative logo concepts",
   },
   {
     id: 8,
     title: "CRM System",
     category: "web",
     img: "/gallery/web4.jpg",
-    description: "Customer relationship management"
+    description: "Customer relationship management",
   },
   {
     id: 9,
     title: "Social Media App",
     category: "mobile",
     img: "/gallery/mobile3.jpg",
-    description: "Social networking platform"
+    description: "Social networking platform",
   },
   {
     id: 10,
     title: "UI/UX Design",
     category: "design",
     img: "/gallery/design3.jpg",
-    description: "User experience optimization"
+    description: "User experience optimization",
   },
   {
     id: 11,
     title: "Portfolio Website",
     category: "web",
     img: "/gallery/web5.jpg",
-    description: "Creative portfolio showcase"
+    description: "Creative portfolio showcase",
   },
   {
     id: 12,
     title: "Fitness App",
     category: "mobile",
     img: "/gallery/mobile4.jpg",
-    description: "Health and fitness tracker"
-  }
+    description: "Health and fitness tracker",
+  },
 ];
 
 const categories = [
-  { id: 'all', name: 'All Projects', icon: '🎨' },
-  { id: 'web', name: 'Web Development', icon: '💻' },
-  { id: 'mobile', name: 'Mobile Apps', icon: '📱' },
-  { id: 'design', name: 'Design', icon: '✨' }
+  { id: "all", name: "All Projects", icon: "🎨" },
+  { id: "web", name: "Web Development", icon: "💻" },
+  { id: "mobile", name: "Mobile Apps", icon: "📱" },
+  { id: "design", name: "Design", icon: "✨" },
 ];
 
 export default function Gallery() {
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const filteredGallery = selectedCategory === 'all' 
-    ? galleryData 
-    : galleryData.filter(item => item.category === selectedCategory);
+  const filteredGallery =
+    selectedCategory === "all"
+      ? galleryData
+      : galleryData.filter((item) => item.category === selectedCategory);
 
   const openLightbox = (item, index) => {
     setSelectedImage(item);
@@ -122,7 +124,8 @@ export default function Gallery() {
   };
 
   const goToPrev = () => {
-    const prevIndex = (currentIndex - 1 + filteredGallery.length) % filteredGallery.length;
+    const prevIndex =
+      (currentIndex - 1 + filteredGallery.length) % filteredGallery.length;
     setCurrentIndex(prevIndex);
     setSelectedImage(filteredGallery[prevIndex]);
   };
@@ -167,8 +170,8 @@ export default function Gallery() {
               onClick={() => setSelectedCategory(category.id)}
               className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 flex items-center gap-2 ${
                 selectedCategory === category.id
-                  ? 'bg-red-600 text-white shadow-lg shadow-red-600/30'
-                  : 'bg-white text-gray-700 hover:bg-gray-100 shadow-md'
+                  ? "bg-red-600 text-white shadow-lg shadow-red-600/30"
+                  : "bg-white text-gray-700 hover:bg-gray-100 shadow-md"
               }`}
             >
               <span className="text-xl">{category.icon}</span>
@@ -197,7 +200,7 @@ export default function Gallery() {
               >
                 {/* Image Container */}
                 <div className="relative h-80 overflow-hidden bg-gray-200">
-                  <img
+                  <Image
                     src={item.img}
                     alt={item.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
@@ -205,12 +208,16 @@ export default function Gallery() {
                       e.target.src = `https://via.placeholder.com/600x400/ef4444/ffffff?text=${item.title}`;
                     }}
                   />
-                  
+
                   {/* Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
                     <div className="p-6 w-full">
-                      <h3 className="text-white text-xl font-bold mb-2">{item.title}</h3>
-                      <p className="text-gray-200 text-sm">{item.description}</p>
+                      <h3 className="text-white text-xl font-bold mb-2">
+                        {item.title}
+                      </h3>
+                      <p className="text-gray-200 text-sm">
+                        {item.description}
+                      </p>
                     </div>
                   </div>
 
@@ -221,7 +228,8 @@ export default function Gallery() {
 
                   {/* Category Badge */}
                   <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-gray-900 px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider">
-                    {categories.find(cat => cat.id === item.category)?.icon} {item.category}
+                    {categories.find((cat) => cat.id === item.category)?.icon}{" "}
+                    {item.category}
                   </div>
                 </div>
 
@@ -245,7 +253,9 @@ export default function Gallery() {
             animate={{ opacity: 1 }}
             className="text-center py-20"
           >
-            <p className="text-gray-500 text-xl">No projects found in this category</p>
+            <p className="text-gray-500 text-xl">
+              No projects found in this category
+            </p>
           </motion.div>
         )}
       </div>
@@ -311,7 +321,7 @@ export default function Gallery() {
               onClick={(e) => e.stopPropagation()}
               className="max-w-5xl w-full"
             >
-              <img
+              <Image
                 src={selectedImage.img}
                 alt={selectedImage.title}
                 className="w-full h-auto max-h-[80vh] object-contain rounded-lg"
@@ -319,7 +329,7 @@ export default function Gallery() {
                   e.target.src = `https://via.placeholder.com/800x600/ef4444/ffffff?text=${selectedImage.title}`;
                 }}
               />
-              
+
               {/* Image Info */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -327,7 +337,9 @@ export default function Gallery() {
                 transition={{ delay: 0.2 }}
                 className="mt-6 text-center"
               >
-                <h3 className="text-white text-2xl font-bold mb-2">{selectedImage.title}</h3>
+                <h3 className="text-white text-2xl font-bold mb-2">
+                  {selectedImage.title}
+                </h3>
                 <p className="text-gray-300">{selectedImage.description}</p>
                 <p className="text-gray-400 text-sm mt-2">
                   {currentIndex + 1} / {filteredGallery.length}

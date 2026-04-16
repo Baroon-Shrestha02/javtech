@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import teamData from "./TeamData";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
 
 // Separate component for the scrollable row
 function TeamScrollRow({ teamMembers }) {
@@ -30,7 +31,7 @@ function TeamScrollRow({ teamMembers }) {
 
     setShowLeftArrow(container.scrollLeft > 0);
     setShowRightArrow(
-      container.scrollLeft < container.scrollWidth - container.clientWidth - 10
+      container.scrollLeft < container.scrollWidth - container.clientWidth - 10,
     );
   };
 
@@ -77,7 +78,7 @@ function TeamScrollRow({ teamMembers }) {
             <div className="bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 hover:border-red-400 transform hover:scale-105 hover:-translate-y-2 h-full">
               {/* Image Container */}
               <div className="relative h-72 overflow-hidden bg-gradient-to-br from-red-50 to-blue-50">
-                <img
+                <Image
                   src={member.img}
                   alt={member.name}
                   className="w-full h-full object-cover transition-all duration-500 group-hover/card:scale-110"
@@ -87,13 +88,16 @@ function TeamScrollRow({ teamMembers }) {
                     e.target.parentElement.innerHTML = `
                       <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-red-100 to-blue-100">
                         <span class="text-5xl font-bold text-red-600">
-                          ${member.name.split(" ").map((n) => n[0]).join("")}
+                          ${member.name
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")}
                         </span>
                       </div>
                     `;
                   }}
                 />
-                
+
                 {/* Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500"></div>
 
@@ -108,7 +112,7 @@ function TeamScrollRow({ teamMembers }) {
                 <h3 className="text-lg font-bold text-gray-900 mb-1 group-hover/card:text-red-600 transition-colors duration-300">
                   {member.name}
                 </h3>
-                
+
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-1.5 h-1.5 bg-red-600 rounded-full"></div>
                   <p className="text-sm font-medium text-gray-500">
@@ -183,7 +187,7 @@ export default function TeamSection() {
             >
               {/* Image Container with Overlay */}
               <div className="relative h-80 overflow-hidden bg-gray-200">
-                <img
+                <Image
                   src={leader.img}
                   alt={leader.name}
                   className="w-full h-full object-cover object-center transition-all duration-700 group-hover:scale-110 group-hover:brightness-75"
@@ -213,7 +217,7 @@ export default function TeamSection() {
                 {leader.quote && (
                   <div className="mb-5 pl-4 border-l-4 border-red-600 bg-red-50/50 py-3 pr-3 rounded-r-lg">
                     <p className="text-sm italic text-gray-700 leading-relaxed">
-                      "{leader.quote}"
+                      `{leader.quote}`
                     </p>
                   </div>
                 )}
