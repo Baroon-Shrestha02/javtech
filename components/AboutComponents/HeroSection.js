@@ -33,7 +33,7 @@ export default function HeroSection() {
   }, [displayed, deleting, wordIndex]);
 
   return (
-    <section className="relative min-h-screen bg-[#0f0f12] text-white flex flex-col">
+    <section className="relative min-h-[85vh] bg-[#0f0f12] text-white flex flex-col">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image

@@ -49,7 +49,7 @@ export default function Pricing() {
       icon: <FaFacebook className="text-5xl text-blue-600 mb-6" />,
       title: "Social Media Complete Handling",
       subtitle: "End-to-End Management",
-      price: "NPR 15,000",
+      price: "Negotiable",
       period: "/month",
       description:
         "End-to-end management of Facebook, Instagram, TikTok, including strategy, content planning, captions, hashtag strategy, and interaction.",
@@ -69,7 +69,7 @@ export default function Pricing() {
       icon: <FaGlobe className="text-5xl text-emerald-600 mb-6" />,
       title: "Website Creation & Updates",
       subtitle: "Fully Responsive Websites",
-      price: "NPR 30,000",
+      price: "Negotiable",
       period: "/project",
       description:
         "Professional website design with SEO optimization, regular updates, and ongoing maintenance.",
@@ -88,7 +88,7 @@ export default function Pricing() {
       icon: <FaPaintBrush className="text-5xl text-purple-600 mb-6" />,
       title: "Complete Branding Package",
       subtitle: "Visual Identity Setup",
-      price: "NPR 20,000",
+      price: "Negotiable",
       period: "/package",
       description:
         "Complete branding package including logo, brand colors, typography, tone, and brand guidelines.",
@@ -105,9 +105,9 @@ export default function Pricing() {
     },
     {
       icon: <FaUsers className="text-5xl text-rose-600 mb-6" />,
-      title: "Social Media Posting & Growth",
+      title: "Digtal Marketing",
       subtitle: "Audience Engagement",
-      price: "NPR 10,000",
+      price: "Negotiable",
       period: "/month",
       description:
         "High-quality post and reel creation, viral campaign planning, and audience engagement tactics.",

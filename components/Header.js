@@ -8,10 +8,9 @@ import { Menu, X, MessageCircle, Lightbulb, ChevronRight } from "lucide-react";
 import Image from "next/image";
 
 const links = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About Us" },
-  { href: "/services", label: "Our Services" },
   { href: "/our-works", label: "Our Works" },
+  { href: "/services", label: "Our Services" },
+  { href: "/about", label: "About Us" },
   { href: "/pricing", label: "Pricing" },
   { href: "/contact", label: "Contact Us" },
 ];
@@ -143,7 +142,7 @@ export function Header() {
                 </Link>
 
                 <a
-                  href="https://wa.me/9779807128557"
+                  href="https://wa.me/9779801816685"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2.5 group"
@@ -154,10 +153,10 @@ export function Header() {
                   />
                   <div>
                     <p className="text-sm font-semibold text-[#cc0000] leading-tight">
-                      +977-9807128557
+                      +977-9801816685
                     </p>
                     <p className="text-[10px] text-gray-400 leading-tight">
-                      Mon-Fri, 9:00 AM – 5:00 PM
+                      Sun-Fri, 10:00 AM – 6:00 PM
                     </p>
                   </div>
                 </a>
@@ -234,7 +233,7 @@ export function Header() {
 
               {/* CTA */}
               <a
-                href="https://wa.me/9779807128557"
+                href="https://wa.me/9779801816685"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="ml-auto hidden lg:flex items-center gap-2 rounded-full bg-[#cc0000] px-5 py-2.5 text-[13px] font-semibold text-white transition-all hover:bg-[#aa0000] active:scale-95 shrink-0"
@@ -365,7 +364,7 @@ export function Header() {
                   Got an Idea?
                 </Link>
                 <a
-                  href="https://wa.me/9779807128557"
+                  href="https://wa.me/9779801816685"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 rounded-full border border-gray-200 px-5 py-3 text-sm font-semibold text-gray-600 transition-all hover:border-gray-300 hover:text-gray-800 active:scale-95"

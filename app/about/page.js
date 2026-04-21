@@ -6,7 +6,6 @@ import HeroSection from "@/components/AboutComponents/HeroSection";
 import TeamSection from "@/components/AboutComponents/TeamSection";
 import WhoWeAre from "@/components/AboutComponents/WhoWeAre";
 import { useEffect } from "react";
-// import Logo from '@/components/AboutComponents/Logo';
 import ServicesSection from "@/components/AboutComponents/ServicesSection";
 import ProcessSection from "@/components/AboutComponents/ProcessSection";
 import CTASection from "@/components/AboutComponents/CTASection";
