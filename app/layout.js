@@ -48,7 +48,6 @@ export const metadata = {
     icon: "/favicon.png",
   },
 };
-
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={inter.variable}>
