@@ -13,9 +13,12 @@ const quickLinks = [
 ];
 
 const socials = [
-  { href: "https://instagram.com", label: "Instagram ↗" },
-  { href: "https://linkedin.com", label: "LinkedIn ↗" },
-  { href: "https://facebook.com", label: "Facebook ↗" },
+  { href: "https://www.instagram.com/javtech.infosys/", label: "Instagram ↗" },
+  {
+    href: "https://www.linkedin.com/company/javtech-infosys",
+    label: "LinkedIn ↗",
+  },
+  { href: "https://www.facebook.com/javtechinfosyspvt/", label: "Facebook ↗" },
 ];
 
 export function Footer() {

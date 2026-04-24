@@ -19,10 +19,9 @@ const initialCards = [
     color: "from-emerald-600 to-teal-600",
   },
   {
-    title: "Poster and Motion Graphics",
-    description:
-      "High-quality motion graphics and visuals that elevate your brand identity.",
-    bgImage: "/Services/herosection2.jpg",
+    title: "Web & App Development",
+    description: "High-quality Web and App Development.",
+    bgImage: "/Services/Webdevelopment.jpg",
     color: "from-orange-600 to-red-600",
   },
   {

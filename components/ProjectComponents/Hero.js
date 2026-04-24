@@ -5,32 +5,25 @@ import { ChevronLeft, ChevronRight, Play, Pause } from "lucide-react";
 
 const initialCards = [
   {
-    title: "E-Commerce Platform",
+    title: "Web & App Development",
     subtitle: "Design • Development",
     description:
       "We crafted a high-conversion fashion e-commerce site with a custom user experience, seamless checkout, and integrated SEO strategies.",
-    bgImage: "/Uploads/newWork.jpeg",
+    bgImage: "/Services/herosection1.jpg",
   },
   {
     title: "Social Media Growth Campaign",
     subtitle: "Instagram • Reels • Ads",
     description:
       "Our reels and motion graphics content helped a local brand triple its engagement, gaining over 15K organic followers in 3 months.",
-    bgImage: "/Uploads/newWork2.jpeg",
-  },
-  {
-    title: "Brand Identity for Startups",
-    subtitle: "Logo • Visuals",
-    description:
-      "We delivered a complete branding kit including logo, color palette, and social assets—helping the startup stand out in a crowded market.",
-    bgImage: "/Uploads/newWork3.jpeg",
+    bgImage: "/Services/herosection3.jpg",
   },
   {
     title: "Poster and Motion Graphics",
     subtitle: "Poster • Brochure • Visuals",
     description:
       "We produced polished explainer videos and product animations for enterprise clients, simplifying complex processes through motion design.",
-    bgImage: "/Uploads/reels.jpg",
+    bgImage: "/Services/download.jpg",
   },
 ];
 
@@ -128,9 +121,9 @@ export default function ProjectsHero() {
         <div className="max-w-4xl">
           {/* Single content container with smooth transitions */}
           <div key={currentIndex} className="animate-slideUp">
-            <div className="text-xs md:text-sm uppercase tracking-[0.2em] mb-4 text-gray-300 font-medium">
+            {/* <div className="text-xs md:text-sm uppercase tracking-[0.2em] mb-4 text-gray-300 font-medium">
               {currentCard.subtitle}
-            </div>
+            </div> */}
 
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-[0.9] drop-shadow-2xl mb-6 text-white">
               {currentCard.title}

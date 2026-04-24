@@ -45,9 +45,12 @@ const contactInfo = [
 ];
 
 const socials = [
-  { label: "Facebook", href: "#" },
-  { label: "Instagram", href: "#" },
-  { label: "LinkedIn", href: "#" },
+  { href: "https://www.facebook.com/javtechinfosyspvt/", label: "Facebook" },
+  { href: "https://www.instagram.com/javtech.infosys/", label: "Instagram" },
+  {
+    href: "https://www.linkedin.com/company/javtech-infosys",
+    label: "LinkedIn",
+  },
   { label: "WhatsApp", href: "https://wa.me/9779807128557" },
 ];
 

@@ -58,12 +58,6 @@ const cards = [
           <span className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-white text-xs font-bold">
             TS
           </span>
-          <span className="w-7 h-7 rounded-full bg-blue-400 flex items-center justify-center text-white text-xs font-bold">
-            Pg
-          </span>
-          <span className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-white text-xs font-bold">
-            Go
-          </span>
         </div>
       </div>
     ),
