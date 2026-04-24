@@ -116,7 +116,7 @@ export function OurServices() {
                         }}
                       >
                         <div className="relative h-full w-full bg-gradient-to-br from-gray-200 to-gray-300">
-                          <Image
+                          <img
                             src={service.image}
                             alt={service.title}
                             fill

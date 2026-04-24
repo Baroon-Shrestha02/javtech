@@ -6,15 +6,16 @@ import Image from "next/image";
 export default function PricingHero() {
   return (
     <div className="relative min-h-[60vh] md:min-h-[80vh] flex flex-col justify-end rounded-b-4xl text-white overflow-hidden shadow-2xl shadow-slate-500">
-      
       {/* Background Image (Next.js optimized) */}
-      <Image
-        src="/Services/web-design.jpg"
-        alt="Pricing Background"
-        fill
-        className="object-cover"
-        priority
-      />
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <img
+          src="/home/digital.jpg"
+          alt="Hero background"
+          className="w-full h-full object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0f0f12]/85 via-[#0f0f12]/60 to-[#0f0f12]/90" />
+      </div>
 
       {/* Overlays */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
@@ -25,7 +26,6 @@ export default function PricingHero() {
       <div className="container mx-auto pb-16 z-10 relative">
         <div className="grid grid-cols-1 md:grid-cols-4 items-center gap-12">
           <div className="col-span-3 pl-4">
-
             <AnimatePresence mode="wait">
               <motion.h1
                 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 drop-shadow-lg"
@@ -50,7 +50,6 @@ export default function PricingHero() {
                 unique needs and goals.
               </motion.p>
             </AnimatePresence>
-
           </div>
         </div>
       </div>

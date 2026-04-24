@@ -49,10 +49,9 @@ const rightCards = [
 function ProjectCard({ image, title, category }) {
   return (
     <div className="relative w-full h-full rounded-xl overflow-hidden group">
-      <Image
+      <img
         src={image}
         alt={title}
-        fill
         className="object-cover transition-transform duration-700 group-hover:scale-105"
       />
       <div className="absolute inset-0 bg-black/10 group-hover:bg-black/55 transition-colors duration-500" />

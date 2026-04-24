@@ -53,7 +53,7 @@ export function PartnersSlider() {
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3 }}
             >
-              <Image
+              <img
                 src={partner.logo}
                 alt={partner.name}
                 width={250}

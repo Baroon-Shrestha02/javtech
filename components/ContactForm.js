@@ -27,8 +27,8 @@ const contactInfo = [
   {
     icon: Mail,
     label: "Email us",
-    value: "hello@javtech.com",
-    href: "mailto:hello@javtech.com",
+    value: "javtechinfosys@gmail.com",
+    href: "mailto:javtechinfosys@gmail.com",
   },
   {
     icon: Phone,
@@ -79,15 +79,40 @@ export function ContactForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSubmitting(true);
+
+    const selectedServices = serviceOptions
+      .filter(({ id }) => form.services.includes(id))
+      .map(({ label }) => label)
+      .join(", ");
+
+    const message = [
+      `👋 *New Project Inquiry*`,
+      ``,
+      `*Services:* ${selectedServices || "Not specified"}`,
+      `*Project:* ${form.projectDescription}`,
+      form.websiteAddress ? `*Website:* ${form.websiteAddress}` : null,
+      ``,
+      `*Name:* ${form.name}`,
+      `*Email:* ${form.email}`,
+      form.phone ? `*Phone:* ${form.phone}` : null,
+      form.additionalInfo
+        ? `\n*Additional info:* ${form.additionalInfo}`
+        : null,
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    const phone = "9779807128557";
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
+    window.open(url, "_blank");
+
+    // Show success state
+    setSubmitted(true);
     setTimeout(() => {
-      setSubmitting(false);
-      setSubmitted(true);
-      setTimeout(() => {
-        setSubmitted(false);
-        setForm(empty);
-      }, 4000);
-    }, 1600);
+      setSubmitted(false);
+      setForm(empty);
+    }, 4000);
   };
 
   const inputClass =
@@ -102,8 +127,8 @@ export function ContactForm() {
           className="absolute inset-y-0 right-0 w-[55%] pointer-events-none"
           aria-hidden="true"
         >
-          <Image
-            src="/contact/hero.avif"
+          <img
+            src="/contact.jpg"
             alt=""
             width={1200}
             height={800}

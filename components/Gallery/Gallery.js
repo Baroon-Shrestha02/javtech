@@ -200,7 +200,7 @@ export default function Gallery() {
               >
                 {/* Image Container */}
                 <div className="relative h-80 overflow-hidden bg-gray-200">
-                  <Image
+                  <img
                     src={item.img}
                     alt={item.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
@@ -321,7 +321,7 @@ export default function Gallery() {
               onClick={(e) => e.stopPropagation()}
               className="max-w-5xl w-full"
             >
-              <Image
+              <img
                 src={selectedImage.img}
                 alt={selectedImage.title}
                 className="w-full h-auto max-h-[80vh] object-contain rounded-lg"

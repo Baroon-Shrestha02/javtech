@@ -24,8 +24,8 @@ export default function HomeCTA() {
           </p>
           <div className="flex flex-col gap-4">
             {[
-              { icon: <MailIcon />, label: "info@quarkinfotech.com" },
-              { icon: <PhoneIcon />, label: "+977-9801816685" },
+              { icon: <MailIcon />, label: "javtechinfosys@gmail.com" },
+              { icon: <PhoneIcon />, label: "+977-980‑7128557" },
             ].map((item, i) => (
               <div
                 key={i}

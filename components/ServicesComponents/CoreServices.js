@@ -107,7 +107,7 @@ export default function CoreServices() {
       <div className="flex items-center justify-center flex-col gap-6">
         <h1 className="text-4xl md:text-6xl text-center">
           Our{" "}
-          <span className="bg-gradient-to-r from-[#C848C1] to-[#54A6F9] bg-clip-text text-transparent logo">
+          <span className="bg-gradient-to-r from-accent2 to-accent font-extrabold bg-clip-text text-transparent logo">
             Core{" "}
           </span>
           Services
@@ -138,7 +138,7 @@ export default function CoreServices() {
             </div>
 
             <div className="space-y-6">
-              <Image
+              <img
                 src={item.image}
                 alt={item.title}
                 width={800}

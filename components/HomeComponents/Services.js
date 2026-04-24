@@ -67,7 +67,7 @@ export default function Services() {
               {/* Replace with your illustration */}
               <div className="flex items-end justify-center pt-6 opacity-80 ">
                 <video
-                  src="/services/ser1.mp4"
+                  src=""
                   alt="computer"
                   autoPlay
                   loop

@@ -35,13 +35,12 @@ export default function HeroSection() {
   return (
     <section className="relative min-h-[85vh] bg-[#0f0f12] text-white flex flex-col">
       {/* Background Image */}
+      {/* Background Image */}
       <div className="absolute inset-0 z-0">
-        <Image
+        <img
           src="/home/digital.jpg"
           alt="Hero background"
-          fill
-          priority
-          className="object-cover object-center"
+          className="w-full h-full object-cover object-center"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0f0f12]/85 via-[#0f0f12]/60 to-[#0f0f12]/90" />
       </div>

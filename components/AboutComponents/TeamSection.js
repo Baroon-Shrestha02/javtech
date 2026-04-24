@@ -78,7 +78,7 @@ function TeamScrollRow({ teamMembers }) {
             <div className="bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 hover:border-red-400 transform hover:scale-105 hover:-translate-y-2 h-full">
               {/* Image Container */}
               <div className="relative h-72 overflow-hidden bg-gradient-to-br from-red-50 to-blue-50">
-                <Image
+                <img
                   src={member.img}
                   alt={member.name}
                   className="w-full h-full object-cover transition-all duration-500 group-hover/card:scale-110"
@@ -189,10 +189,10 @@ export default function TeamSection() {
             >
               {/* Image Container with Overlay */}
               <div className="relative h-80 overflow-hidden bg-gray-200">
-                <Image
+                <img
                   src={leader.img}
                   alt={leader.name}
-                  className="w-full h-full object-cover object-center transition-all duration-700 group-hover:scale-110 group-hover:brightness-75"
+                  className="w-full h-full object-cover object-bottom transition-all duration-700 group-hover:scale-110 group-hover:brightness-75"
                   loading="lazy"
                   width={400}
                   height={320}

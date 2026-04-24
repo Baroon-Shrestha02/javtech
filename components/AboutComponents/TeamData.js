@@ -49,7 +49,7 @@ const teamData = [
     name: "Barun Shrestha",
     role: "Full Stack Developer",
     category: "team",
-    img: "/team/new.webp",
+    img: "/team/baroon.png",
     description:
       "Builds complex software ecosystems designed to expand effortlessly with your business. Balancing sophisticated database management with slick user interfaces.",
   },
@@ -67,7 +67,7 @@ const teamData = [
     name: "Pushit Chaudhary",
     role: "Full Stack Developer",
     category: "team",
-    img: "/team/pushit.jpeg",
+    img: "/team/pushit.png",
     description:
       "A dynamic engineer who bridges the gap between high-performance back-end logic and pixel-perfect front-end artistry. Specializes in transforming complex concepts into captivating visual journeys.",
   },
@@ -77,7 +77,7 @@ const teamData = [
     name: "Bhumika Bista",
     role: "Frontend Developer",
     category: "team",
-    img: "",
+    img: "team/bhumika.png",
     description:
       "Believes that the best design is both beautiful and intuitive. Crafts user-friendly interfaces that remove friction and ensure every interaction feels natural.",
   },
@@ -86,7 +86,7 @@ const teamData = [
     name: "Sadip Khatri",
     role: "Frontend Developer",
     category: "team",
-    img: "/team/sadip.jpg",
+    img: "/team/sadip-2.png",
     description:
       "Brings speed and precision to frontend development. Expertise in optimizing performance and ensuring flawless display across all devices.",
   },
@@ -95,7 +95,7 @@ const teamData = [
     name: "Sahitya Bhattarai",
     role: "Content Writer",
     category: "team",
-    img: "/team/sahitya.jpeg",
+    img: "/team/sahitya.jpg",
     description:
       "The voice behind Javtech's message. Specializes in turning complex tech ideas into clear, compelling stories that build brand authority and boost SEO.",
   },

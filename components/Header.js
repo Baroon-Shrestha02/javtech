@@ -5,15 +5,17 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, MessageCircle, Lightbulb, ChevronRight } from "lucide-react";
-import Image from "next/image";
 
 const links = [
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About Us" },
   { href: "/our-works", label: "Our Works" },
   { href: "/services", label: "Our Services" },
-  { href: "/about", label: "About Us" },
   { href: "/pricing", label: "Pricing" },
   { href: "/contact", label: "Contact Us" },
 ];
+
+const WA_LINK = "https://wa.me/9779807128557";
 
 function NavLink({ href, label, active, layoutId }) {
   const [hovered, setHovered] = useState(false);
@@ -32,7 +34,7 @@ function NavLink({ href, label, active, layoutId }) {
       {active && (
         <motion.span
           layoutId={layoutId}
-          className="absolute inset-0 -z-10 rounded-full"
+          className="absolute inset-0 -z-10 rounded-full pointer-events-none"
           style={{
             background: "rgba(255,255,255,0.85)",
             backdropFilter: "blur(12px)",
@@ -50,7 +52,7 @@ function NavLink({ href, label, active, layoutId }) {
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.92 }}
-          className="absolute inset-0 -z-10 rounded-full"
+          className="absolute inset-0 -z-10 rounded-full pointer-events-none"
           style={{
             background: "rgba(255,255,255,0.5)",
             backdropFilter: "blur(8px)",
@@ -100,7 +102,7 @@ export function Header() {
             <div className="mx-auto max-w-7xl px-5 flex items-center gap-4 h-[68px]">
               {/* Logo */}
               <Link href="/" className="shrink-0 mr-4">
-                <Image
+                <img
                   src="/logo.png"
                   alt="Logo"
                   height={36}
@@ -122,7 +124,7 @@ export function Header() {
               >
                 {links.map(({ href, label }) => (
                   <NavLink
-                    key={label}
+                    key={href}
                     href={href}
                     label={label}
                     active={pathname === href}
@@ -142,7 +144,7 @@ export function Header() {
                 </Link>
 
                 <a
-                  href="https://wa.me/9779801816685"
+                  href={WA_LINK}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2.5 group"
@@ -153,7 +155,7 @@ export function Header() {
                   />
                   <div>
                     <p className="text-sm font-semibold text-[#cc0000] leading-tight">
-                      +977-9801816685
+                      +977-9807128557
                     </p>
                     <p className="text-[10px] text-gray-400 leading-tight">
                       Sun-Fri, 10:00 AM – 6:00 PM
@@ -208,7 +210,7 @@ export function Header() {
               {/* Logo */}
               <Link href="/" className="shrink-0 mr-1">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full overflow-hidden ring-1 ring-gray-100">
-                  <Image
+                  <img
                     src="/logo.png"
                     alt="logo"
                     height={40}
@@ -222,7 +224,7 @@ export function Header() {
               <nav className="hidden lg:flex items-center gap-0.5 flex-1">
                 {links.map(({ href, label }) => (
                   <NavLink
-                    key={label}
+                    key={href}
                     href={href}
                     label={label}
                     active={pathname === href}
@@ -233,7 +235,7 @@ export function Header() {
 
               {/* CTA */}
               <a
-                href="https://wa.me/9779801816685"
+                href={WA_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="ml-auto hidden lg:flex items-center gap-2 rounded-full bg-[#cc0000] px-5 py-2.5 text-[13px] font-semibold text-white transition-all hover:bg-[#aa0000] active:scale-95 shrink-0"
@@ -286,7 +288,7 @@ export function Header() {
               {/* Drawer header */}
               <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
                 <Link href="/" onClick={() => setMobileOpen(false)}>
-                  <Image
+                  <img
                     src="/logo.png"
                     alt="logo"
                     height={32}
@@ -309,7 +311,7 @@ export function Header() {
                   const active = pathname === href;
                   return (
                     <motion.div
-                      key={label}
+                      key={href}
                       initial={{ opacity: 0, x: 24 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{
@@ -364,7 +366,7 @@ export function Header() {
                   Got an Idea?
                 </Link>
                 <a
-                  href="https://wa.me/9779801816685"
+                  href={WA_LINK}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 rounded-full border border-gray-200 px-5 py-3 text-sm font-semibold text-gray-600 transition-all hover:border-gray-300 hover:text-gray-800 active:scale-95"

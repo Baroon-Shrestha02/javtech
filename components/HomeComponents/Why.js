@@ -2,7 +2,6 @@
 
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import Image from "next/image";
 import { SectionHeader } from "../SharedComponents/SectionHeader";
 
 const cards = [
@@ -10,52 +9,60 @@ const cards = [
     bg: "#c0392b",
     zIndex: 10,
     content: (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
-        <h2 className="text-4xl md:text-5xl font-extrabold text-white uppercase leading-tight tracking-tight">
-          We Drive Digital Innovation
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 items-start">
+        <h2 className="text-3xl md:text-5xl font-extrabold text-white uppercase leading-tight tracking-tight">
+          We Build Digital Products That Grow With You
         </h2>
 
-        <div className="flex justify-center md:justify-end ">
-          <Image
+        <div className="flex justify-start md:justify-end">
+          <img
             src="/logo.png"
-            alt="logo"
-            height={100}
-            width={100}
-            className="bg-white"
+            alt="JavTech logo"
+            height={80}
+            width={80}
+            className="bg-white rounded-xl p-2"
           />
         </div>
 
         <div>
           <h3 className="text-white font-bold text-base mb-2">
-            Crafting future-ready software & experiences
+            From idea to launch — fast
           </h3>
           <p className="text-white/80 text-sm leading-relaxed">
-            We help ambitious brands and start-ups turn bold ideas into
-            powerful, scalable products that fuel growth and success.
+            JavTech takes your vision and turns it into a polished, scalable
+            product. We handle web, mobile, branding, and everything in between
+            — so you can focus on your business.
           </p>
         </div>
 
         <div>
           <h3 className="text-white font-bold text-base mb-2">
-            Shaping the next era of UX
+            Built in Kathmandu, serving globally
           </h3>
           <p className="text-white/80 text-sm leading-relaxed">
-            Our designs and solutions redefine digital interactions, creating
-            intuitive, impactful experiences that set new industry benchmarks.
+            We&apos;re a Kathmandu-based agency delivering world-class software
+            and design to startups, SMEs, and growing brands across Nepal and
+            beyond.
           </p>
         </div>
 
-        <div className="col-span-1 md:col-span-2 border-t border-white/20 pt-4 flex gap-4 items-center">
+        <div className="col-span-1 md:col-span-2 border-t border-white/20 pt-4 flex flex-wrap gap-3 items-center">
           <span className="text-white text-xl">⚛</span>
-          <span className="text-white text-xl font-bold">~</span>
+          <span className="text-white font-bold text-lg">~</span>
           <span className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-white text-xs font-bold">
-            L
+            N
           </span>
           <span className="w-7 h-7 rounded-full bg-yellow-400 flex items-center justify-center text-black text-xs font-bold">
             JS
           </span>
           <span className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-white text-xs font-bold">
-            N
+            TS
+          </span>
+          <span className="w-7 h-7 rounded-full bg-blue-400 flex items-center justify-center text-white text-xs font-bold">
+            Pg
+          </span>
+          <span className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-white text-xs font-bold">
+            Go
           </span>
         </div>
       </div>
@@ -65,13 +72,13 @@ const cards = [
     bg: "#a93226",
     zIndex: 20,
     content: (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
-        <h2 className="text-4xl md:text-5xl font-extrabold text-white uppercase leading-tight tracking-tight">
-          Delivering Excellence! Fast & Reliably
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 items-start">
+        <h2 className="text-3xl md:text-5xl font-extrabold text-white uppercase leading-tight tracking-tight">
+          We Deliver. On Time, Every Time.
         </h2>
 
-        <div className="flex justify-end">
-          <svg width="200" height="160" viewBox="0 0 200 160" fill="none">
+        <div className="flex justify-start md:justify-end">
+          <svg width="160" height="130" viewBox="0 0 200 160" fill="none">
             <ellipse
               cx="140"
               cy="40"
@@ -120,32 +127,32 @@ const cards = [
           </svg>
         </div>
 
-        <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-8 mt-4">
-          <div>
+        <div className="col-span-1 md:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-6 mt-2">
+          <div className="bg-white/10 rounded-2xl p-5">
             <h3 className="text-white font-bold text-base mb-2">
-              Lean execution, real results
+              Weekly progress, zero surprises
             </h3>
             <p className="text-white/75 text-sm leading-relaxed">
-              We prioritize action over talk, shipping design and development
-              progress every week—on time, every time.
+              We ship weekly updates — design, development, or both. You always
+              know exactly where your project stands.
             </p>
           </div>
-          <div>
+          <div className="bg-white/10 rounded-2xl p-5">
             <h3 className="text-white font-bold text-base mb-2">
-              Turning complexity into clarity
+              Clean code, clean handoffs
             </h3>
             <p className="text-white/75 text-sm leading-relaxed">
-              We simplify intricate systems into sleek, user-focused solutions
-              built for seamless performance.
+              Every project is documented, version-controlled, and handed off in
+              a way that makes future scaling effortless.
             </p>
           </div>
-          <div>
+          <div className="bg-white/10 rounded-2xl p-5">
             <h3 className="text-white font-bold text-base mb-2">
-              Flexible models, effortless onboarding
+              Transparent pricing, always
             </h3>
             <p className="text-white/75 text-sm leading-relaxed">
-              From dedicated teams to expert support, we integrate smoothly into
-              your workflows with transparent pricing.
+              No hidden fees. We agree on scope, price, and timeline upfront —
+              and we stick to it.
             </p>
           </div>
         </div>
@@ -157,76 +164,77 @@ const cards = [
     zIndex: 30,
     content: (
       <div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start mb-4">
-          <h2 className="text-4xl md:text-5xl font-extrabold text-white uppercase leading-tight tracking-tight">
-            Why Clients Love Partnering With Us
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 items-start mb-6">
+          <h2 className="text-3xl md:text-5xl font-extrabold text-white uppercase leading-tight tracking-tight">
+            Clients Trust JavTech to Grow Their Business
           </h2>
 
-          <div className="relative h-72">
-            <div className="absolute top-0 left-0 w-56 bg-[#f5f5f0] rounded-2xl p-5 shadow-xl z-10">
-              <div className="w-10 h-10 rounded-full bg-[#3d3472] flex items-center justify-center mb-3">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <div className="relative h-60 md:h-72">
+            <div className="absolute top-0 left-0 w-52 bg-[#f5f5f0] rounded-2xl p-4 shadow-xl z-10">
+              <div className="w-9 h-9 rounded-full bg-[#3d3472] flex items-center justify-center mb-3">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                   <circle cx="12" cy="8" r="4" fill="#fff" />
                   <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" fill="#fff" />
                 </svg>
               </div>
-              <p className="text-sm font-bold text-gray-900">Rubick Joshi</p>
+              <p className="text-sm font-bold text-gray-900">
+                Humans for humanity
+              </p>
               <p className="text-xs text-gray-500 leading-tight mb-2">
-                Marketing Manager
-                <br />
-                Community Homestay Network
+                Coordinator
               </p>
               <span className="text-yellow-400 text-sm">★★★★★</span>
             </div>
 
-            <div className="absolute -top-4 right-0 w-52 bg-[#f5f5f0] rounded-2xl p-5 shadow-xl z-30">
-              <div className="w-10 h-10 rounded-full bg-[#d97b1a] flex items-center justify-center mb-3">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <div className="absolute -top-4 right-0 w-48 bg-[#f5f5f0] rounded-2xl p-4 shadow-xl z-30">
+              <div className="w-9 h-9 rounded-full bg-[#d97b1a] flex items-center justify-center mb-3">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                   <circle cx="12" cy="8" r="4" fill="#fff" />
                   <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" fill="#fff" />
                 </svg>
               </div>
-              <p className="text-sm font-bold text-gray-900">Norbu Lama</p>
+              <p className="text-sm font-bold text-gray-900">
+                Gsonic Electronics
+              </p>
               <p className="text-xs text-gray-500 leading-tight mb-2">
                 Managing Director
-                <br />
-                Singing Bowl Village Nepal
               </p>
               <span className="text-yellow-400 text-sm">★★★★★</span>
-              <p className="text-xs text-gray-400 mt-2">
-                Rara Treks Tours & Travels
-              </p>
-              <span className="text-yellow-400 text-xs">★★★★★</span>
             </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 border-t border-white/15 pt-10">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 border-t border-white/15 pt-8">
           <div>
-            <h3 className="text-white font-bold text-base mb-2">
-              A trusted extension of your team
+            <div className="text-2xl font-extrabold text-white mb-1">10+</div>
+            <h3 className="text-white font-bold text-sm mb-1">
+              Projects delivered
             </h3>
             <p className="text-white/70 text-sm leading-relaxed">
-              Our clients call us their growth partner, and we&apos;re proud to
-              be part of their success stories.
+              Websites, apps, and brand identities — built with precision for
+              clients across Nepal and abroad.
             </p>
           </div>
           <div>
-            <h3 className="text-white font-bold text-base mb-2">
-              4.9/5 – Rated by industry leaders
+            <div className="text-2xl font-extrabold text-white mb-1">
+              4.5 / 5
+            </div>
+            <h3 className="text-white font-bold text-sm mb-1">
+              Average client rating
             </h3>
             <p className="text-white/70 text-sm leading-relaxed">
-              1,100+ successful projects delivered with creativity, precision,
-              and a focus on building lasting relationships.
+              Our clients don&apos;t just come back — they refer us.
+              Relationships and results are at the core of everything we do.
             </p>
           </div>
           <div>
-            <h3 className="text-white font-bold text-base mb-2">
-              Purpose-driven innovation
+            <div className="text-2xl font-extrabold text-white mb-1">24 hr</div>
+            <h3 className="text-white font-bold text-sm mb-1">
+              Response guarantee
             </h3>
             <p className="text-white/70 text-sm leading-relaxed">
-              We&apos;re passionate about solving problems that matter—every
-              project is crafted with impact in mind.
+              Reach us on WhatsApp, email, or phone. We respond within 24 hours
+              — usually much faster.
             </p>
           </div>
         </div>
@@ -264,7 +272,7 @@ function ParallaxCard({ card, index, totalCards, containerRef }) {
       }}
     >
       <section
-        className="rounded-t-3xl px-6 md:px-16 py-16"
+        className="rounded-t-3xl px-5 md:px-16 py-12 md:py-16"
         style={{ background: card.bg }}
       >
         {card.content}
@@ -278,7 +286,7 @@ export default function Why() {
 
   return (
     <>
-      <section className="">
+      <section>
         <section className="px-4 md:px-10">
           <SectionHeader
             title="Javtech Edge"

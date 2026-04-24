@@ -60,12 +60,10 @@ export function WhoWeAre() {
       <div className="absolute inset-y-0 right-0 w-[55%] pointer-events-none">
         {/* Image */}
         <motion.div className="absolute inset-0">
-          <Image
+          <img
             src="/Services/DigitalMarketing.jpg"
             alt="JavTech team"
-            fill
             className="object-cover object-center"
-            priority
           />
         </motion.div>
 

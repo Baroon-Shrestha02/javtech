@@ -152,11 +152,11 @@ export default function HowWeWork() {
         <div className="text-center mb-16 relative">
           <h2 className="text-5xl md:text-7xl font-black text-gray-900 mb-6 tracking-tight relative z-10">
             How We Turn{" "}
-            <span className="logo bg-gradient-to-r from-violet-600 via-purple-600 to-blue-600 bg-clip-text text-transparent">
+            <span className="logo bg-gradient-to-r from-accent2 to-accent bg-clip-text text-transparent">
               Ideas
             </span>{" "}
             into{" "}
-            <span className="logo bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 bg-clip-text text-transparent">
+            <span className="logo bg-gradient-to-r from-accent2  to-accent bg-clip-text text-transparent">
               Results
             </span>
           </h2>
@@ -409,7 +409,7 @@ export default function HowWeWork() {
         </div>
 
         {/* CTA */}
-        <div className="text-center mt-20">
+        {/* <div className="text-center mt-20">
           <div className="inline-block p-8 bg-white rounded-3xl shadow-xl">
             <h3 className="text-2xl font-bold text-gray-900 mb-4">
               Ready to Transform Your Ideas?
@@ -425,7 +425,7 @@ export default function HowWeWork() {
               </button>
             </Link>
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* Video Modal */}

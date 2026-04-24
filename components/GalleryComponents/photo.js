@@ -107,7 +107,7 @@ export default function Photo() {
                   style={{ transitionDelay: `${i * 60}ms` }}
                 >
                   {/* Image */}
-                  <Image
+                  <img
                     src={img}
                     alt={`gallery-${i + 1}`}
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-105"

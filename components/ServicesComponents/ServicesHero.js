@@ -82,26 +82,25 @@ export default function ServicesHero() {
                 : "opacity-0 scale-105"
             }`}
           >
-            <Image
+            <img
               src={card.bgImage}
               alt={card.title}
-              fill
-              priority={index === 0}
-              className="object-cover"
+              className="absolute inset-0 w-full h-full object-cover"
             />
 
-            <div
-              className={`absolute inset-0 bg-gradient-to-br ${card.color} opacity-40`}
-            />
+            <div />
           </div>
         ))}
       </div>
 
       {/* Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+      <div className="absolute inset-0 bg-black/40" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/70" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/40" />
 
       {/* Content */}
-      <div className="relative z-10 max-w-5xl px-6 md:px-12 pb-16">
+      <div className="relative z-10 px-6 md:px-12 pb-16 container mx-auto">
         <div key={currentIndex} className="animate-slideUp">
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight">
             {currentCard.title}
@@ -110,14 +109,6 @@ export default function ServicesHero() {
           <p className="text-lg md:text-xl text-gray-200 max-w-2xl">
             {currentCard.description}
           </p>
-        </div>
-
-        {/* Progress Bar */}
-        <div className="mt-8 h-[3px] bg-white/20 rounded-full overflow-hidden max-w-xs">
-          <div
-            className="h-full bg-white transition-all duration-100"
-            style={{ width: `${progress}%` }}
-          />
         </div>
       </div>
 

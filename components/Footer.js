@@ -9,7 +9,6 @@ const quickLinks = [
   { href: "/services", label: "Services" },
   { href: "/our-works", label: "Our Works" },
   { href: "/pricing", label: "Pricing" },
-  { href: "/career", label: "Career" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -36,7 +35,7 @@ export function Footer() {
         >
           {/* ── Col 1: Contact info ── */}
           <div className="flex flex-col gap-6">
-            <Image
+            <img
               src="/logo.png"
               alt="Logo"
               width={110}
@@ -56,7 +55,7 @@ export function Footer() {
                 href="mailto:hello@javtech.com"
                 className="text-sm transition-colors duration-200 hover:text-white/60"
               >
-                javtechinfosys@gmail.com
+                info@javtechinfosys.com
               </a>
             </div>
 
@@ -83,7 +82,7 @@ export function Footer() {
                 Location
               </p>
               <p className="text-sm" style={{ color: "rgba(255,255,255,0.7)" }}>
-                Dhobighat, Kathmandu — Nepal
+                Sanepa, Kathmandu — Nepal
               </p>
             </div>
 
@@ -126,12 +125,11 @@ export function Footer() {
             >
               <iframe
                 title="JavTech Location"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d56516.31625949046!2d85.29111643515625!3d27.708964!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb198a307baabf%3A0xb5137c1bf18db1ea!2sKathmandu%2C%20Nepal!5e0!3m2!1sen!2s!4v1712000000000"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d511.9035969965138!2d85.30201494016545!3d27.67938799520154!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb19000b9b0c7b%3A0xf062d9f1da8c3790!2sJavtech%20Infosys!5e1!3m2!1sen!2snp!4v1777019404205!5m2!1sen!2snp"
                 width="100%"
                 height="100%"
                 style={{
                   border: 0,
-                  filter: "grayscale(100%)",
                 }}
                 allowFullScreen
                 loading="lazy"
