@@ -2,7 +2,7 @@ import React from "react";
 
 export function SectionHeader({ title, header, subheader }) {
   return (
-    <div className="mx-auto max-w-7xl py-20">
+    <div className="mx-auto container py-20">
       <div className="flex flex-col lg:flex-row lg:items-start lg:gap-20">
         {/* Left: eyebrow title */}
         <div className="lg:w-48 shrink-0 mb-6 lg:mb-0 lg:pt-3">

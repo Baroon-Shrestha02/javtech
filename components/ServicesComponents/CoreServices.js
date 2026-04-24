@@ -113,7 +113,7 @@ export default function CoreServices() {
           Services
         </h1>
         <p className="text-lg md:text-xl font-extralight max-w-3xl text-center">
-          At Iconiq, we craft stunning designs, build powerful websites and
+          At JavTech, we craft stunning designs, build powerful websites and
           launch digital campaigns that drive results.
         </p>
       </div>
