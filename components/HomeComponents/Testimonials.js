@@ -14,7 +14,7 @@ const testimonials = [
     role: "eCommerce Platform",
     company: "GSonic",
     initials: "GS",
-    image: "/gsonic.jpeg",
+    image: "/clients/gsonic.png",
   },
   {
     quote:
@@ -23,7 +23,7 @@ const testimonials = [
     role: "NGO Mobile App",
     company: "Humans for Humanity",
     initials: "HH",
-    image: "/HFH.png",
+    image: "/clients/HFH.png",
   },
   {
     quote:

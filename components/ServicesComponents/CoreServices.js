@@ -64,6 +64,15 @@ const CoreServicesData = [
   },
 ];
 
+const serviceMenu = [
+  "Digital marketing strategy",
+  "Social media handling",
+  "Brand identity design",
+  "Website design and development",
+  "Mobile app development",
+  "Poster and motion graphics",
+];
+
 export default function CoreServices() {
   const wrapperRefs = useRef([]);
 
@@ -116,6 +125,20 @@ export default function CoreServices() {
           At JavTech, we craft stunning designs, build powerful websites and
           launch digital campaigns that drive results.
         </p>
+      </div>
+
+      <div className="mx-4 mt-12 grid gap-4 rounded-[28px] border border-gray-100 bg-white p-4 shadow-xl shadow-slate-200/70 md:grid-cols-2 lg:grid-cols-3">
+        {serviceMenu.map((service, index) => (
+          <div
+            key={service}
+            className="flex items-center gap-4 rounded-2xl bg-slate-50 p-5"
+          >
+            <div className="flex h-11 w-11 flex-none items-center justify-center rounded-2xl bg-gradient-to-r from-accent2 to-accent text-sm font-black text-white">
+              {String(index + 1).padStart(2, "0")}
+            </div>
+            <p className="text-base font-bold text-gray-800">{service}</p>
+          </div>
+        ))}
       </div>
 
       <section className="px-4 py-16 space-y-[8vh] md:space-y-[20vh]">

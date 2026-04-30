@@ -10,6 +10,7 @@ const quickLinks = [
   { href: "/our-works", label: "Our Works" },
   { href: "/pricing", label: "Pricing" },
   { href: "/contact", label: "Contact" },
+  { href: "/privacy-policy", label: "Privacy Policy" },
 ];
 
 const socials = [
@@ -41,10 +42,7 @@ export function Footer() {
             <img
               src="/logo.png"
               alt="Logo"
-              width={110}
-              height={100}
               className="h-8 w-auto object-contain bg-white"
-              priority
             />
 
             <div>
@@ -205,35 +203,11 @@ export function Footer() {
       {/* ── Bottom bar ── */}
       <div
         style={{ borderTop: "1px solid rgba(255,255,255,0.07)" }}
-        className="mx-auto max-w-7xl px-5 py-5 flex flex-wrap items-center justify-between gap-3"
+        className="mx-auto max-w-7xl px-5 py-5 flex flex-wrap items-center justify-center gap-3"
       >
         <p className="text-xs" style={{ color: "rgba(255,255,255,0.25)" }}>
           ©{year} JavTech. All rights reserved.
         </p>
-        <div className="flex items-center gap-5">
-          <Link
-            href="/privacy-policy"
-            className="text-xs transition-colors duration-200"
-            style={{ color: "rgba(255,255,255,0.25)" }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.color = "rgba(255,255,255,0.25)")
-            }
-          >
-            Privacy Policy
-          </Link>
-          <Link
-            href="/terms"
-            className="text-xs transition-colors duration-200"
-            style={{ color: "rgba(255,255,255,0.25)" }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.color = "rgba(255,255,255,0.25)")
-            }
-          >
-            Terms of Use
-          </Link>
-        </div>
       </div>
     </footer>
   );

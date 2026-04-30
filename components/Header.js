@@ -2,73 +2,227 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, MessageCircle, Lightbulb, ChevronRight } from "lucide-react";
+import {
+  Menu,
+  X,
+  MessageCircle,
+  Lightbulb,
+  ChevronRight,
+  ChevronDown,
+  Code2,
+  Smartphone,
+  Megaphone,
+} from "lucide-react";
+
+/* ─────────────────────────────
+   NAV CONFIG
+───────────────────────────── */
+const dropdownItems = [
+  {
+    label: "Web Development",
+    description: "Modern, scalable websites & web apps",
+    slug: "web-development",
+    icon: Code2,
+  },
+  {
+    label: "App Development",
+    description: "Native & cross-platform mobile apps",
+    slug: "app-development",
+    icon: Smartphone,
+  },
+  {
+    label: "Digital Marketing",
+    description: "SEO, social, and growth campaigns",
+    slug: "digital-marketing",
+    icon: Megaphone,
+  },
+];
 
 const links = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About Us" },
   { href: "/our-works", label: "Our Works" },
-  { href: "/services", label: "Our Services" },
-  { href: "/pricing", label: "Pricing" },
+  {
+    href: "/services",
+    label: "Our Services",
+    dropdown: dropdownItems.map((d) => ({
+      ...d,
+      href: `/services/${d.slug}`,
+    })),
+  },
+  {
+    href: "/pricing",
+    label: "Pricing",
+    dropdown: dropdownItems.map((d) => ({
+      ...d,
+      href: `/pricing/${d.slug}`,
+    })),
+  },
   { href: "/contact", label: "Contact Us" },
 ];
 
 const WA_LINK = "https://wa.me/9779807128557";
 
-function NavLink({ href, label, active, layoutId }) {
-  const [hovered, setHovered] = useState(false);
-
+/* ─────────────────────────────
+   DROPDOWN ITEM ROW
+───────────────────────────── */
+function DropdownItem({
+  href,
+  icon: Icon,
+  label,
+  description,
+  index,
+  onClose,
+}) {
   return (
-    <Link
-      href={href}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className={`relative px-4 py-2 text-[13px] font-medium rounded-full transition-colors select-none ${
-        active ? "text-gray-900" : "text-gray-500 hover:text-gray-800"
-      }`}
+    <motion.div
+      initial={{ opacity: 0, y: 4 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.035, duration: 0.15 }}
     >
-      {label}
-
-      {active && (
-        <motion.span
-          layoutId={layoutId}
-          className="absolute inset-0 -z-10 rounded-full pointer-events-none"
-          style={{
-            background: "rgba(255,255,255,0.85)",
-            backdropFilter: "blur(12px)",
-            WebkitBackdropFilter: "blur(12px)",
-            boxShadow:
-              "0 2px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.9)",
-            border: "1px solid rgba(255,255,255,0.6)",
-          }}
-          transition={{ type: "spring", stiffness: 400, damping: 32 }}
-        />
-      )}
-
-      {hovered && !active && (
-        <motion.span
-          initial={{ opacity: 0, scale: 0.92 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.92 }}
-          className="absolute inset-0 -z-10 rounded-full pointer-events-none"
-          style={{
-            background: "rgba(255,255,255,0.5)",
-            backdropFilter: "blur(8px)",
-            WebkitBackdropFilter: "blur(8px)",
-          }}
-          transition={{ duration: 0.15 }}
-        />
-      )}
-    </Link>
+      <Link
+        href={href}
+        onClick={onClose}
+        className="group flex items-center gap-3.5 px-3 py-3 rounded-xl hover:bg-red-50/80 transition-colors duration-150"
+      >
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gray-50 text-gray-400 group-hover:bg-[#cc0000] group-hover:text-white transition-colors duration-150">
+          <Icon size={16} strokeWidth={1.8} />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-[13px] font-semibold text-gray-800 group-hover:text-[#cc0000] transition-colors duration-150">
+            {label}
+          </p>
+          <p className="text-[11px] text-gray-400 mt-0.5 leading-snug">
+            {description}
+          </p>
+        </div>
+      </Link>
+    </motion.div>
   );
 }
 
+/* ─────────────────────────────
+   NAV LINK WITH DROPDOWN
+───────────────────────────── */
+function NavLink({ href, label, active, dropdown }) {
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef(null);
+  const timeoutRef = useRef(null);
+
+  const hasDropdown = !!dropdown;
+
+  // Clear any pending close when we re-enter
+  const handleEnter = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+    if (hasDropdown) setOpen(true);
+  }, [hasDropdown]);
+
+  // Delay close so the mouse can travel from trigger → panel
+  const handleLeave = useCallback(() => {
+    timeoutRef.current = setTimeout(() => setOpen(false), 150);
+  }, []);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative"
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+    >
+      <Link
+        href={href}
+        className={`relative flex items-center gap-1 px-3 py-2 text-[13px] font-medium transition-all duration-150 select-none
+          after:absolute after:left-3 after:right-3 after:-bottom-1 after:h-[2px] after:rounded-full after:transition-all after:duration-150
+          ${
+            active
+              ? "text-[#cc0000] after:bg-[#cc0000] after:opacity-100"
+              : "text-gray-500 hover:text-gray-900 after:bg-transparent after:opacity-0 hover:after:bg-gray-300 hover:after:opacity-100"
+          }`}
+      >
+        {label}
+        {hasDropdown && (
+          <motion.span
+            animate={{ rotate: open ? 180 : 0 }}
+            transition={{ duration: 0.2 }}
+            className="ml-0.5"
+          >
+            <ChevronDown size={12} />
+          </motion.span>
+        )}
+      </Link>
+
+      {/* Dropdown panel — absolutely positioned under THIS link */}
+      <AnimatePresence>
+        {open && hasDropdown && (
+          <motion.div
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 6 }}
+            transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute top-full left-0 z-50"
+            style={{
+              paddingTop: "8px",
+            }} /* invisible bridge so hover isn't broken */
+          >
+            <div
+              className="w-[320px] rounded-2xl overflow-hidden border border-gray-100/80"
+              style={{
+                background: "rgba(255,255,255,0.98)",
+                backdropFilter: "blur(20px)",
+                boxShadow:
+                  "0 4px 6px -1px rgba(0,0,0,0.05), 0 20px 50px -12px rgba(0,0,0,0.12)",
+              }}
+            >
+              <div className="p-2">
+                {dropdown.map((item, i) => (
+                  <DropdownItem
+                    key={item.href}
+                    index={i}
+                    href={item.href}
+                    icon={item.icon}
+                    label={item.label}
+                    description={item.description}
+                    onClose={() => setOpen(false)}
+                  />
+                ))}
+              </div>
+
+              <Link
+                href={href}
+                onClick={() => setOpen(false)}
+                className="flex items-center justify-between px-5 py-2.5 border-t border-gray-100 text-[11px] font-medium text-gray-400 hover:text-[#cc0000] hover:bg-gray-50/50 transition-colors duration-150"
+              >
+                View all {label.toLowerCase()}
+                <ChevronRight size={12} />
+              </Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+/* ─────────────────────────────
+   HEADER COMPONENT
+───────────────────────────── */
 export function Header() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileSubmenu, setMobileSubmenu] = useState(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -87,9 +241,24 @@ export function Header() {
     };
   }, [mobileOpen]);
 
+  const isActive = (link) =>
+    pathname === link.href ||
+    (link.dropdown && pathname.startsWith(link.href + "/"));
+
+  const renderDesktopNav = () =>
+    links.map((link) => (
+      <NavLink
+        key={link.href}
+        href={link.href}
+        label={link.label}
+        active={isActive(link)}
+        dropdown={link.dropdown}
+      />
+    ));
+
   return (
     <>
-      {/* ── DEFAULT NAVBAR ── */}
+      {/* ───────── DEFAULT NAVBAR ───────── */}
       <AnimatePresence>
         {!scrolled && (
           <motion.header
@@ -99,9 +268,8 @@ export function Header() {
             transition={{ duration: 0.18 }}
             className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100"
           >
-            <div className="mx-auto max-w-7xl px-5 flex items-center gap-4 h-[68px]">
-              {/* Logo */}
-              <Link href="/" className="shrink-0 mr-4">
+            <div className="mx-auto max-w-7xl px-5 flex items-center gap-6 h-[68px]">
+              <Link href="/" className="shrink-0">
                 <img
                   src="/logo.png"
                   alt="Logo"
@@ -111,33 +279,14 @@ export function Header() {
                 />
               </Link>
 
-              {/* Desktop nav */}
-              <nav
-                className="hidden lg:flex items-center gap-0.5 flex-1 rounded-full px-1.5 py-1.5"
-                style={{
-                  background: "rgba(243,244,246,0.7)",
-                  backdropFilter: "blur(8px)",
-                  WebkitBackdropFilter: "blur(8px)",
-                  border: "1px solid rgba(0,0,0,0.06)",
-                  width: "fit-content",
-                }}
-              >
-                {links.map(({ href, label }) => (
-                  <NavLink
-                    key={href}
-                    href={href}
-                    label={label}
-                    active={pathname === href}
-                    layoutId="default-pill"
-                  />
-                ))}
+              <nav className="hidden lg:flex items-center gap-2 flex-1">
+                {renderDesktopNav()}
               </nav>
 
-              {/* Desktop right */}
-              <div className="hidden lg:flex items-center gap-5 ml-auto shrink-0">
+              <div className="hidden lg:flex items-center gap-5 ml-auto">
                 <Link
                   href="/contact"
-                  className="flex items-center gap-2 rounded-full bg-[#cc0000] px-5 py-2.5 text-sm font-semibold text-white transition-all hover:bg-[#aa0000] active:scale-95"
+                  className="flex items-center gap-2 rounded-full bg-[#cc0000] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#aa0000] transition-colors"
                 >
                   Got an Idea
                   <Lightbulb size={14} />
@@ -146,29 +295,18 @@ export function Header() {
                 <a
                   href={WA_LINK}
                   target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2.5 group"
+                  className="flex items-center gap-2.5"
                 >
-                  <MessageCircle
-                    size={22}
-                    className="text-[#cc0000] transition-transform group-hover:scale-110"
-                  />
-                  <div>
-                    <p className="text-sm font-semibold text-[#cc0000] leading-tight">
-                      +977-9807128557
-                    </p>
-                    <p className="text-[10px] text-gray-400 leading-tight">
-                      Sun-Fri, 10:00 AM – 6:00 PM
-                    </p>
-                  </div>
+                  <MessageCircle size={20} className="text-[#cc0000]" />
+                  <span className="text-sm font-semibold text-[#cc0000]">
+                    +977-9807128557
+                  </span>
                 </a>
               </div>
 
-              {/* Mobile hamburger */}
               <button
                 onClick={() => setMobileOpen(true)}
-                className="ml-auto lg:hidden flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 text-gray-500 hover:border-gray-300 hover:text-gray-800 transition-colors active:scale-95"
-                aria-label="Open menu"
+                className="ml-auto lg:hidden flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 text-gray-500"
               >
                 <Menu size={18} />
               </button>
@@ -177,213 +315,208 @@ export function Header() {
         )}
       </AnimatePresence>
 
-      {/* ── SCROLLED NAVBAR ── */}
+      {/* ───────── SCROLLED NAVBAR (CARD) ───────── */}
       <AnimatePresence>
         {scrolled && (
-          <div
-            style={{
-              position: "fixed",
-              top: "14px",
-              left: "50%",
-              transform: "translateX(-50%)",
-              width: "calc(100% - 2rem)",
-              maxWidth: "880px",
-              zIndex: 50,
-            }}
-          >
+          <div className="fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-[920px] z-50">
             <motion.div
               key="scrolled-nav"
               initial={{ opacity: 0, y: -16 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -16 }}
-              transition={{ duration: 0.22, ease: "easeOut" }}
-              className="flex items-center gap-3 rounded-full px-3 py-2"
+              className="flex items-center gap-4 rounded-2xl px-4 py-2.5"
               style={{
-                background: "rgba(255,255,255,0.75)",
+                background: "rgba(255,255,255,0.88)",
                 backdropFilter: "blur(20px)",
-                WebkitBackdropFilter: "blur(20px)",
-                boxShadow:
-                  "0 8px 40px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.9)",
+                boxShadow: "0 10px 40px rgba(0,0,0,0.1)",
                 border: "1px solid rgba(255,255,255,0.6)",
               }}
             >
-              {/* Logo */}
-              <Link href="/" className="shrink-0 mr-1">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full overflow-hidden ring-1 ring-gray-100">
-                  <img
-                    src="/logo.png"
-                    alt="logo"
-                    height={40}
-                    width={40}
-                    className="rounded-full object-cover"
-                  />
-                </div>
+              <Link href="/">
+                <img src="/logo.png" className="h-9" alt="Logo" />
               </Link>
 
-              {/* Desktop nav */}
-              <nav className="hidden lg:flex items-center gap-0.5 flex-1">
-                {links.map(({ href, label }) => (
-                  <NavLink
-                    key={href}
-                    href={href}
-                    label={label}
-                    active={pathname === href}
-                    layoutId="scrolled-pill"
-                  />
-                ))}
+              <nav className="hidden lg:flex items-center gap-2 flex-1">
+                {renderDesktopNav()}
               </nav>
 
-              {/* CTA */}
               <a
                 href={WA_LINK}
                 target="_blank"
-                rel="noopener noreferrer"
-                className="ml-auto hidden lg:flex items-center gap-2 rounded-full bg-[#cc0000] px-5 py-2.5 text-[13px] font-semibold text-white transition-all hover:bg-[#aa0000] active:scale-95 shrink-0"
+                className="ml-auto hidden lg:flex items-center gap-2 rounded-full bg-[#cc0000] px-5 py-2 text-sm text-white hover:bg-[#aa0000] transition-colors"
               >
-                WhatsApp Us
-                <MessageCircle size={13} />
+                WhatsApp
+                <MessageCircle size={14} />
               </a>
 
-              {/* Mobile hamburger */}
               <button
                 onClick={() => setMobileOpen(true)}
-                className="ml-auto lg:hidden flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 text-gray-500 hover:border-gray-300 hover:text-gray-800 transition-colors"
-                aria-label="Open menu"
+                className="ml-auto lg:hidden"
               >
-                <Menu size={18} />
+                <Menu size={20} />
               </button>
             </motion.div>
           </div>
         )}
       </AnimatePresence>
 
-      {/* ── MOBILE DRAWER ── */}
+      {/* ───────── MOBILE MENU ───────── */}
       <AnimatePresence>
         {mobileOpen && (
           <>
             <motion.div
-              key="backdrop"
+              className="fixed inset-0 z-[60] bg-black/30"
+              onClick={() => setMobileOpen(false)}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              onClick={() => setMobileOpen(false)}
-              className="fixed inset-0 z-[60] bg-black/30 backdrop-blur-sm"
             />
 
             <motion.div
-              key="drawer"
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", stiffness: 320, damping: 34 }}
-              className="fixed top-0 right-0 bottom-0 z-[70] w-[300px] flex flex-col"
+              initial={{ y: 40, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 40, opacity: 0 }}
+              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              className="fixed top-4 right-4 bottom-4 z-[70] w-[calc(100%-2rem)] max-w-[360px] rounded-3xl overflow-hidden flex flex-col"
               style={{
-                background: "rgba(255,255,255,0.92)",
+                background: "rgba(255,255,255,0.98)",
                 backdropFilter: "blur(24px)",
-                WebkitBackdropFilter: "blur(24px)",
-                borderLeft: "1px solid rgba(0,0,0,0.07)",
+                boxShadow: "0 24px 80px rgba(0,0,0,0.22)",
               }}
             >
-              {/* Drawer header */}
-              <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
-                <Link href="/" onClick={() => setMobileOpen(false)}>
-                  <img
-                    src="/logo.png"
-                    alt="logo"
-                    height={32}
-                    width={90}
-                    className="object-contain"
-                  />
-                </Link>
+              {/* Header */}
+              <div className="flex justify-between items-center p-5 border-b border-gray-100 shrink-0">
+                <img src="/logo.png" className="h-8" alt="Logo" />
                 <button
                   onClick={() => setMobileOpen(false)}
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 text-gray-400 hover:border-gray-300 hover:text-gray-700 transition-colors active:scale-95"
-                  aria-label="Close menu"
+                  className="h-9 w-9 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
                 >
-                  <X size={18} />
+                  <X size={20} />
                 </button>
               </div>
 
-              {/* Nav links */}
-              <nav className="flex flex-col px-4 py-6 gap-1 flex-1 overflow-y-auto">
-                {links.map(({ href, label }, i) => {
-                  const active = pathname === href;
+              {/* Scrollable links */}
+              <nav className="flex flex-col gap-1 p-4 flex-1 overflow-y-auto overscroll-contain">
+                {links.map((link) => {
+                  const active = isActive(link);
+                  const expanded = mobileSubmenu === link.label;
+
+                  if (link.dropdown) {
+                    return (
+                      <div key={link.href}>
+                        <button
+                          onClick={() =>
+                            setMobileSubmenu(expanded ? null : link.label)
+                          }
+                          className={`w-full flex justify-between items-center px-4 py-3 rounded-xl text-sm font-medium transition-colors
+                            ${
+                              active
+                                ? "bg-red-50 text-[#cc0000]"
+                                : "text-gray-700 hover:bg-gray-50"
+                            }`}
+                        >
+                          {link.label}
+                          <motion.span
+                            animate={{ rotate: expanded ? 180 : 0 }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            <ChevronDown size={14} />
+                          </motion.span>
+                        </button>
+
+                        <AnimatePresence initial={false}>
+                          {expanded && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{
+                                duration: 0.25,
+                                ease: [0.22, 1, 0.36, 1],
+                              }}
+                              className="overflow-hidden"
+                            >
+                              <div className="pl-3 py-2 flex flex-col gap-1">
+                                <Link
+                                  href={link.href}
+                                  onClick={() => setMobileOpen(false)}
+                                  className="flex items-center justify-between px-4 py-2.5 rounded-lg text-xs font-medium text-gray-400 hover:bg-gray-50 hover:text-[#cc0000] transition-colors"
+                                >
+                                  All {link.label}
+                                  <ChevronRight size={12} />
+                                </Link>
+                                {link.dropdown.map((sub) => {
+                                  const Icon = sub.icon;
+                                  const subActive = pathname === sub.href;
+                                  return (
+                                    <Link
+                                      key={sub.href}
+                                      href={sub.href}
+                                      onClick={() => setMobileOpen(false)}
+                                      className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-colors
+                                        ${
+                                          subActive
+                                            ? "bg-red-50 text-[#cc0000]"
+                                            : "text-gray-600 hover:bg-gray-50"
+                                        }`}
+                                    >
+                                      <Icon size={14} />
+                                      {sub.label}
+                                    </Link>
+                                  );
+                                })}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    );
+                  }
+
                   return (
-                    <motion.div
-                      key={href}
-                      initial={{ opacity: 0, x: 24 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{
-                        delay: i * 0.055 + 0.08,
-                        type: "spring",
-                        stiffness: 300,
-                        damping: 28,
-                      }}
-                    >
-                      <Link
-                        href={href}
-                        onClick={() => setMobileOpen(false)}
-                        className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-all active:scale-[0.98] ${
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setMobileOpen(false)}
+                      className={`flex justify-between items-center px-4 py-3 rounded-xl text-sm font-medium transition-colors
+                        ${
                           active
-                            ? "text-gray-900 border border-red-100"
-                            : "text-gray-500 hover:bg-gray-50 hover:text-gray-800 border border-transparent"
+                            ? "bg-red-50 text-[#cc0000]"
+                            : "text-gray-700 hover:bg-gray-50"
                         }`}
-                        style={
-                          active
-                            ? {
-                                background: "rgba(255,255,255,0.9)",
-                                backdropFilter: "blur(12px)",
-                                WebkitBackdropFilter: "blur(12px)",
-                                boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
-                              }
-                            : {}
-                        }
-                      >
-                        {label}
-                        <ChevronRight
-                          size={15}
-                          className={`transition-transform ${
-                            active
-                              ? "text-[#cc0000] translate-x-0.5"
-                              : "opacity-30"
-                          }`}
-                        />
-                      </Link>
-                    </motion.div>
+                    >
+                      {link.label}
+                      <ChevronRight size={14} />
+                    </Link>
                   );
                 })}
               </nav>
 
-              {/* Drawer footer */}
-              <div className="px-6 py-6 border-t border-gray-100 flex flex-col gap-3">
+              {/* Footer */}
+              <div className="p-5 border-t border-gray-100 flex flex-col gap-3 shrink-0">
                 <Link
                   href="/contact"
                   onClick={() => setMobileOpen(false)}
-                  className="flex items-center justify-center gap-2 rounded-full bg-[#cc0000] px-5 py-3 text-sm font-semibold text-white transition-all hover:bg-[#aa0000] active:scale-95"
+                  className="flex items-center justify-center gap-2 bg-[#cc0000] hover:bg-[#aa0000] text-white text-sm font-semibold py-3 rounded-xl transition-colors"
                 >
-                  <Lightbulb size={15} />
                   Got an Idea?
+                  <Lightbulb size={14} />
                 </Link>
+
                 <a
                   href={WA_LINK}
                   target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 rounded-full border border-gray-200 px-5 py-3 text-sm font-semibold text-gray-600 transition-all hover:border-gray-300 hover:text-gray-800 active:scale-95"
+                  className="flex items-center justify-center gap-2 border border-gray-200 hover:border-[#cc0000] hover:text-[#cc0000] text-sm font-medium text-gray-700 py-3 rounded-xl transition-colors"
                 >
-                  <MessageCircle size={15} />
+                  <MessageCircle size={14} />
                   WhatsApp Us
                 </a>
-                <p className="text-center text-[11px] text-gray-400 mt-1">
-                  Sun-Fri, 10:00 AM – 6:00 PM
-                </p>
               </div>
             </motion.div>
           </>
         )}
       </AnimatePresence>
 
-      {/* Spacer */}
       <div className="h-[68px]" />
     </>
   );

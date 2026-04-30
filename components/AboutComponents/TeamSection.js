@@ -148,13 +148,7 @@ export default function TeamSection() {
 
   return (
     <section className="bg-gradient-to-b from-white via-gray-50 to-white py-20 px-6 overflow-hidden">
-      {/* HEADER */}
       <div className="text-center max-w-4xl mx-auto mb-20 animate-fadeInUp">
-        <div className="inline-block mb-4">
-          <span className="bg-red-100 text-red-700 px-5 py-2 rounded-full text-sm font-semibold tracking-wider uppercase">
-            Our Team
-          </span>
-        </div>
         <h1 className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight mb-6">
           Expertly Driven.
           <br />

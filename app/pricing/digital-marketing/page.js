@@ -1,9 +1,11 @@
+import DigitalPricing from "@/components/PricingComponents/ServiceBasedPricing/DigitalPricing";
+
 export const metadata = { title: "Dgitial Marketing Services" };
 
-export default function DigitalMarketing() {
+export default function Page() {
   return (
     <main>
-      <h1>Digital Marketing Services</h1>
+      <DigitalPricing />
     </main>
   );
 }

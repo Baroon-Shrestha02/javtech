@@ -6,15 +6,13 @@ import { SectionHeader } from "../SharedComponents/SectionHeader";
 const stats = [
   { number: "50+", label: "Awards &\nRecognition", dark: true, col: "left" },
   { number: "900+", label: "Projects\nCompleted", dark: true, col: "right" },
-  { number: "20+", label: "Creative\nMinds", dark: false, col: "left" },
+  { number: "20+", label: "Creative\nMinds", dark: true, col: "left" },
   { number: "5+", label: "Years of\nExperience", dark: true, col: "right" },
 ];
 
 const PX_PER_CARD = 40;
 const TOTAL_SCROLL_PX = stats.length * PX_PER_CARD;
 
-// How many pixels BEFORE the section top is reached we start animating.
-// Positive value = cards start while the header is still visible in viewport.
 const EARLY_START_PX = 300;
 
 const cardImages = {
@@ -32,7 +30,7 @@ function StatCard({ stat, progress }) {
   const opacity = Math.min(1, progress * 1.5);
   const translateY = (1 - progress) * 60;
 
-  const bgColor = stat.dark ? "#1a1a1f" : "#a8d5b5";
+  const bgColor = stat.dark ? "#1a1a1f" : "#E01522";
   const imgSrc = cardImages[stat.number];
 
   return (
