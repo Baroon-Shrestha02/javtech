@@ -19,7 +19,6 @@ const serviceOptions = [
   { id: "marketing", label: "Digital Marketing" },
   { id: "ecommerce", label: "eCommerce Development" },
   { id: "branding", label: "Branding / Rebranding" },
-  { id: "saas", label: "SaaS Development" },
   { id: "uiux", label: "UI/UX Design" },
 ];
 
