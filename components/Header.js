@@ -14,12 +14,71 @@ import {
   Code2,
   Smartphone,
   Megaphone,
+  Search,
+  Share2,
+  Palette,
+  FileText,
+  MousePointerClick,
+  Layout,
 } from "lucide-react";
 
 /* ─────────────────────────────
-   NAV CONFIG
+   SERVICE CATEGORIES
 ───────────────────────────── */
-const dropdownItems = [
+const serviceCategories = [
+  {
+    category: "Development",
+    description:
+      "Creating digital experiences through coding, design, and user interaction principles.",
+    items: [
+      {
+        label: "Website Development",
+        description: "Specialized Custom Website Development Services",
+        slug: "web-development",
+        icon: Code2,
+      },
+      {
+        label: "App Development",
+        description: "Building Custom Apps for Seamless User Experience",
+        slug: "app-development",
+        icon: Smartphone,
+      },
+    ],
+  },
+  {
+    category: "Marketing",
+    description:
+      "Promotion of products or services via online channels and strategies.",
+    items: [
+      {
+        label: "Social Media Marketing (SMM)",
+        description: "Boost online presence, engage audience",
+        slug: "social-media-marketing",
+        icon: Share2,
+      },
+      {
+        label: "Graphic Design",
+        description: "Bringing Ideas to Visual Life",
+        slug: "graphic-design",
+        icon: Palette,
+      },
+      {
+        label: "Content Writing & Creation",
+        description: "Creating Content that Resonates",
+        slug: "content-writing",
+        icon: FileText,
+      },
+      {
+        label: "Digital Marketing",
+        description: "Designing Digital Paths That Echo with Audiences",
+        slug: "digital-marketing",
+        icon: Megaphone,
+      },
+    ],
+  },
+];
+
+const pricingDropdownItems = [
   {
     label: "Web Development",
     description: "Modern, scalable websites & web apps",
@@ -47,15 +106,12 @@ const links = [
   {
     href: "/services",
     label: "Our Services",
-    dropdown: dropdownItems.map((d) => ({
-      ...d,
-      href: `/services/${d.slug}`,
-    })),
+    megaMenu: true,
   },
   {
     href: "/pricing",
     label: "Pricing",
-    dropdown: dropdownItems.map((d) => ({
+    dropdown: pricingDropdownItems.map((d) => ({
       ...d,
       href: `/pricing/${d.slug}`,
     })),
@@ -66,7 +122,45 @@ const links = [
 const WA_LINK = "https://wa.me/9779807128557";
 
 /* ─────────────────────────────
-   DROPDOWN ITEM ROW
+   MEGA MENU ITEM
+───────────────────────────── */
+function MegaMenuItem({
+  href,
+  icon: Icon,
+  label,
+  description,
+  index,
+  onClose,
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 4 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.02, duration: 0.15 }}
+    >
+      <Link
+        href={href}
+        onClick={onClose}
+        className="group flex items-start gap-3 px-3 py-3 rounded-xl hover:bg-gray-200/50 transition-colors duration-150"
+      >
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gray-50 text-gray-400 group-hover:bg-accent2 group-hover:text-white transition-colors duration-150">
+          <Icon size={18} strokeWidth={1.8} />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-semibold text-gray-900 group-hover:text-accent2 transition-colors duration-150 leading-snug">
+            {label}
+          </p>
+          <p className="text-xs text-gray-500 mt-0.5 leading-relaxed">
+            {description}
+          </p>
+        </div>
+      </Link>
+    </motion.div>
+  );
+}
+
+/* ─────────────────────────────
+   DROPDOWN ITEM (for Pricing)
 ───────────────────────────── */
 function DropdownItem({
   href,
@@ -104,16 +198,15 @@ function DropdownItem({
 }
 
 /* ─────────────────────────────
-   NAV LINK WITH DROPDOWN
+   NAV LINK COMPONENT
 ───────────────────────────── */
-function NavLink({ href, label, active, dropdown }) {
+function NavLink({ href, label, active, dropdown, megaMenu }) {
   const [open, setOpen] = useState(false);
   const containerRef = useRef(null);
   const timeoutRef = useRef(null);
 
-  const hasDropdown = !!dropdown;
+  const hasDropdown = !!dropdown || megaMenu;
 
-  // Clear any pending close when we re-enter
   const handleEnter = useCallback(() => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
@@ -122,12 +215,18 @@ function NavLink({ href, label, active, dropdown }) {
     if (hasDropdown) setOpen(true);
   }, [hasDropdown]);
 
-  // Delay close so the mouse can travel from trigger → panel
   const handleLeave = useCallback(() => {
-    timeoutRef.current = setTimeout(() => setOpen(false), 150);
+    timeoutRef.current = setTimeout(() => setOpen(false), 120);
   }, []);
 
-  // Cleanup on unmount
+  const handleClose = useCallback(() => {
+    setOpen(false);
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+  }, []);
+
   useEffect(() => {
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -163,9 +262,76 @@ function NavLink({ href, label, active, dropdown }) {
         )}
       </Link>
 
-      {/* Dropdown panel — absolutely positioned under THIS link */}
+      {/* Mega Menu for Services */}
       <AnimatePresence>
-        {open && hasDropdown && (
+        {open && megaMenu && (
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 8 }}
+            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute top-full -left-[230px] z-50"
+            style={{
+              paddingTop: "12px",
+            }}
+          >
+            <div
+              className="w-[720px] rounded-2xl overflow-hidden border border-gray-100/80"
+              style={{
+                background: "rgba(255,255,255,0.98)",
+                backdropFilter: "blur(24px)",
+                boxShadow:
+                  "0 4px 6px -1px rgba(0,0,0,0.05), 0 20px 50px -12px rgba(0,0,0,0.15)",
+              }}
+            >
+              <div className="grid grid-cols-2 gap-6 p-6">
+                {serviceCategories.map((category, catIndex) => (
+                  <div key={category.category}>
+                    {/* Category Header */}
+                    <div className="mb-4 pb-3 border-b border-gray-100">
+                      <h3 className="text-base font-bold text-gray-900 mb-1">
+                        {category.category}
+                      </h3>
+                      <p className="text-xs text-gray-500 leading-relaxed">
+                        {category.description}
+                      </p>
+                    </div>
+
+                    {/* Category Items */}
+                    <div className="space-y-1">
+                      {category.items.map((item, itemIndex) => (
+                        <MegaMenuItem
+                          key={item.slug}
+                          href={`/services/${item.slug}`}
+                          icon={item.icon}
+                          label={item.label}
+                          description={item.description}
+                          index={catIndex * 10 + itemIndex}
+                          onClose={handleClose}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Footer Link */}
+              <Link
+                href="/services"
+                onClick={handleClose}
+                className="flex items-center justify-between px-6 py-3 border-t border-gray-100 text-xs font-medium text-gray-400 hover:text-accent2 hover:bg-gray-50/50 transition-colors duration-150"
+              >
+                Services Overview
+                <ChevronRight size={12} />
+              </Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Regular Dropdown for Pricing */}
+      <AnimatePresence>
+        {open && dropdown && !megaMenu && (
           <motion.div
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
@@ -174,7 +340,7 @@ function NavLink({ href, label, active, dropdown }) {
             className="absolute top-full left-0 z-50"
             style={{
               paddingTop: "8px",
-            }} /* invisible bridge so hover isn't broken */
+            }}
           >
             <div
               className="w-[320px] rounded-2xl overflow-hidden border border-gray-100/80"
@@ -194,17 +360,17 @@ function NavLink({ href, label, active, dropdown }) {
                     icon={item.icon}
                     label={item.label}
                     description={item.description}
-                    onClose={() => setOpen(false)}
+                    onClose={handleClose}
                   />
                 ))}
               </div>
 
               <Link
                 href={href}
-                onClick={() => setOpen(false)}
+                onClick={handleClose}
                 className="flex items-center justify-between px-5 py-2.5 border-t border-gray-100 text-[11px] font-medium text-gray-400 hover:text-[#cc0000] hover:bg-gray-50/50 transition-colors duration-150"
               >
-                View all {label.toLowerCase()}
+                {label} Overview
                 <ChevronRight size={12} />
               </Link>
             </div>
@@ -241,9 +407,15 @@ export function Header() {
     };
   }, [mobileOpen]);
 
-  const isActive = (link) =>
-    pathname === link.href ||
-    (link.dropdown && pathname.startsWith(link.href + "/"));
+  const isActive = (link) => {
+    if (link.megaMenu) {
+      return pathname.startsWith("/services");
+    }
+    return (
+      pathname === link.href ||
+      (link.dropdown && pathname.startsWith(link.href + "/"))
+    );
+  };
 
   const renderDesktopNav = () =>
     links.map((link) => (
@@ -253,12 +425,20 @@ export function Header() {
         label={link.label}
         active={isActive(link)}
         dropdown={link.dropdown}
+        megaMenu={link.megaMenu}
       />
     ));
 
+  const allServices = serviceCategories.flatMap((cat) =>
+    cat.items.map((item) => ({
+      ...item,
+      href: `/services/${item.slug}`,
+      category: cat.category,
+    })),
+  );
+
   return (
     <>
-      {/* ───────── DEFAULT NAVBAR ───────── */}
       <AnimatePresence>
         {!scrolled && (
           <motion.header
@@ -315,7 +495,7 @@ export function Header() {
         )}
       </AnimatePresence>
 
-      {/* ───────── SCROLLED NAVBAR (CARD) ───────── */}
+      {/* ───────── SCROLLED NAVBAR ───────── */}
       <AnimatePresence>
         {scrolled && (
           <div className="fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-[920px] z-50">
@@ -360,7 +540,6 @@ export function Header() {
         )}
       </AnimatePresence>
 
-      {/* ───────── MOBILE MENU ───────── */}
       <AnimatePresence>
         {mobileOpen && (
           <>
@@ -384,7 +563,6 @@ export function Header() {
                 boxShadow: "0 24px 80px rgba(0,0,0,0.22)",
               }}
             >
-              {/* Header */}
               <div className="flex justify-between items-center p-5 border-b border-gray-100 shrink-0">
                 <img src="/logo.png" className="h-8" alt="Logo" />
                 <button
@@ -395,11 +573,84 @@ export function Header() {
                 </button>
               </div>
 
-              {/* Scrollable links */}
               <nav className="flex flex-col gap-1 p-4 flex-1 overflow-y-auto overscroll-contain">
                 {links.map((link) => {
                   const active = isActive(link);
                   const expanded = mobileSubmenu === link.label;
+
+                  if (link.megaMenu) {
+                    return (
+                      <div key={link.href}>
+                        <button
+                          onClick={() =>
+                            setMobileSubmenu(expanded ? null : link.label)
+                          }
+                          className={`w-full flex justify-between items-center px-4 py-3 rounded-xl text-sm font-medium transition-colors
+                            ${
+                              active
+                                ? "bg-red-50 text-[#cc0000]"
+                                : "text-gray-700 hover:bg-gray-50"
+                            }`}
+                        >
+                          {link.label}
+                          <motion.span
+                            animate={{ rotate: expanded ? 180 : 0 }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            <ChevronDown size={14} />
+                          </motion.span>
+                        </button>
+
+                        <AnimatePresence initial={false}>
+                          {expanded && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{
+                                duration: 0.25,
+                                ease: [0.22, 1, 0.36, 1],
+                              }}
+                              className="overflow-hidden"
+                            >
+                              <div className="pl-3 py-2 flex flex-col gap-1">
+                                <Link
+                                  href={link.href}
+                                  onClick={() => setMobileOpen(false)}
+                                  className="flex items-center justify-between px-4 py-2.5 rounded-lg text-xs font-medium text-gray-400 hover:bg-gray-50 hover:text-[#cc0000] transition-colors"
+                                >
+                                  All Services
+                                  <ChevronRight size={12} />
+                                </Link>
+                                {allServices.map((service) => {
+                                  const Icon = service.icon;
+                                  const subActive = pathname === service.href;
+                                  return (
+                                    <Link
+                                      key={service.href}
+                                      href={service.href}
+                                      onClick={() => setMobileOpen(false)}
+                                      className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-colors
+                                        ${
+                                          subActive
+                                            ? "bg-red-50 text-[#cc0000]"
+                                            : "text-gray-600 hover:bg-gray-50"
+                                        }`}
+                                    >
+                                      <Icon size={14} />
+                                      <span className="text-xs">
+                                        {service.label}
+                                      </span>
+                                    </Link>
+                                  );
+                                })}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    );
+                  }
 
                   if (link.dropdown) {
                     return (
@@ -492,7 +743,6 @@ export function Header() {
                 })}
               </nav>
 
-              {/* Footer */}
               <div className="p-5 border-t border-gray-100 flex flex-col gap-3 shrink-0">
                 <Link
                   href="/contact"

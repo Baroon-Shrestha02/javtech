@@ -38,12 +38,14 @@ export function Footer() {
           }}
         >
           {/* ── Col 1: Contact info ── */}
-          <div className="flex flex-col gap-6">
-            <img
-              src="/logo.png"
-              alt="Logo"
-              className="h-8 w-auto object-contain bg-white"
-            />
+          <div className="flex flex-col  gap-6">
+            <div className="">
+              <img
+                src="/logo.png"
+                alt="Logo"
+                className="h-24 w-auto object-contain bg-white rounded-xl"
+              />
+            </div>
 
             <div>
               <p

@@ -1,6 +1,7 @@
 "use client";
 
 import Accordion from "../SharedComponents/Accordion";
+import { SectionHeader } from "../SharedComponents/SectionHeader";
 
 const faqData = [
   {
@@ -180,8 +181,8 @@ const faqData = [
 const FAQSection = () => {
   return (
     <div className="min-h-screen bg-white text-gray-900">
-      <div className="mx-auto max-w-7xl px-6 py-20">
-        <div className="mb-16 flex flex-col items-center gap-5 text-center">
+      <div className="mx-auto max-w-7xl px-6 pb-16">
+        {/* <div className="mb-16 flex flex-col items-center gap-5 text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-400">
             Got questions?
           </p>
@@ -192,8 +193,13 @@ const FAQSection = () => {
             Everything you need to know about working with JavTech — from
             pricing and timelines to what happens after we launch.
           </p>
-        </div>
-        <Accordion items={faqData} />
+        </div> */}
+        <SectionHeader
+          title="Got questions?"
+          header="Frequently Asked Questions"
+          subheader="Everything you need to know about working with JavTech — from pricing and timelines to what happens after we launch."
+        />
+        <Accordion items={faqData} variant="card" />
       </div>
     </div>
   );

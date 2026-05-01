@@ -1,9 +1,10 @@
-export const metadata = { title: "Dgitial Marketing Services" };
+export const metadata = {
+  title: "Digital Marketing Services",
+  description:
+    "Digital marketing services for social campaigns, SEO, paid ads, and measurable growth.",
+  alternates: { canonical: "/services/digital-marketing" },
+};
 
 export default function DigitalMarketing() {
-  return (
-    <main>
-      <h1>Digital Marketing Services</h1>
-    </main>
-  );
+  return <>Digital marketing</>;
 }

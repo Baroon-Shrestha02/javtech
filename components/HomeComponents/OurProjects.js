@@ -148,7 +148,7 @@ export function OurProjects() {
   return (
     <section
       ref={sectionRef}
-      className="relative h-screen w-full overflow-hidden bg-black"
+      className="relative h-screen w-full overflow-hidden bg-black my-16"
     >
       <div className="relative h-screen w-[75vw] mx-auto py-10">
         {/* Card grid — explicit height so images fill */}

@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Image from "next/image";
+import { motion, useInView } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Check, Sparkles } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,7 +14,7 @@ const CoreServicesData = [
     title: "Digital Marketing",
     subtitle: "We strategize content that converts.",
     description:
-      "Our digital marketing services focus on creating data-driven strategies that deliver measurable results. We combine creative content with advanced analytics to build campaigns that not only engage your audience but drive conversions. From social media management to performance advertising, we ensure your brand reaches the right people at the right time with compelling messages that inspire action.",
+      "Our digital marketing services focus on creating data-driven strategies that deliver measurable results. We combine creative content with advanced analytics to build campaigns that not only engage your audience but drive conversions.",
     title2: "What we provide",
     points: [
       "Social media ads and organic posts",
@@ -21,46 +22,47 @@ const CoreServicesData = [
       "Email marketing and digital content",
     ],
     image: "/Services/DigitalMarketing.jpg",
+    gradient: "from-pink-500 to-rose-500",
   },
   {
     id: 2,
     title: "Digital Branding",
     subtitle: "Crafting your visual identity.",
     description:
-      "We create cohesive brand identities that resonate with your target audience and differentiate you from competitors. Our branding process involves deep market research, competitor analysis, and collaborative design sessions to develop a visual language that authentically represents your values and mission. Every element from logo to color palette is carefully crafted to create lasting brand recognition.",
+      "We create cohesive brand identities that resonate with your target audience and differentiate you from competitors. Our branding process involves deep market research, competitor analysis, and collaborative design sessions.",
     title2: "What we provide",
     points: [
       "Custom logo design and brand identity",
-      "Comprehensive brand guidelines and style guides",
+      "Comprehensive brand guidelines",
       "Strategic color systems and typography",
     ],
     image: "/Services/herosection3.jpg",
+    gradient: "from-blue-500 to-cyan-500",
   },
   {
     id: 3,
     title: "Web Development",
     subtitle: "Building scalable websites.",
     description:
-      "We develop modern, responsive websites that provide exceptional user experiences across all devices. Our development approach emphasizes performance, security, and scalability, ensuring your website can grow with your business. Using cutting-edge technologies and best practices, we create websites that not only look great but also rank well in search engines and convert visitors into customers.",
+      "We develop modern, responsive websites that provide exceptional user experiences across all devices. Our development approach emphasizes performance, security, and scalability, ensuring your website can grow with your business.",
     title2: "What we provide",
-    points: [
-      "Mobile-first responsive websites",
-      "Custom eCommerce platforms and online stores",
-    ],
+    points: ["Mobile-first responsive websites", "Custom eCommerce platforms"],
     image: "/Services/Webdevelopment.jpg",
+    gradient: "from-violet-500 to-purple-500",
   },
   {
     id: 4,
-    title: "Poster and Motion Graphics",
-    subtitle: "Short-form video that sells.",
+    title: "Motion Graphics",
+    subtitle: "Visual content that sells.",
     description:
-      "Our video production services specialize in creating engaging short-form content optimized for social media platforms. We understand the nuances of different platforms and create videos that capture attention within the first few seconds. From concept development to final delivery, we handle every aspect of video production to ensure your content stands out in crowded feeds.",
+      "Our video production services specialize in creating engaging short-form content optimized for social media platforms. From concept development to final delivery, we handle every aspect to ensure your content stands out.",
     title2: "What we provide",
     points: [
-      "Professional reels editing and post-production",
+      "Professional video editing",
       "Custom motion graphics and animations",
     ],
     image: "/Services/poster.jpg",
+    gradient: "from-orange-500 to-red-500",
   },
 ];
 
@@ -75,116 +77,211 @@ const serviceMenu = [
 
 export default function CoreServices() {
   const wrapperRefs = useRef([]);
+  const imageRefs = useRef([]);
+  const headerRef = useRef(null);
+  const isHeaderInView = useInView(headerRef, { once: true, amount: 0.5 });
 
   useEffect(() => {
     if (typeof window === "undefined") return;
 
     const mediaQuery = window.matchMedia("(min-width: 768px)");
-
-    const setupScrollTrigger = () => {
+    const ctx = gsap.context(() => {
       if (mediaQuery.matches) {
+        // Pin left side titles
         wrapperRefs.current.forEach((el) => {
           if (!el) return;
           ScrollTrigger.create({
             trigger: el,
-            start: "top center",
-            end: "85% center",
+            start: "top 20%",
+            end: "bottom 60%",
             pin: el.querySelector(".left-side"),
             pinSpacing: false,
           });
         });
+
+        // Parallax on images
+        imageRefs.current.forEach((img) => {
+          if (!img) return;
+          gsap.fromTo(
+            img,
+            { y: 60, scale: 1.1 },
+            {
+              y: -60,
+              scale: 1,
+              ease: "none",
+              scrollTrigger: {
+                trigger: img,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 1.5,
+              },
+            },
+          );
+        });
       }
-    };
+    });
 
-    setupScrollTrigger();
-
-    const handleResize = () => {
-      ScrollTrigger.getAll().forEach((t) => t.kill());
-      setupScrollTrigger();
-    };
-
-    mediaQuery.addEventListener("change", handleResize);
-
-    return () => {
-      ScrollTrigger.getAll().forEach((t) => t.kill());
-      mediaQuery.removeEventListener("change", handleResize);
-    };
+    return () => ctx.revert();
   }, []);
 
   return (
-    <div className="container mx-auto py-12">
-      <div className="flex items-center justify-center flex-col gap-6">
-        <h1 className="text-4xl md:text-6xl text-center">
+    <div className="container mx-auto py-20 md:py-32">
+      {/* Header */}
+      <motion.div
+        ref={headerRef}
+        className="flex items-center justify-center flex-col gap-6 mb-20"
+        initial={{ opacity: 0, y: 30 }}
+        animate={isHeaderInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+        transition={{ duration: 0.7 }}
+      >
+        <motion.div
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#cc0000]/10 border border-[#cc0000]/20"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={isHeaderInView ? { opacity: 1, scale: 1 } : { opacity: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
+          <Sparkles className="h-4 w-4 text-[#cc0000]" />
+          <span className="text-sm font-semibold text-[#cc0000]">
+            Core Services
+          </span>
+        </motion.div>
+
+        <h1
+          className="text-center font-bold tracking-tight"
+          style={{ fontSize: "clamp(2rem, 6vw, 4rem)" }}
+        >
           Our{" "}
-          <span className="bg-gradient-to-r from-accent2 to-accent font-extrabold bg-clip-text text-transparent logo">
+          <span className="bg-gradient-to-r from-[#cc0000] to-[#ff4444] bg-clip-text text-transparent">
             Core{" "}
           </span>
           Services
         </h1>
-        <p className="text-lg md:text-xl font-extralight max-w-3xl text-center">
+
+        <p className="text-lg md:text-xl text-gray-600 max-w-3xl text-center leading-relaxed px-4">
           At JavTech, we craft stunning designs, build powerful websites and
           launch digital campaigns that drive results.
         </p>
-      </div>
+      </motion.div>
 
-      <div className="mx-4 mt-12 grid gap-4 rounded-[28px] border border-gray-100 bg-white p-4 shadow-xl shadow-slate-200/70 md:grid-cols-2 lg:grid-cols-3">
-        {serviceMenu.map((service, index) => (
-          <div
-            key={service}
-            className="flex items-center gap-4 rounded-2xl bg-slate-50 p-5"
-          >
-            <div className="flex h-11 w-11 flex-none items-center justify-center rounded-2xl bg-gradient-to-r from-accent2 to-accent text-sm font-black text-white">
-              {String(index + 1).padStart(2, "0")}
-            </div>
-            <p className="text-base font-bold text-gray-800">{service}</p>
-          </div>
-        ))}
-      </div>
-
-      <section className="px-4 py-16 space-y-[8vh] md:space-y-[20vh]">
+      <section className="px-4 space-y-32 md:space-y-48">
         {CoreServicesData.map((item, index) => (
-          <div
+          <ServiceSection
             key={item.id}
-            className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start"
-            ref={(el) => (wrapperRefs.current[index] = el)}
-          >
-            {/* Left (pinned per section on desktop) */}
-            <div className="left-side relative">
-              <div className="md:sticky md:top-[15%] space-y-4 flex flex-col md:items-end items-center mb-4 md:mb-0">
-                <h2 className="text-3xl md:text-5xl font-bold text-center md:text-right">
-                  {item.title}
-                </h2>
-                <p className="text-base md:text-xl text-gray-500 font-extralight text-center md:text-right">
-                  {item.subtitle}
-                </p>
-              </div>
-            </div>
-
-            <div className="space-y-6">
-              <img
-                src={item.image}
-                alt={item.title}
-                width={800}
-                height={450}
-                className="w-full h-[400px] md:h-[450px] rounded-xl object-cover"
-              />
-              <p className="text-gray-700 text-lg text-justify leading-relaxed">
-                {item.description}
-              </p>
-              <div>
-                <h4 className="text-xl font-semibold underline mb-2">
-                  <b>{item.title2}</b>
-                </h4>
-                <ul className="list-disc pl-5 text-lg space-y-1 text-gray-800">
-                  {item.points.map((pt, i) => (
-                    <li key={i}>{pt}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
+            item={item}
+            index={index}
+            wrapperRefs={wrapperRefs}
+            imageRefs={imageRefs}
+          />
         ))}
       </section>
+    </div>
+  );
+}
+
+function ServiceSection({ item, index, wrapperRefs, imageRefs }) {
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
+
+  return (
+    <div
+      ref={(el) => {
+        wrapperRefs.current[index] = el;
+        sectionRef.current = el;
+      }}
+      className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-start"
+    >
+      {/* Left - Pinned Title */}
+      <div className="left-side relative">
+        <motion.div
+          className="md:sticky md:top-[25vh] space-y-5 flex flex-col md:items-end items-center"
+          initial={{ opacity: 0, x: -30 }}
+          animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+        >
+          <motion.div
+            className={`inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${item.gradient} text-white font-black text-xl shadow-2xl`}
+            initial={{ scale: 0, rotate: -180 }}
+            animate={isInView ? { scale: 1, rotate: 0 } : { scale: 0 }}
+            transition={{ duration: 0.6, delay: 0.3, type: "spring" }}
+          >
+            {String(item.id).padStart(2, "0")}
+          </motion.div>
+
+          <h2
+            className="font-black text-center md:text-right tracking-tight leading-none"
+            style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)" }}
+          >
+            {item.title}
+          </h2>
+
+          <p className="text-lg md:text-xl text-gray-500 text-center md:text-right leading-relaxed max-w-md">
+            {item.subtitle}
+          </p>
+
+          <motion.div
+            className={`h-1 w-20 rounded-full bg-gradient-to-r ${item.gradient} hidden md:block`}
+            initial={{ width: 0 }}
+            animate={isInView ? { width: 80 } : { width: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+          />
+        </motion.div>
+      </div>
+
+      {/* Right - Content */}
+      <motion.div
+        className="space-y-8"
+        initial={{ opacity: 0, y: 40 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+        transition={{ duration: 0.7, delay: 0.4 }}
+      >
+        {/* Image with parallax */}
+        <div
+          className="relative rounded-2xl overflow-hidden shadow-2xl"
+          ref={(el) => (imageRefs.current[index] = el)}
+        >
+          <img
+            src={item.image}
+            alt={item.title}
+            className="w-full h-[350px] md:h-[450px] object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+        </div>
+
+        {/* Description */}
+        <p className="text-gray-700 text-base md:text-lg leading-relaxed">
+          {item.description}
+        </p>
+
+        {/* What we provide */}
+        <div className="bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 rounded-2xl p-6 md:p-8">
+          <h4 className="text-xl md:text-2xl font-bold mb-5 flex items-center gap-2">
+            <span
+              className={`h-1.5 w-1.5 rounded-full bg-gradient-to-r ${item.gradient}`}
+            />
+            {item.title2}
+          </h4>
+          <ul className="space-y-3">
+            {item.points.map((pt, i) => (
+              <motion.li
+                key={i}
+                className="flex items-start gap-3"
+                initial={{ opacity: 0, x: -10 }}
+                animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0 }}
+                transition={{ duration: 0.4, delay: 0.6 + i * 0.1 }}
+              >
+                <div
+                  className={`mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-gradient-to-br ${item.gradient}`}
+                >
+                  <Check className="h-3 w-3 text-white" strokeWidth={3} />
+                </div>
+                <span className="text-base md:text-lg text-gray-800 leading-relaxed">
+                  {pt}
+                </span>
+              </motion.li>
+            ))}
+          </ul>
+        </div>
+      </motion.div>
     </div>
   );
 }
