@@ -63,8 +63,10 @@ export default function WhyJavTech() {
         custom={1}
         viewport={{ once: true }}
       >
-        You're not buying a package. <br />
-        <span className="italic text-accent2">You're getting a partner.</span>
+        You&apos;re not buying a package. <br />
+        <span className="italic text-accent2">
+          You&apos;re getting a partner.
+        </span>
       </motion.h2>
 
       <motion.p

@@ -217,7 +217,7 @@ export default function PrivacyPolicyPage() {
               <p>We use your information to:</p>
               <ul>
                 <li>
-                  Deliver and manage the IT services you've engaged us for
+                  Deliver and manage the IT services you have engaged us for
                 </li>
                 <li>
                   Communicate about projects, proposals, support tickets, and
@@ -383,7 +383,7 @@ export default function PrivacyPolicyPage() {
                 <a href="mailto:privacy@javtechinfosys.com">
                   privacy@javtechinfosys.com
                 </a>
-                . We'll respond within 30 days.
+                . We will respond within 30 days.
               </p>
             </Section>
 
@@ -414,17 +414,18 @@ export default function PrivacyPolicyPage() {
               <p>
                 Our services are intended for businesses and professionals. We
                 do not knowingly collect personal information from children
-                under 13 (or under 16 in some regions). If we learn we've
-                collected such data, we'll delete it promptly.
+                under 13 (or under 16 in some regions). If we learn we&apos;ve
+                collected such data, we&apos;ll delete it promptly.
               </p>
             </Section>
 
             <Section id="changes" number="12" title="Changes to This Policy">
               <p>
                 We may update this Privacy Policy as our services, technology,
-                or legal obligations evolve. The "Last updated" date at the top
-                reflects the most recent revision. For material changes, we'll
-                notify you via email or a prominent notice on our website.
+                or legal obligations evolve. The &quot;Last updated&quot; date
+                at the top reflects the most recent revision. For material
+                changes, we&apos;ll notify you via email or a prominent notice
+                on our website.
               </p>
             </Section>
 
@@ -445,8 +446,8 @@ export default function PrivacyPolicyPage() {
                   value="dpo@javtechinfosys.com"
                   href="mailto:dpo@javtechinfosys.com"
                 />
-                <ContactCard label="Office" value="[Your Office Address]" />
-                <ContactCard label="Phone" value="[Your Contact Number]" />
+                <ContactCard label="Office" value="Sanepa, Lalitpur, Nepal" />
+                <ContactCard label="Phone" value="+977-980-7128557" />
               </div>
             </Section>
           </article>

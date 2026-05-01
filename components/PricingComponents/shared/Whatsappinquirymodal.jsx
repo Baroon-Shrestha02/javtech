@@ -244,7 +244,7 @@ export function WhatsAppInquiryModal({
                 </button>
 
                 <p className="text-xs text-center text-gray-500">
-                  You'll be redirected to WhatsApp with a pre-filled message
+                  You will be redirected to WhatsApp with a pre-filled message
                 </p>
               </form>
             </motion.div>
