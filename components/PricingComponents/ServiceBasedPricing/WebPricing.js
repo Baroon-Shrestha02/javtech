@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { CircleDollarSign } from "lucide-react";
 import { PricingSection } from "../shared/Pricingcomponents";
-import { WhatsAppInquiryModal } from "../shared/WhatsAppInquiryModal";
 import HeroSection from "../shared/Hero";
+import { WhatsAppInquiryModal } from "../shared/Whatsappinquirymodal";
 
 /* ─────────────────────────────
    WEB DEVELOPMENT PRICING
@@ -135,7 +135,7 @@ export default function WebPricing() {
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         planName={selectedPlan}
-        whatsappNumber="9779818739823"
+        whatsappNumber="9779807128557"
       />
     </>
   );

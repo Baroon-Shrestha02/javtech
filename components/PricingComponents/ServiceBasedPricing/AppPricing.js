@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { Smartphone } from "lucide-react";
 import { PricingSection } from "../shared/Pricingcomponents";
-import { WhatsAppInquiryModal } from "../shared/WhatsAppInquiryModal";
 import HeroSection from "../shared/Hero";
+import { WhatsAppInquiryModal } from "../shared/Whatsappinquirymodal";
 
 /* ─────────────────────────────
    APP DEVELOPMENT PRICING

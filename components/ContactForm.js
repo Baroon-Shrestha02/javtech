@@ -274,21 +274,21 @@ export function ContactForm() {
                     {
                       name: "name",
                       label: "Full name",
-                      placeholder: "Sara Lamichhane",
+                      placeholder: "Your full name",
                       type: "text",
                       req: true,
                     },
                     {
                       name: "email",
                       label: "Email",
-                      placeholder: "sara@example.com",
+                      placeholder: "Your email address",
                       type: "email",
                       req: true,
                     },
                     {
                       name: "phone",
                       label: "Phone (optional)",
-                      placeholder: "+977 9807128557",
+                      placeholder: "+977 1234567890",
                       type: "tel",
                       req: false,
                     },
@@ -386,27 +386,6 @@ export function ContactForm() {
           </a>
         </div>
       </section>
-
-      {/* ── Map ── */}
-      {/* <section className="px-5 pb-20 bg-[#f5f5f2]">
-        <div className="mx-auto max-w-7xl">
-          <div
-            className="overflow-hidden rounded-2xl"
-            style={{ height: "320px" }}
-          >
-            <iframe
-              title="JavTech Location"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d56516.31625949046!2d85.29111643515625!3d27.708964!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb198a307baabf%3A0xb5137c1bf18db1ea!2sKathmandu%2C%20Nepal!5e0!3m2!1sen!2s!4v1712000000000"
-              width="100%"
-              height="100%"
-              style={{ border: 0, filter: "grayscale(100%) contrast(90%)" }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-          </div>
-        </div>
-      </section> */}
     </div>
   );
 }
