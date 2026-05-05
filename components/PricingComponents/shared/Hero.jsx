@@ -4,9 +4,10 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 
 export default function HeroSection({
+  eyebrow = "Services",
   title = "Default Title",
+  description = "Discover our comprehensive solutions designed to help your business grow.",
   image = "/home/digital.jpg",
-  subtitle,
   breadcrumbs,
 }) {
   const sectionRef = useRef(null);
@@ -18,7 +19,7 @@ export default function HeroSection({
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-[65vh] bg-[#0f0f12] text-white flex flex-col overflow-hidden"
+      className="relative min-h-[70vh] bg-[#0f0f12] text-white flex flex-col overflow-hidden"
     >
       {/* Background Image with Ken Burns zoom */}
       <motion.div
@@ -58,7 +59,7 @@ export default function HeroSection({
       />
 
       {/* Content */}
-      <div className="relative z-10 flex flex-1 items-end px-6 pb-16">
+      <div className="relative z-10 flex flex-1 items-end px-6 pb-16 md:pb-20">
         <div className="mx-auto w-full max-w-7xl">
           {/* Breadcrumbs */}
           {breadcrumbs && (
@@ -83,10 +84,28 @@ export default function HeroSection({
             </motion.div>
           )}
 
-          {/* Title with word-by-word stagger */}
+          {/* Eyebrow (Small Header) */}
+          <motion.div
+            className="mb-4 inline-block"
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{
+              duration: 0.6,
+              delay: 0.3,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+          >
+            <div className="inline-flex items-center gap-2 py-2 rounded-full ">
+              <span className="text-xs md:text-sm font-extralight uppercase tracking-wider text-white/90">
+                {eyebrow}
+              </span>
+            </div>
+          </motion.div>
+
+          {/* Main Title with word-by-word stagger */}
           <div
-            className="font-bold leading-[1] tracking-[-0.03em] overflow-hidden"
-            style={{ fontSize: "clamp(34px, 7.5vw, 75px)" }}
+            className="font-bold leading-[1.1] tracking-[-0.03em] overflow-hidden mb-6"
+            style={{ fontSize: "clamp(32px, 7vw, 72px)" }}
           >
             {titleWords.map((word, wordIndex) => (
               <motion.span
@@ -98,7 +117,7 @@ export default function HeroSection({
                 }
                 transition={{
                   duration: 0.8,
-                  delay: 0.3 + wordIndex * 0.1,
+                  delay: 0.4 + wordIndex * 0.1,
                   ease: [0.22, 1, 0.36, 1],
                 }}
               >
@@ -107,32 +126,30 @@ export default function HeroSection({
             ))}
           </div>
 
-          {/* Subtitle */}
-          {subtitle && (
-            <motion.p
-              className="mt-6 max-w-2xl text-lg md:text-xl text-white/80 leading-relaxed"
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-              transition={{
-                duration: 0.8,
-                delay: 0.6 + titleWords.length * 0.1,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-            >
-              {subtitle}
-            </motion.p>
-          )}
+          {/* Description */}
+          <motion.p
+            className="max-w-3xl font-extralight text-base md:text-md lg:text-xl text-white/70 leading-relaxed"
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{
+              duration: 0.8,
+              delay: 0.7 + titleWords.length * 0.1,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+          >
+            {description}
+          </motion.p>
 
           {/* Animated underline accent */}
           <motion.div
-            className="mt-8 h-1 bg-gradient-to-r from-white via-white/60 to-transparent rounded-full"
+            className="mt-8 h-1 bg-gradient-to-r from-[#cc0000] via-[#cc0000]/60 to-transparent rounded-full"
             initial={{ width: 0, opacity: 0 }}
             animate={
-              isInView ? { width: 128, opacity: 1 } : { width: 0, opacity: 0 }
+              isInView ? { width: 180, opacity: 1 } : { width: 0, opacity: 0 }
             }
             transition={{
               duration: 0.9,
-              delay: 0.8 + titleWords.length * 0.1,
+              delay: 0.9 + titleWords.length * 0.1,
               ease: [0.22, 1, 0.36, 1],
             }}
           />

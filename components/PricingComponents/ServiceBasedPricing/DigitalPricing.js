@@ -94,7 +94,9 @@ export default function DigitalMarketingPricing() {
     <>
       <section>
         <HeroSection
-          title="Digital Marketing Solutions for Every Business Need"
+          eyebrow="Digital marketing pricing packages"
+          title="Digital Marketing Solutions for Your Business"
+          description="Choose a digital marketing package based on your brand goals, campaign needs, and growth strategy."
           image="/home/web.jpg"
         />
         <PricingSection

@@ -32,7 +32,7 @@ const serviceCategories = [
       "Creating digital experiences through coding, design, and user interaction principles.",
     items: [
       {
-        label: "Website Development",
+        label: "Web Development",
         description: "Specialized Custom Website Development Services",
         slug: "web-development",
         icon: Code2,
@@ -102,12 +102,12 @@ const pricingDropdownItems = [
 const links = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About Us" },
-  { href: "/our-works", label: "Our Works" },
   {
     href: "/services",
     label: "Our Services",
     megaMenu: true,
   },
+  { href: "/our-works", label: "Our Works" },
   {
     href: "/pricing",
     label: "Pricing",
@@ -337,7 +337,7 @@ function NavLink({ href, label, active, dropdown, megaMenu }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 6 }}
             transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute top-full left-0 z-50"
+            className="absolute top-full -left-[100px] z-50"
             style={{
               paddingTop: "8px",
             }}

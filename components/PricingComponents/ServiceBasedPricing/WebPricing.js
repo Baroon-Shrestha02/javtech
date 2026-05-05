@@ -114,7 +114,9 @@ export default function WebPricing() {
     <>
       <section>
         <HeroSection
-          title="Web-Based Solutions for Every Business Need"
+          eyebrow="Web-based pricing packages"
+          title="Web-Based Solutions for Your Business"
+          description="Choose a website package based on your business goal, required features, and development scope."
           image="/home/web.jpg"
         />
         <PricingSection

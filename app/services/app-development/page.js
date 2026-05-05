@@ -1,3 +1,5 @@
+import AppService from "@/components/ServicesComponents/SharedServicespages/AppService";
+
 export const metadata = {
   title: "App Development Services",
   description:
@@ -6,5 +8,9 @@ export const metadata = {
 };
 
 export default function AppDevelopment() {
-  return <>App Development</>;
+  return (
+    <>
+      <AppService />
+    </>
+  );
 }

@@ -169,9 +169,7 @@ export function ContactForm() {
             <div className="flex flex-col gap-10">
               <div>
                 <h2 className="text-2xl font-bold tracking-tight text-[#0f0f12]">
-                  Tell us about
-                  <br />
-                  your project
+                  Tell us about your project idea
                 </h2>
                 <p className="mt-3 text-sm leading-relaxed text-[#666]">
                   Fill in the form and we&apos;ll get back to you within 24

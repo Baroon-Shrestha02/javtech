@@ -1,3 +1,5 @@
+import ContentService from "@/components/ServicesComponents/SharedServicespages/ContentService";
+
 export const metadata = {
   title: "Content Writing Services",
   description: "Content writing services for businesses and organizations.",
@@ -5,5 +7,9 @@ export const metadata = {
 };
 
 export default function ContentWriting() {
-  return <>Content Writing</>;
+  return (
+    <>
+      <ContentService />
+    </>
+  );
 }

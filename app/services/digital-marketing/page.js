@@ -1,3 +1,5 @@
+import DigitalService from "@/components/ServicesComponents/SharedServicespages/DigitalService";
+
 export const metadata = {
   title: "Digital Marketing Services",
   description:
@@ -6,5 +8,9 @@ export const metadata = {
 };
 
 export default function DigitalMarketing() {
-  return <>Digital marketing</>;
+  return (
+    <>
+      <DigitalService />
+    </>
+  );
 }

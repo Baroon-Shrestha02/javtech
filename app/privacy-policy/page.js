@@ -1,31 +1,26 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 
 const sections = [
-  { id: "information-we-collect", title: "Information We Collect" },
-  { id: "how-we-use", title: "How We Use Your Information" },
-  { id: "cookies", title: "Cookies and Tracking" },
-  { id: "how-we-share", title: "How We Share Information" },
-  { id: "client-data", title: "Client Data and Confidentiality" },
-  { id: "data-retention", title: "Data Retention" },
-  { id: "data-security", title: "Data Security" },
-  { id: "your-rights", title: "Your Rights" },
-  { id: "international", title: "International Data Transfers" },
-  { id: "third-party", title: "Third-Party Links" },
-  { id: "children", title: "Children's Privacy" },
-  { id: "changes", title: "Changes to This Policy" },
-  { id: "contact", title: "Contact Us" },
+  { id: "scope", title: "Scope of This Policy" },
+  { id: "information-collection", title: "Detailed Information Collection" },
+  { id: "use-of-information", title: "Strategic Use of Information" },
+  { id: "data-storage", title: "Data Storage and Sovereignty" },
+  { id: "third-party", title: "Third-Party Disclosures" },
+  { id: "cookies", title: "Use of Cookies and Tracking" },
+  { id: "your-rights", title: "Your Data Rights & Choices" },
+  { id: "external-links", title: "External Links" },
+  { id: "updates", title: "Updates to This Policy" },
+  { id: "cancellation", title: "Cancellation and Termination" },
+  { id: "contact", title: "Contact and Grievance" },
 ];
 
-// Offset from top of viewport when scrolling to a section (px)
 const SCROLL_OFFSET = 100;
 
 export default function PrivacyPolicyPage() {
   const [activeId, setActiveId] = useState(sections[0].id);
 
-  // Track which section is currently in view for the sticky TOC
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -49,32 +44,22 @@ export default function PrivacyPolicyPage() {
     return () => observer.disconnect();
   }, []);
 
-  // Smooth scroll handler with offset — keeps the section heading
-  // from sitting flush against the top of the viewport
   const handleNavClick = (e, id) => {
     e.preventDefault();
     const el = document.getElementById(id);
     if (!el) return;
 
     const top = el.getBoundingClientRect().top + window.scrollY - SCROLL_OFFSET;
-
-    window.scrollTo({
-      top,
-      behavior: "smooth",
-    });
-
-    // Update the URL hash without triggering an instant jump
+    window.scrollTo({ top, behavior: "smooth" });
     window.history.pushState(null, "", `#${id}`);
     setActiveId(id);
   };
 
-  // Honor a hash on initial load (e.g. someone lands via a deep link)
   useEffect(() => {
     if (typeof window === "undefined") return;
     const hash = window.location.hash.replace("#", "");
     if (!hash) return;
 
-    // Wait one frame so layout has settled
     requestAnimationFrame(() => {
       const el = document.getElementById(hash);
       if (!el) return;
@@ -91,7 +76,7 @@ export default function PrivacyPolicyPage() {
       <section className="border-b border-neutral-200/80">
         <div className="max-w-7xl mx-auto px-6 lg:px-10 py-20 lg:py-28">
           <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl leading-[1.05] tracking-tight max-w-3xl">
-            Privacy <em className="italic font-light text-accent2">Policy</em>
+            Privacy <em className="italic font-light text-[#cc0000]">Policy</em>
           </h1>
           <p className="mt-8 max-w-2xl text-lg leading-relaxed text-neutral-700">
             How Javtech Infosys collects, uses, and protects information across
@@ -103,7 +88,7 @@ export default function PrivacyPolicyPage() {
               <p className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-1">
                 Last updated
               </p>
-              <p className="text-neutral-900">April 29, 2026</p>
+              <p className="text-neutral-900">May 1, 2026</p>
             </div>
             <div>
               <p className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-1">
@@ -140,7 +125,7 @@ export default function PrivacyPolicyPage() {
                         <span
                           className={`font-mono text-[10px] tabular-nums transition-colors ${
                             activeId === s.id
-                              ? "text-amber-600"
+                              ? "text-[#cc0000]"
                               : "text-neutral-400"
                           }`}
                         >
@@ -159,294 +144,292 @@ export default function PrivacyPolicyPage() {
           <article className="lg:col-span-8 xl:col-span-9 max-w-3xl">
             <Intro />
 
-            <Section
-              id="information-we-collect"
-              number="01"
-              title="Information We Collect"
-            >
-              <SubHeading>Information You Provide</SubHeading>
+            {/* 1. Scope */}
+            <Section id="scope" number="01" title="Scope of This Policy">
               <p>
-                When you contact us, request a quote, sign a service agreement,
-                or onboard as a client, you may share:
-              </p>
-              <ul>
-                <li>Name, job title, and company name</li>
-                <li>Business email, phone number, and address</li>
-                <li>
-                  Project requirements, technical specifications, and business
-                  goals
-                </li>
-                <li>Billing and payment information</li>
-                <li>
-                  Any other details you choose to share in communications with
-                  us
-                </li>
-              </ul>
-
-              <SubHeading>Information We Collect Automatically</SubHeading>
-              <p>
-                When you visit javtechinfosys.com, we automatically collect
-                technical data such as your IP address, browser type, device
-                information, operating system, pages viewed, time spent, and
-                referring URLs. This is gathered through cookies and similar
-                technologies.
-              </p>
-
-              <SubHeading>Client Project Data</SubHeading>
-              <p>
-                In the course of delivering software development, consulting,
-                cloud, or managed IT services, we may access or process data
-                belonging to our clients (including their end users). This data
-                is handled strictly under the terms of the relevant service
-                agreement or Data Processing Agreement (DPA).
-              </p>
-
-              <SubHeading>Information from Third Parties</SubHeading>
-              <p>
-                We may receive information from partners, recruiters,
-                lead-generation platforms, or publicly available business
-                directories.
+                This Privacy Policy applies to all visitors of our website,
+                clients engaging in our software development services, and any
+                individuals interacting with our digital platforms. By accessing
+                our services, you acknowledge and agree to the terms described
+                herein.
               </p>
             </Section>
 
+            {/* 2. Information Collection */}
             <Section
-              id="how-we-use"
+              id="information-collection"
               number="02"
-              title="How We Use Your Information"
+              title="Detailed Information Collection"
             >
-              <p>We use your information to:</p>
-              <ul>
-                <li>
-                  Deliver and manage the IT services you have engaged us for
-                </li>
-                <li>
-                  Communicate about projects, proposals, support tickets, and
-                  contracts
-                </li>
-                <li>Process invoices and payments</li>
-                <li>Respond to inquiries and provide technical support</li>
-                <li>Improve our website, services, and client experience</li>
-                <li>
-                  Send updates about our services, case studies, or industry
-                  insights (you can opt out anytime)
-                </li>
-                <li>Recruit and evaluate candidates for open positions</li>
-                <li>Detect and prevent fraud, security incidents, or misuse</li>
-                <li>Comply with legal, tax, and regulatory obligations</li>
-              </ul>
-              <Callout>We do not sell your personal information.</Callout>
-            </Section>
-
-            <Section id="cookies" number="03" title="Cookies and Tracking">
               <p>
-                Our website uses cookies to keep the site functional, analyze
-                traffic, and improve user experience. The categories we use
-                include:
+                We collect several types of information to provide you with
+                high-velocity and pixel-perfect IT solutions:
               </p>
-              <ul>
-                <li>
-                  <strong>Essential cookies</strong> — required for core site
-                  functionality
-                </li>
-                <li>
-                  <strong>Analytics cookies</strong> — help us understand how
-                  visitors use our site
-                </li>
-                <li>
-                  <strong>Preference cookies</strong> — remember your settings
-                  and choices
-                </li>
-              </ul>
+
+              <SubHeading>Personal Information</SubHeading>
               <p>
-                You can manage or disable cookies through your browser settings.
-                Note that disabling some cookies may affect site functionality.
+                This includes your name, official email address, phone number,
+                and address when you fill out our contact or inquiry forms.
+              </p>
+
+              <SubHeading>Project & Business Data</SubHeading>
+              <p>
+                To deliver custom software, we collect project briefs, technical
+                specifications, and business logic provided during
+                consultations.
+              </p>
+
+              <SubHeading>Financial Information</SubHeading>
+              <p>
+                For billing and payment purposes, we may collect tax
+                identification numbers (e.g., PAN/VAT) and transaction records,
+                ensuring they are handled through secure, authorized channels.
               </p>
             </Section>
 
+            {/* 3. Use of Information */}
             <Section
-              id="how-we-share"
+              id="use-of-information"
+              number="03"
+              title="Strategic Use of Information"
+            >
+              <p>
+                Your data is never used for unsolicited purposes. We utilize it
+                specifically for:
+              </p>
+
+              <SubHeading>Product Development</SubHeading>
+              <p>
+                To build, test, and deploy the full-stack and application
+                solutions you have commissioned.
+              </p>
+
+              <SubHeading>Communication & Support</SubHeading>
+              <p>
+                To provide real-time project updates, technical support, and
+                critical notifications regarding your digital infrastructure.
+              </p>
+
+              <SubHeading>Marketing & Newsletters</SubHeading>
+              <p>
+                With your explicit consent, we may send information about new
+                technology trends or service updates from Javtech Infosys.
+              </p>
+
+              <SubHeading>Legal Compliance</SubHeading>
+              <p>
+                To meet the regulatory requirements of the Government of Nepal,
+                including tax reporting and cybersecurity mandates.
+              </p>
+            </Section>
+
+            {/* 4. Data Storage */}
+            <Section
+              id="data-storage"
               number="04"
-              title="How We Share Information"
+              title="Data Storage and Sovereignty"
             >
+              <SubHeading>Location</SubHeading>
               <p>
-                We share information only when necessary, and only with parties
-                bound by appropriate confidentiality and data protection
-                obligations:
+                We prioritize storing data on secure servers that comply with
+                international security standards while respecting Nepal{"'"}s
+                data sovereignty guidelines.
               </p>
-              <ul>
-                <li>
-                  <strong>Subprocessors and service providers</strong> — cloud
-                  hosting (AWS, Azure, Google Cloud), CRM platforms,
-                  communication tools, payment processors, and analytics
-                  providers
-                </li>
-                <li>
-                  <strong>Project subcontractors</strong> — when a project
-                  requires specialized expertise, with prior client consent
-                  where applicable
-                </li>
-                <li>
-                  <strong>Legal and regulatory authorities</strong> — when
-                  required by law, court order, or to protect our rights,
-                  clients, or the public
-                </li>
-                <li>
-                  <strong>Business transfers</strong> — in the event of a
-                  merger, acquisition, or sale of assets, with notice to
-                  affected parties
-                </li>
-              </ul>
+
+              <SubHeading>Retention Period</SubHeading>
+              <p>
+                We retain your information only as long as necessary to fulfill
+                the service contract or as required by Nepali law for auditing
+                and record-keeping purposes.
+              </p>
+
+              <SubHeading>Security Protocols</SubHeading>
+              <p>
+                We employ advanced encryption (SSL/TLS), firewalls, and strict
+                access controls to ensure your data is protected against
+                unauthorized access, alteration, or destruction.
+              </p>
             </Section>
 
+            {/* 5. Third Party */}
             <Section
-              id="client-data"
+              id="third-party"
               number="05"
-              title="Client Data and Confidentiality"
+              title="Third-Party Disclosures"
             >
-              <p>
-                For data we process on behalf of clients, Javtech acts as a{" "}
-                <strong>data processor</strong> (or{" "}
-                <strong>service provider</strong>, depending on jurisdiction).
-                We:
-              </p>
-              <ul>
-                <li>
-                  Process client data only on documented instructions from the
-                  client
-                </li>
-                <li>
-                  Ensure all team members handling client data are bound by
-                  confidentiality
-                </li>
-                <li>
-                  Apply technical and organizational safeguards to protect the
-                  data
-                </li>
-                <li>
-                  Notify clients of any data incidents within agreed timeframes
-                </li>
-                <li>
-                  Return or securely delete client data upon contract
-                  termination
-                </li>
-              </ul>
-            </Section>
+              <Callout>
+                Javtech Infosys maintains a {'"'}No-Sale{'"'} policy regarding
+                your personal data.
+              </Callout>
 
-            <Section id="data-retention" number="06" title="Data Retention">
               <p>
-                We retain your information only as long as needed to fulfill the
-                purposes outlined in this policy, meet contractual obligations,
-                or comply with legal requirements such as tax and accounting
-                laws. When no longer needed, data is securely deleted or
-                anonymized.
+                We only share information under the following circumstances:
+              </p>
+
+              <SubHeading>Essential Service Providers</SubHeading>
+              <p>
+                We may share data with trusted third-party partners (such as
+                cloud hosting providers or payment gateways) who assist in our
+                operations, under strict confidentiality agreements.
+              </p>
+
+              <SubHeading>Legal & Law Enforcement</SubHeading>
+              <p>
+                We will disclose information if compelled by a court order or an
+                official request from the Government of Nepal under the
+                Electronic Transactions Act.
               </p>
             </Section>
 
-            <Section id="data-security" number="07" title="Data Security">
-              <p>We take security seriously. Our safeguards include:</p>
-              <ul>
-                <li>
-                  Encryption of data in transit (TLS) and at rest where
-                  appropriate
-                </li>
-                <li>
-                  Role-based access controls and least-privilege principles
-                </li>
-                <li>
-                  Regular security audits, vulnerability scans, and code reviews
-                </li>
-                <li>
-                  Secure development practices aligned with industry standards
-                </li>
-                <li>Employee training on data protection and security</li>
-                <li>Incident response and business continuity procedures</li>
-              </ul>
-              <p>
-                While we follow strong security practices, no system is 100%
-                impenetrable, and we cannot guarantee absolute security.
-              </p>
-            </Section>
-
-            <Section id="your-rights" number="08" title="Your Rights">
-              <p>Depending on your location, you may have the right to:</p>
-              <ul>
-                <li>Access the personal information we hold about you</li>
-                <li>Request correction of inaccurate or incomplete data</li>
-                <li>Request deletion of your information</li>
-                <li>Object to or restrict specific types of processing</li>
-                <li>Receive your data in a portable format</li>
-                <li>Withdraw consent at any time</li>
-                <li>Lodge a complaint with a data protection authority</li>
-              </ul>
-              <p>
-                To exercise any of these rights, email us at{" "}
-                <a href="mailto:privacy@javtechinfosys.com">
-                  privacy@javtechinfosys.com
-                </a>
-                . We will respond within 30 days.
-              </p>
-            </Section>
-
+            {/* 6. Cookies */}
             <Section
-              id="international"
-              number="09"
-              title="International Data Transfers"
+              id="cookies"
+              number="06"
+              title="Use of Cookies and Tracking"
             >
               <p>
-                Javtech operates globally and works with clients and
-                infrastructure across multiple regions. Your information may be
-                transferred to and processed in countries other than your own.
-                Where required, we use appropriate safeguards such as Standard
-                Contractual Clauses (SCCs) to protect international transfers.
+                Our website utilizes cookies to personalize your experience and
+                analyze our traffic. These small files help us remember your
+                preferences and improve site performance.
+              </p>
+              <p>
+                You have the option to decline cookies via your browser
+                settings; however, this may limit your ability to use certain
+                features of our platform.
               </p>
             </Section>
 
-            <Section id="third-party" number="10" title="Third-Party Links">
+            {/* 7. Your Rights */}
+            <Section
+              id="your-rights"
+              number="07"
+              title="Your Data Rights & Choices"
+            >
               <p>
-                Our website and project deliverables may contain links to
-                third-party sites or tools. We are not responsible for the
-                privacy practices of those services. Please review their privacy
-                policies separately.
+                Under the spirit of modern data protection, you have the
+                following rights:
+              </p>
+
+              <SubHeading>Right to Access</SubHeading>
+              <p>
+                You may request a summary of the personal data we hold about you
+                at any time.
+              </p>
+
+              <SubHeading>Right to Correction</SubHeading>
+              <p>
+                If your information is outdated or incorrect, you can request an
+                immediate update to ensure accuracy in our records.
+              </p>
+
+              <SubHeading>Right to Erasure</SubHeading>
+              <p>
+                Upon termination of services, you may request the deletion of
+                your personal data, subject to legal data retention
+                requirements.
+              </p>
+
+              <SubHeading>Withdrawal of Consent</SubHeading>
+              <p>
+                You may opt-out of marketing communications at any time by
+                clicking the {'"'}unsubscribe{'"'} link or contacting us
+                directly.
               </p>
             </Section>
 
-            <Section id="children" number="11" title="Children's Privacy">
+            {/* 8. External Links */}
+            <Section id="external-links" number="08" title="External Links">
               <p>
-                Our services are intended for businesses and professionals. We
-                do not knowingly collect personal information from children
-                under 13 (or under 16 in some regions). If we learn we&apos;ve
-                collected such data, we&apos;ll delete it promptly.
+                Our website may contain links to external sites. Please be aware
+                that Javtech Infosys is not responsible for the privacy
+                practices or content of such third-party websites.
               </p>
             </Section>
 
-            <Section id="changes" number="12" title="Changes to This Policy">
+            {/* 9. Updates */}
+            <Section id="updates" number="09" title="Updates to This Policy">
               <p>
-                We may update this Privacy Policy as our services, technology,
-                or legal obligations evolve. The &quot;Last updated&quot; date
-                at the top reflects the most recent revision. For material
-                changes, we&apos;ll notify you via email or a prominent notice
-                on our website.
+                As technology and regulations evolve, so will our policy. We
+                reserve the right to modify this document at any time. We
+                encourage you to review this page periodically to stay informed
+                about how we are protecting your information.
               </p>
             </Section>
 
-            <Section id="contact" number="13" title="Contact Us">
+            {/* 10. Cancellation */}
+            <Section
+              id="cancellation"
+              number="10"
+              title="Cancellation and Termination"
+            >
               <p>
-                If you have questions, concerns, or requests regarding this
-                Privacy Policy or how we handle data, please reach out:
+                At Javtech Infosys, we prioritize professional commitment and
+                clarity in every project lifecycle. This section outlines the
+                conditions under which service agreements may be suspended or
+                concluded:
+              </p>
+
+              <SubHeading>Client-Initiated Cancellation</SubHeading>
+              <p>
+                You may request to cancel a project or service at any time by
+                providing written notice via our official communication
+                channels. Please note that any work completed up to the date of
+                cancellation, including research, architecture, and development
+                hours, will be billed accordingly.
+              </p>
+
+              <SubHeading>Company-Initiated Termination</SubHeading>
+              <p>
+                Javtech Infosys reserves the right to terminate or suspend
+                services immediately, without prior notice, if there is a breach
+                of our Terms and Conditions, non-payment of agreed fees, or if
+                the client engages in activities that violate the Electronic
+                Transactions Act of Nepal.
+              </p>
+
+              <SubHeading>Project Completion</SubHeading>
+              <p>
+                A service agreement is considered naturally terminated once the
+                final project deliverables are handed over and the execution
+                standard is met.
+              </p>
+
+              <SubHeading>Effect of Termination</SubHeading>
+              <p>
+                Upon termination, all licenses granted for the use of our
+                proprietary tools may be revoked, and both parties must settle
+                any outstanding financial obligations. Any data retained
+                following termination will be managed according to our Data
+                Retention protocols as outlined in this Privacy Policy.
+              </p>
+
+              <SubHeading>Survival of Provisions</SubHeading>
+              <p>
+                Clauses related to Intellectual Property, Confidentiality, and
+                Indemnity shall survive the termination of any agreement to
+                ensure continued protection for both the client and the firm.
+              </p>
+            </Section>
+
+            {/* 11. Contact */}
+            <Section id="contact" number="11" title="Contact and Grievance">
+              <p>
+                If you have any questions, concerns, or grievances regarding
+                your privacy, please reach out to us.
               </p>
 
               <div className="not-prose mt-8 grid sm:grid-cols-2 gap-6 text-sm">
                 <ContactCard
-                  label="General Privacy"
-                  value="privacy@javtechinfosys.com"
-                  href="mailto:privacy@javtechinfosys.com"
+                  label="Email"
+                  value="info@javtechinfosys.com"
+                  href="mailto:info@javtechinfosys.com"
                 />
                 <ContactCard
-                  label="Data Protection Officer"
-                  value="dpo@javtechinfosys.com"
-                  href="mailto:dpo@javtechinfosys.com"
+                  label="Website"
+                  value="javtechinfosys.com"
+                  href="https://javtechinfosys.com/"
                 />
-                <ContactCard label="Office" value="Sanepa, Lalitpur, Nepal" />
+                <ContactCard label="Address" value="Sanepa, Lalitpur, Nepal" />
                 <ContactCard label="Phone" value="+977-980-7128557" />
               </div>
             </Section>
@@ -458,7 +441,8 @@ export default function PrivacyPolicyPage() {
       <footer className="border-t border-neutral-200/80">
         <div className="max-w-7xl mx-auto px-6 lg:px-10 py-10 flex flex-col sm:flex-row justify-center items-start sm:items-center gap-4">
           <p className="font-serif text-sm text-neutral-600">
-            © {new Date().getFullYear()} Javtech Infosys. All rights reserved.
+            &copy; {new Date().getFullYear()} Javtech Infosys. All rights
+            reserved.
           </p>
         </div>
       </footer>
@@ -472,14 +456,16 @@ function Intro() {
   return (
     <div className="mb-16 pb-10 border-b border-neutral-200">
       <p className="font-serif text-2xl md:text-3xl leading-[1.4] text-neutral-800">
-        At Javtech Infosys, trust is the foundation of every client relationship
-        — and that starts with how we handle your data.
+        At Javtech Infosys, we are committed to maintaining the highest
+        standards of data integrity and transparency.
       </p>
       <p className="mt-6 text-neutral-600 leading-relaxed">
-        This Privacy Policy explains how we collect, use, and protect
-        information when you visit our website, engage our services, or
-        otherwise interact with us. By using our services, you agree to the
-        practices described here.
+        Operating as a premier IT firm based in Nepal, we ensure that your
+        personal and professional information is handled with the utmost care,
+        in strict adherence to the Electronic Transactions Act, 2063 (2006) and
+        other prevailing digital governance laws of Nepal. This document
+        outlines our comprehensive practices regarding the collection, use,
+        protection, and management of your data.
       </p>
     </div>
   );
@@ -489,14 +475,14 @@ function Section({ id, number, title, children }) {
   return (
     <section id={id} className="scroll-mt-28 mb-16">
       <div className="flex items-baseline gap-4 mb-6">
-        <span className="font-mono text-xs text-amber-600 tabular-nums">
+        <span className="font-mono text-xs text-[#cc0000] tabular-nums">
           {number}
         </span>
         <h2 className="font-serif text-3xl md:text-4xl tracking-tight text-neutral-900">
           {title}
         </h2>
       </div>
-      <div className="prose prose-neutral max-w-none prose-p:leading-relaxed prose-p:text-neutral-700 prose-li:text-neutral-700 prose-li:leading-relaxed prose-a:text-amber-700 prose-a:no-underline hover:prose-a:underline prose-strong:text-neutral-900 prose-strong:font-semibold">
+      <div className="prose prose-neutral max-w-none prose-p:leading-relaxed prose-p:text-neutral-700 prose-li:text-neutral-700 prose-li:leading-relaxed prose-a:text-[#cc0000] prose-a:no-underline hover:prose-a:underline prose-strong:text-neutral-900 prose-strong:font-semibold">
         {children}
       </div>
     </section>
@@ -513,7 +499,7 @@ function SubHeading({ children }) {
 
 function Callout({ children }) {
   return (
-    <div className="not-prose my-8 pl-6 border-l-2 border-amber-600">
+    <div className="not-prose my-8 pl-6 border-l-2 border-[#cc0000]">
       <p className="font-serif text-lg italic text-neutral-800 leading-relaxed">
         {children}
       </p>

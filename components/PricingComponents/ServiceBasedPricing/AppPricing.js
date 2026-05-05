@@ -94,7 +94,9 @@ export default function AppPricing() {
     <>
       <section>
         <HeroSection
-          title="App-Based Solutions for Every Business Need"
+          eyebrow="App-based pricing packages"
+          title="App-Based Solutions for Your Business"
+          description="Select an app development package based on your product vision, required features, and scalability goals."
           image="/home/web.jpg"
         />
         <PricingSection

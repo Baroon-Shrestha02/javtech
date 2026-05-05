@@ -1,7 +1,4 @@
-import {
-  ServiceDetailPage,
-  servicePages,
-} from "@/components/ServicesComponents/ServiceDetailPage";
+import WebService from "@/components/ServicesComponents/SharedServicespages/WebService";
 
 export const metadata = {
   title: "Web Development Services",
@@ -11,5 +8,9 @@ export const metadata = {
 };
 
 export default function WebDevelopment() {
-  return <>Web Development</>;
+  return (
+    <>
+      <WebService />
+    </>
+  );
 }

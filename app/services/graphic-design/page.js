@@ -1,3 +1,5 @@
+import GraphicService from "@/components/ServicesComponents/SharedServicespages/GraphicService";
+
 export const metadata = {
   title: "Graphic Design Services",
   description: "Graphic design services for businesses and organizations.",
@@ -5,5 +7,9 @@ export const metadata = {
 };
 
 export default function GraphicDesign() {
-  return <>Graphic Design</>;
+  return (
+    <>
+      <GraphicService />
+    </>
+  );
 }
