@@ -1,8 +1,8 @@
 import React from "react";
-import HeroSection from "../Shared/Hero";
 import SplitHero from "@/components/SharedComponents/Hero";
 import ProcessSection from "./Shared/Processsection";
 import ExpertiseGrid from "./Shared/OurExpertise";
+import WhyChooseUs from "./Shared/WhyChooseUs";
 
 const ssmData = {
   headerData: {
@@ -94,6 +94,34 @@ export default function SSMService() {
         ]}
       />
       <ProcessSection headerData={ssmData.headerData} steps={ssmData.steps} />
+      <WhyChooseUs
+        eyebrow="Why Choose Us?"
+        title="When Engagement Drives Success"
+        highlightedWords={["Engagement"]}
+        subtitle="Social Growth Specialists"
+        subtitleHighlight="Social Growth"
+        description="We build and manage social media strategies that increase engagement, visibility, and brand loyalty."
+        image="/Services/why/ssm.jpg"
+        accentColor="#cc0000"
+        features={[
+          {
+            title: "Consistent Presence",
+            description: "Regular, high-quality content delivery.",
+          },
+          {
+            title: "Audience Growth",
+            description: "Strategies to expand your reach.",
+          },
+          {
+            title: "Platform Expertise",
+            description: "Optimized for each social channel.",
+          },
+          {
+            title: "Community Building",
+            description: "Engaging and retaining your audience.",
+          },
+        ]}
+      />
     </div>
   );
 }

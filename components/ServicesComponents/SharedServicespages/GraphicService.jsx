@@ -2,6 +2,7 @@ import SplitHero from "@/components/SharedComponents/Hero";
 import React from "react";
 import ExpertiseGrid from "./Shared/OurExpertise";
 import ProcessSection from "./Shared/Processsection";
+import WhyChooseUs from "./Shared/WhyChooseUs";
 
 const graphicsDesignData = {
   headerData: {
@@ -95,6 +96,34 @@ export default function GraphicService() {
       <ProcessSection
         headerData={graphicsDesignData.headerData}
         steps={graphicsDesignData.steps}
+      />
+      <WhyChooseUs
+        eyebrow="Why Choose Us?"
+        title="When Your Brand Needs to Stand Out"
+        highlightedWords={["Brand"]}
+        subtitle="Creative Visual Solutions"
+        subtitleHighlight="Visual Solutions"
+        description="We craft compelling visual identities that communicate your brand message and leave a lasting impression."
+        image="/Services/why/graph.jpg"
+        accentColor="#cc0000"
+        features={[
+          {
+            title: "Creative Excellence",
+            description: "Unique designs tailored to your brand.",
+          },
+          {
+            title: "Brand Impact",
+            description: "Designs that improve recognition.",
+          },
+          {
+            title: "Consistent Identity",
+            description: "Cohesive visuals across all platforms.",
+          },
+          {
+            title: "Client Collaboration",
+            description: "We design with your vision in mind.",
+          },
+        ]}
       />
     </div>
   );

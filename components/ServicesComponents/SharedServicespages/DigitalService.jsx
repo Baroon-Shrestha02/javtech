@@ -2,6 +2,7 @@ import React from "react";
 import SplitHero from "@/components/SharedComponents/Hero";
 import ProcessSection from "./Shared/Processsection";
 import ExpertiseGrid from "./Shared/OurExpertise";
+import WhyChooseUs from "./Shared/WhyChooseUs";
 
 const digitalMarketingData = {
   headerData: {
@@ -92,6 +93,34 @@ export default function DigitalService() {
       <ProcessSection
         headerData={digitalMarketingData.headerData}
         steps={digitalMarketingData.steps}
+      />
+      <WhyChooseUs
+        eyebrow="Why Choose Us?"
+        title="When Growth Is Your Priority"
+        highlightedWords={["Growth"]}
+        subtitle="Performance Marketing Experts"
+        subtitleHighlight="Performance Marketing"
+        description="We deliver data-driven marketing strategies designed to maximize ROI and accelerate your business growth."
+        image="/Services/why/digi.jpg"
+        accentColor="#cc0000"
+        features={[
+          {
+            title: "Data-Driven Strategy",
+            description: "Decisions backed by real analytics.",
+          },
+          {
+            title: "ROI Focused",
+            description: "Campaigns optimized for maximum returns.",
+          },
+          {
+            title: "Brand Consistency",
+            description: "Unified messaging across all channels.",
+          },
+          {
+            title: "Transparent Reporting",
+            description: "Clear insights and regular updates.",
+          },
+        ]}
       />
     </div>
   );

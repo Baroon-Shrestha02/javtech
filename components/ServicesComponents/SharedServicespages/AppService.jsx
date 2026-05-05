@@ -2,7 +2,7 @@ import React from "react";
 import SplitHero from "@/components/SharedComponents/Hero";
 import ProcessSection from "./Shared/Processsection";
 import ExpertiseGrid from "./Shared/OurExpertise";
-import { MonitorIcon } from "lucide-react";
+import WhyChooseUs from "./Shared/WhyChooseUs";
 
 const appProcessData = {
   headerData: {
@@ -101,6 +101,34 @@ export default function AppService() {
       <ProcessSection
         headerData={appProcessData.headerData}
         steps={appProcessData.steps}
+      />
+      <WhyChooseUs
+        eyebrow="Why Choose Us?"
+        title="When Your App Needs to Perform"
+        highlightedWords={["App"]}
+        subtitle="Scalable Mobile Experiences"
+        subtitleHighlight="Mobile Experiences"
+        description="We build intuitive, high-performance mobile applications that deliver seamless user experiences across devices."
+        image="/Services/why/app.webp"
+        accentColor="#cc0000"
+        features={[
+          {
+            title: "Smooth Performance",
+            description: "Optimized apps with fast load times.",
+          },
+          {
+            title: "User-Centric Design",
+            description: "Focused on engagement and retention.",
+          },
+          {
+            title: "Secure & Stable",
+            description: "Robust backend and data protection.",
+          },
+          {
+            title: "Lifecycle Support",
+            description: "From launch to scaling and updates.",
+          },
+        ]}
       />
     </section>
   );

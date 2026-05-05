@@ -1,8 +1,8 @@
 import React from "react";
-import HeroSection from "../Shared/Hero";
 import SplitHero from "@/components/SharedComponents/Hero";
 import ProcessSection from "./Shared/Processsection";
 import ExpertiseGrid from "./Shared/OurExpertise";
+import WhyChooseUs from "./Shared/WhyChooseUs";
 
 const webDevData = {
   headerData: {
@@ -105,6 +105,34 @@ export default function WebService() {
       <ProcessSection
         headerData={webDevData.headerData}
         steps={webDevData.steps}
+      />
+      <WhyChooseUs
+        eyebrow="Why Choose Us?"
+        title="When Your Website Matters Most"
+        highlightedWords={["Website"]}
+        subtitle="High-Performance Web Solutions"
+        subtitleHighlight="Web Solutions"
+        description="We engineer fast, scalable, and secure websites that not only look great but drive measurable business outcomes."
+        image="/Services/why/web.webp"
+        accentColor="#cc0000"
+        features={[
+          {
+            title: "Optimized Performance",
+            description: "Lightning-fast websites with seamless UX.",
+          },
+          {
+            title: "Conversion Focused",
+            description: "Designed to generate leads and sales.",
+          },
+          {
+            title: "Secure Architecture",
+            description: "Built with modern security standards.",
+          },
+          {
+            title: "Long-Term Support",
+            description: "Continuous improvements and maintenance.",
+          },
+        ]}
       />
     </div>
   );

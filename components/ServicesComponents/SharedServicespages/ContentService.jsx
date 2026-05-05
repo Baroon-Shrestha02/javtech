@@ -1,8 +1,8 @@
 import React from "react";
-import HeroSection from "../Shared/Hero";
 import SplitHero from "@/components/SharedComponents/Hero";
 import ProcessSection from "./Shared/Processsection";
 import ExpertiseGrid from "./Shared/OurExpertise";
+import WhyChooseUs from "./Shared/WhyChooseUs";
 
 const contentCreationData = {
   headerData: {
@@ -90,6 +90,34 @@ export default function ContentService() {
       <ProcessSection
         headerData={contentCreationData.headerData}
         steps={contentCreationData.steps}
+      />
+      <WhyChooseUs
+        eyebrow="Why Choose Us?"
+        title="When Content Defines Your Brand"
+        highlightedWords={["Content"]}
+        subtitle="Strategic Content Solutions"
+        subtitleHighlight="Content Solutions"
+        description="We create impactful content that connects with your audience, strengthens your brand voice, and drives conversions."
+        image="/Services/why/content.jpg"
+        accentColor="#cc0000"
+        features={[
+          {
+            title: "High-Quality Content",
+            description: "Well-researched and engaging writing.",
+          },
+          {
+            title: "SEO Optimized",
+            description: "Content designed to rank and perform.",
+          },
+          {
+            title: "Brand Voice Consistency",
+            description: "Aligned messaging across all channels.",
+          },
+          {
+            title: "Content Strategy",
+            description: "Planned for long-term growth.",
+          },
+        ]}
       />
     </div>
   );
