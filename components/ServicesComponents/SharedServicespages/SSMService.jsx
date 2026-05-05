@@ -59,7 +59,7 @@ export default function SSMService() {
         title="Social Media Marketing"
         tagline={"Social Media Marketing.\nCross-platform reach."}
         description="Choose a social media marketing package based on your brand goals, campaign needs, and growth strategy."
-        image="/services/section/ssm.jpg"
+        image="/Services/section/ssm.jpg"
       />
       <ExpertiseGrid
         eyebrow="SOCIAL MEDIA MARKETING"

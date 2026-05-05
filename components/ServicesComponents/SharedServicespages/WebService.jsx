@@ -67,7 +67,7 @@ export default function WebService() {
         title="Web Development"
         tagline={"Web Development.\nCross-platform reach."}
         description="We develop website and web apps based on your brand goals, campaign needs, and growth strategy."
-        image="/services/section/web.png"
+        image="/Services/section/web.png"
       />
 
       <ExpertiseGrid

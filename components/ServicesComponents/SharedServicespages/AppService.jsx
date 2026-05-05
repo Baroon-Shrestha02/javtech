@@ -64,7 +64,7 @@ export default function AppService() {
         title="App Development"
         tagline={"Native performance.\nCross-platform reach."}
         description="We develop applications based on your product vision, required features, and scalability goals."
-        image="/services/section/mobile.jpg"
+        image="/Services/section/mobile.jpg"
       />
 
       <ExpertiseGrid

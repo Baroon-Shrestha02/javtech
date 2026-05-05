@@ -54,7 +54,7 @@ export default function ContentService() {
         title="Content Creation"
         tagline={"Native performance.\nCross-platform reach."}
         description="We write contents based on your content needs, required features, and scalability goals."
-        image="/services/section/content.jpg"
+        image="/Services/section/content.jpg"
       />
 
       <ExpertiseGrid

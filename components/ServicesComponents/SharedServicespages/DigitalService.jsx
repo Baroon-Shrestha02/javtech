@@ -57,7 +57,7 @@ export default function DigitalService() {
         title="Digital Marketing"
         tagline={"Native performance.\nCross-platform reach."}
         description="digital marketing based on your brand goals, campaign needs, and growth strategy."
-        image="/services/section/digi.avif"
+        image="/Services/section/digi.avif"
       />
 
       <ExpertiseGrid

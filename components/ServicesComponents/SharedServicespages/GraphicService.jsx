@@ -57,7 +57,7 @@ export default function GraphicService() {
         title="Graphics Designing"
         tagline={"Native performance.\nCross-platform reach."}
         description="Full-stack development, branding, and marketing — all under one roof in Lalitpur, Nepal."
-        image="/services/section/graphics.webp"
+        image="/Services/section/graphics.webp"
       />
 
       <ExpertiseGrid
