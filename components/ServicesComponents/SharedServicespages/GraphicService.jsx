@@ -3,6 +3,7 @@ import React from "react";
 import ExpertiseGrid from "./Shared/OurExpertise";
 import ProcessSection from "./Shared/Processsection";
 import WhyChooseUs from "./Shared/WhyChooseUs";
+import CTASection from "../main/CTA";
 
 const graphicsDesignData = {
   headerData: {
@@ -125,6 +126,7 @@ export default function GraphicService() {
           },
         ]}
       />
+      <CTASection />
     </div>
   );
 }

@@ -3,6 +3,8 @@ import SplitHero from "@/components/SharedComponents/Hero";
 import ProcessSection from "./Shared/Processsection";
 import ExpertiseGrid from "./Shared/OurExpertise";
 import WhyChooseUs from "./Shared/WhyChooseUs";
+import Pricing from "./Shared/Pricing";
+import CTASection from "../main/CTA";
 
 const appProcessData = {
   headerData: {
@@ -130,6 +132,7 @@ export default function AppService() {
           },
         ]}
       />
+      <CTASection />
     </section>
   );
 }

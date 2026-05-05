@@ -3,6 +3,7 @@ import SplitHero from "@/components/SharedComponents/Hero";
 import ProcessSection from "./Shared/Processsection";
 import ExpertiseGrid from "./Shared/OurExpertise";
 import WhyChooseUs from "./Shared/WhyChooseUs";
+import CTASection from "../main/CTA";
 
 const contentCreationData = {
   headerData: {
@@ -119,6 +120,7 @@ export default function ContentService() {
           },
         ]}
       />
+      <CTASection />
     </div>
   );
 }

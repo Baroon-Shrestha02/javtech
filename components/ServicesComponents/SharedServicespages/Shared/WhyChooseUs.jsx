@@ -2,6 +2,9 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 export default function WhyChooseUs({
   eyebrow = "Why Choose Us?",
@@ -14,11 +17,26 @@ export default function WhyChooseUs({
   imageAlt = "Why choose us",
   features = [],
   accentColor = "#cc0000",
+  ctaText = "View Pricing",
+  ctaHref,
 }) {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
+  const pathname = usePathname();
 
   const resolvedFeatures = features.length > 0 ? features : defaultFeatures;
+
+  // Auto-detect pricing link based on current service page
+  const pricingMap = {
+    "/services/web-development": "/pricing/web-development",
+    "/services/app-development": "/pricing/app-development",
+    "/services/digital-marketing": "/pricing/digital-marketing",
+    "/services/social-media-marketing": "/pricing/digital-marketing",
+    "/services/graphic-design": "/pricing/digital-marketing",
+    "/services/content-writing": "/pricing/digital-marketing",
+  };
+
+  const resolvedCtaHref = ctaHref || pricingMap[pathname] || "/pricing";
 
   // Render title with highlighted words
   const renderTitle = (text, highlights) => {
@@ -55,7 +73,10 @@ export default function WhyChooseUs({
   };
 
   return (
-    <section ref={sectionRef} className="py-20 bg-white overflow-hidden">
+    <section
+      ref={sectionRef}
+      className="py-20 md:py-28 bg-white overflow-hidden"
+    >
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Left — Image */}
@@ -185,6 +206,29 @@ export default function WhyChooseUs({
                 );
               })}
             </div>
+
+            {/* CTA Button */}
+            <motion.div
+              className="mt-10"
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={{ duration: 0.6, delay: 0.9 }}
+            >
+              <Link
+                href={resolvedCtaHref}
+                className="group inline-flex items-center gap-3 px-8 py-4 rounded-full text-white font-semibold text-sm md:text-base transition-all hover:gap-4 shadow-lg"
+                style={{
+                  backgroundColor: accentColor,
+                  boxShadow: `0 10px 30px ${accentColor}30`,
+                }}
+              >
+                {ctaText}
+                <ArrowRight
+                  size={18}
+                  className="transition-transform group-hover:translate-x-1"
+                />
+              </Link>
+            </motion.div>
           </div>
         </div>
       </div>

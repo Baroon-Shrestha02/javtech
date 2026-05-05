@@ -3,6 +3,7 @@ import SplitHero from "@/components/SharedComponents/Hero";
 import ProcessSection from "./Shared/Processsection";
 import ExpertiseGrid from "./Shared/OurExpertise";
 import WhyChooseUs from "./Shared/WhyChooseUs";
+import CTASection from "../main/CTA";
 
 const webDevData = {
   headerData: {
@@ -134,6 +135,7 @@ export default function WebService() {
           },
         ]}
       />
+      <CTASection />
     </div>
   );
 }
