@@ -364,7 +364,7 @@ export function ContactForm() {
         </div>
       </section>
 
-      <section className="max-w-5xl mx-auto mb-6">
+      <section className="max-w-5xl mx-auto mb-6 px-6 md:px-0">
         <div className="rounded-2xl bg-[#0f0f12] p-6 flex flex-col items-center">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/30 mb-3">
             Quick chat?

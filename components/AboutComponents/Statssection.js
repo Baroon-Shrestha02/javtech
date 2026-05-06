@@ -151,45 +151,47 @@ export function StatsSection() {
 
   return (
     <>
-      <SectionHeader
-        title="OUR STORY"
-        header="From Passion to Expertise"
-        subheader="What started as a shared passion for cutting-edge technology has evolved into a thriving hub of creativity and technical excellence. Our founders, with their combined decades of experience in the tech industry, recognized the need for a company that doesn't just deliver projects, but crafts digital experiences that drive real business growth."
-      />
-      <section
-        ref={sectionRef}
-        className="px-5"
-        style={{ height: `calc(100vh + ${TOTAL_SCROLL_PX}px)` }}
-      >
-        <div
-          className="sticky top-0 mx-auto max-w-7xl"
-          style={{ paddingTop: "20px" }}
+      <section className="px-6 md:px-0">
+        <SectionHeader
+          title="OUR STORY"
+          header="From Passion to Expertise"
+          subheader="What started as a shared passion for cutting-edge technology has evolved into a thriving hub of creativity and technical excellence. Our founders, with their combined decades of experience in the tech industry, recognized the need for a company that doesn't just deliver projects, but crafts digital experiences that drive real business growth."
+        />
+        <section
+          ref={sectionRef}
+          className="px-5"
+          style={{ height: `calc(100vh + ${TOTAL_SCROLL_PX}px)` }}
         >
-          <div className="flex gap-5 items-start overflow-visible">
-            <div className="flex flex-1 flex-col gap-5">
-              {leftCards.map((stat, i) => (
-                <StatCard
-                  key={stat.number}
-                  stat={stat}
-                  progress={leftProgresses[i]}
-                />
-              ))}
-            </div>
+          <div
+            className="sticky top-0 mx-auto max-w-7xl"
+            style={{ paddingTop: "20px" }}
+          >
+            <div className="flex gap-5 items-start overflow-visible">
+              <div className="flex flex-1 flex-col gap-5">
+                {leftCards.map((stat, i) => (
+                  <StatCard
+                    key={stat.number}
+                    stat={stat}
+                    progress={leftProgresses[i]}
+                  />
+                ))}
+              </div>
 
-            <div
-              className="flex flex-1 flex-col gap-5"
-              style={{ marginTop: "20vh" }}
-            >
-              {rightCards.map((stat, i) => (
-                <StatCard
-                  key={stat.number}
-                  stat={stat}
-                  progress={rightProgresses[i]}
-                />
-              ))}
+              <div
+                className="flex flex-1 flex-col gap-5"
+                style={{ marginTop: "20vh" }}
+              >
+                {rightCards.map((stat, i) => (
+                  <StatCard
+                    key={stat.number}
+                    stat={stat}
+                    progress={rightProgresses[i]}
+                  />
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        </section>
       </section>
     </>
   );

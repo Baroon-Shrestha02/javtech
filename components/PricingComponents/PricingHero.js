@@ -1,52 +1,40 @@
 "use client";
 
 import MainHero from "../SharedComponents/MainHero";
-import HeroSection from "./shared/Hero";
 
 export default function PricingHero() {
   const slides = [
     {
-      eyebrow: "Web Solutions",
-      title: "Web Development",
+      eyebrow: "Pricing Plans",
+      title: "Web Development Pricing",
       description:
-        "Creating stunning websites for businesses worldwide. Responsive, SEO-optimized, and built to impress.",
-      bgImage: "/Services/herosection1.jpg",
+        "Flexible pricing plans for websites and web applications—designed to fit startups, growing businesses, and enterprise needs.",
+      bgImage: "/hero/webp.webp",
       cta: {
-        label: "Explore Web Services",
-        href: "/services/web-development",
+        label: "View Web Pricing",
+        href: "/pricing/web-development",
       },
     },
     {
-      eyebrow: "Marketing",
-      title: "Digital Marketing",
+      eyebrow: "Marketing Packages",
+      title: "Digital Marketing Pricing",
       description:
-        "Our team crafts digital campaigns that convert visitors into loyal customers across all platforms.",
-      bgImage: "/Services/one.jpg",
+        "Transparent digital marketing packages tailored to your goals, covering SEO, paid ads, and performance campaigns.",
+      bgImage: "/hero/digi.png",
       cta: {
-        label: "View Marketing Plans",
-        href: "/abhiyan.jpeg",
+        label: "Explore Marketing Packages",
+        href: "/pricing/digital-marketing",
       },
     },
     {
-      eyebrow: "Development",
-      title: "Web & App Development",
+      eyebrow: "Design Packages",
+      title: "Branding & Design Pricing",
       description:
-        "High-quality Web and App Development with modern technologies and best practices.",
-      bgImage: "HFH.png",
+        "Creative branding and design packages structured to deliver high-impact visuals with clear, scalable pricing options.",
+      bgImage: "/hero/brand.webp",
       cta: {
-        label: "See Our Work",
-        href: "/our-works",
-      },
-    },
-    {
-      eyebrow: "Branding",
-      title: "Branding & Identity",
-      description:
-        "We create memorable branding systems that define your business presence in the digital world.",
-      bgImage: "/Services/herosection2.jpg",
-      cta: {
-        label: "Learn More",
-        href: "/services/branding",
+        label: "See Design Packages",
+        href: "/pricing/branding",
       },
     },
   ];

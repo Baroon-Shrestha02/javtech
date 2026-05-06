@@ -30,7 +30,7 @@ export default function ExpertiseGrid({
   const resolvedCards = cards.length >= 4 ? cards : defaultCards;
 
   return (
-    <section ref={sectionRef}>
+    <section ref={sectionRef} className="px-6 md:px-0">
       <div className="">
         <SectionHeader title={eyebrow} header={title} subheader={description} />
       </div>

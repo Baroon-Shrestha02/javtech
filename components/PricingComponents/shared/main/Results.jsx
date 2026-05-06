@@ -44,7 +44,7 @@ const fadeRight = {
 
 export default function Results() {
   return (
-    <div className="container mx-auto my-24">
+    <div className="container mx-auto my-24 px-6 md:px-0">
       <motion.p
         className="mb-3 text-xs font-semibold uppercase tracking-widest text-gray-400"
         variants={fadeUp}

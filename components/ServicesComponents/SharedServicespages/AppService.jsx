@@ -17,84 +17,104 @@ const appProcessData = {
   steps: [
     {
       number: "01",
-      title: "Discuss",
+      title: "Discover",
       description:
-        "We start by understanding your business goals, app idea, target users, required features, and technical expectations.",
-      points: ["Requirement gathering", "Goal alignment", "Timeline planning"],
+        "We begin by understanding your business objectives, target audience, and product vision to define a clear development roadmap.",
+      points: [
+        "In-depth requirement analysis and stakeholder discussions",
+        "Target audience research and market positioning insights",
+        "Project roadmap, scope definition, and timeline planning",
+      ],
     },
     {
       number: "02",
       title: "Design",
       description:
-        "We convert your ideas into wireframes, user flows, and clean UI/UX designs before development starts.",
-      points: ["Wireframing", "UI/UX design", "Prototype review"],
+        "We transform ideas into intuitive user experiences through wireframes, prototypes, and visually engaging UI/UX designs.",
+      points: [
+        "Detailed wireframing and interactive prototyping",
+        "User experience (UX) structure and flow optimization",
+        "Modern, visually consistent user interface (UI) design",
+      ],
     },
     {
       number: "03",
       title: "Develop",
       description:
-        "We build the app using scalable frontend, backend, database, and API architecture.",
+        "Our team builds scalable, high-performance applications using modern technologies and robust architecture.",
       points: [
-        "Frontend development",
-        "Backend development",
-        "API integration",
+        "Frontend and backend development with clean architecture",
+        "Secure API integration and third-party service connections",
+        "Database design and scalable system infrastructure setup",
       ],
     },
     {
       number: "04",
-      title: "Test",
+      title: "Test & Optimize",
       description:
-        "We test the application for performance, usability, responsiveness, bugs, and real-world usage scenarios.",
-      points: ["QA testing", "Bug fixing", "Performance optimization"],
+        "We rigorously test the application to ensure performance, security, and a seamless user experience across all devices.",
+      points: [
+        "Comprehensive quality assurance and usability testing",
+        "Bug fixing, debugging, and continuous refinements",
+        "Performance tuning, speed optimization, and responsiveness",
+      ],
     },
     {
       number: "05",
-      title: "Deliver",
+      title: "Launch & Scale",
       description:
-        "We deploy the app, provide launch support, and continue improvements based on feedback.",
-      points: ["Deployment", "Launch support", "Maintenance"],
+        "We deploy your application, support the launch, and continuously improve it to support long-term growth.",
+      points: [
+        "Smooth deployment and go-live process management",
+        "Post-launch monitoring, support, and issue resolution",
+        "Ongoing updates, feature enhancements, and scalability improvements",
+      ],
     },
   ],
 };
 
 export default function AppService() {
   return (
-    <section>
+    <section className="">
       <SplitHero
         title="App Development"
-        tagline={"Native performance.\nCross-platform reach."}
-        description="We develop applications based on your product vision, required features, and scalability goals."
+        tagline={"Build - Launch - Scale.\nSeamless Mobile Experiences."}
+        description="We design and develop high-performance mobile applications aligned with your product vision, feature requirements, and long-term scalability goals."
         image="/Services/section/mobile.jpg"
       />
 
       <ExpertiseGrid
         eyebrow="APP DEVELOPMENT"
         title="What We Build"
-        description="Scalable mobile solutions tailored for modern users."
+        description="We build scalable, high-performance mobile applications tailored for modern users, delivering seamless experiences across platforms and devices."
         cards={[
           {
             title: "iOS & Android Apps",
-            description: "Native and cross-platform mobile applications.",
+            description:
+              "We build high-performance native and cross-platform mobile apps tailored for seamless user experience across both iOS and Android platforms.",
             gradient:
               "linear-gradient(155deg, #6d0000 0%, #a71010 55%, #c0392b 100%)",
             image: "/Services/app/mobile2.jpg",
           },
           {
             title: "Cross-Platform Apps",
-            description: "Flutter & React Native unified builds.",
+            description:
+              "Develop once, deploy everywhere. We create efficient cross-platform apps using Flutter and React Native for consistent performance across devices.",
             gradient:
               "linear-gradient(145deg, #8b0000 0%, #b71c1c 55%, #c62828 100%)",
             image: "/Services/app/mobile.jpg",
           },
           {
             title: "UI/UX Design",
-            description: "User-focused mobile app interfaces.",
+            description:
+              "We design intuitive, user-centric interfaces that enhance usability, engagement, and overall mobile app experience.",
             gradient:
               "linear-gradient(145deg, #a71010 0%, #c62828 60%, #d32f2f 100%)",
           },
           {
             title: "App Maintenance",
-            description: "Updates, scaling, and performance optimization.",
+            description:
+              "Ensure long-term performance with regular updates, bug fixes, scalability improvements, and ongoing technical support.",
             gradient:
               "linear-gradient(145deg, #c0392b 0%, #d32f2f 55%, #e53935 100%)",
           },

@@ -5,12 +5,12 @@ import { motion, AnimatePresence, useInView } from "framer-motion";
 import { SectionHeader } from "@/components/SharedComponents/SectionHeader";
 
 export default function ProcessSection({ headerData, steps = [] }) {
-  const [openIndex, setOpenIndex] = useState(null);
+  const [openIndex, setOpenIndex] = useState(0);
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
 
   return (
-    <section ref={sectionRef}>
+    <section ref={sectionRef} className="px-6 md:px-0">
       <div className="container mx-auto">
         {headerData && (
           <SectionHeader

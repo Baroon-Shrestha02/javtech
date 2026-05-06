@@ -55,13 +55,13 @@ function ProjectCard({ image, title, category }) {
         alt={title}
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
       />
-      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/55 transition-colors duration-500" />
-      <div className="absolute bottom-4 left-4 right-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10">
+      {/* <div className="absolute inset-0 bg-black/20 group-hover:bg-black/55 transition-colors duration-500" /> */}
+      {/* <div className="absolute bottom-4 left-4 right-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10">
         <p className="text-xs tracking-widest uppercase text-white/70">
           {category}
         </p>
         <h3 className="text-lg font-semibold">{title}</h3>
-      </div>
+      </div> */}
     </div>
   );
 }

@@ -17,35 +17,57 @@ const digitalMarketingData = {
     {
       number: "01",
       title: "Research",
-      description: "We identify target audience, keywords, and market trends.",
-      points: ["Keyword research", "Market analysis", "Audience targeting"],
+      description:
+        "We analyze your target audience, industry landscape, and search behavior to uncover opportunities for growth.",
+      points: [
+        "Advanced keyword research and search intent analysis",
+        "Market trends and competitor performance evaluation",
+        "Audience segmentation and targeting strategy",
+      ],
     },
     {
       number: "02",
       title: "Plan",
       description:
-        "We build a marketing strategy tailored to your business objectives.",
-      points: ["Campaign strategy", "Channel selection", "Budget planning"],
+        "We create a data-driven marketing strategy aligned with your business goals and campaign objectives.",
+      points: [
+        "Campaign strategy tailored to business objectives",
+        "Channel selection across SEO, paid ads, and social media",
+        "Budget allocation and performance forecasting",
+      ],
     },
     {
       number: "03",
       title: "Execute",
       description:
-        "We run campaigns across SEO, Google Ads, and social platforms.",
-      points: ["SEO optimization", "Paid ads", "Content distribution"],
+        "We launch and manage campaigns across multiple digital channels to drive traffic, leads, and conversions.",
+      points: [
+        "SEO implementation and on-page optimization",
+        "Paid advertising across Google and social platforms",
+        "Content distribution and audience engagement",
+      ],
     },
     {
       number: "04",
       title: "Analyze",
-      description: "We monitor campaign performance using real-time data.",
-      points: ["Analytics tracking", "Conversion tracking", "Reporting"],
+      description:
+        "We track performance using real-time data to measure results and identify areas for improvement.",
+      points: [
+        "Advanced analytics and campaign performance tracking",
+        "Conversion tracking and user behavior insights",
+        "Detailed reporting with actionable recommendations",
+      ],
     },
     {
       number: "05",
-      title: "Scale",
+      title: "Optimize & Scale",
       description:
-        "We optimize and scale successful campaigns for maximum ROI.",
-      points: ["Optimization", "Scaling campaigns", "Performance tuning"],
+        "We continuously refine and scale high-performing campaigns to maximize ROI and long-term growth.",
+      points: [
+        "Campaign optimization based on data insights",
+        "Scaling successful campaigns for higher returns",
+        "Performance tuning and continuous improvement",
+      ],
     },
   ],
 };
@@ -55,37 +77,43 @@ export default function DigitalService() {
     <div>
       <SplitHero
         title="Digital Marketing"
-        tagline={"Native performance.\nCross-platform reach."}
-        description="digital marketing based on your brand goals, campaign needs, and growth strategy."
+        tagline={"Reach - Engage - Convert.\nPerformance-Driven Growth."}
+        description="We deliver data-driven digital marketing strategies aligned with your brand goals, campaign objectives, and growth roadmap to maximize visibility, leads, and ROI."
         image="/Services/section/digi.avif"
       />
 
       <ExpertiseGrid
         eyebrow="DIGITAL MARKETING"
         title="Growth Solutions"
-        description="Data-driven strategies to scale your business."
+        description="We implement data-driven marketing strategies designed to increase visibility, attract qualified leads, and scale your business with measurable results."
         cards={[
           {
             title: "SEO Optimization",
-            description: "Improve visibility and organic traffic.",
+            description:
+              "Enhance search rankings and drive consistent organic traffic through technical SEO, keyword strategy, and content optimization.",
             gradient:
               "linear-gradient(155deg, #6d0000 0%, #a71010 55%, #c0392b 100%)",
+            image: "/Services/section/seo.avif",
           },
           {
             title: "Paid Advertising",
-            description: "Google Ads, Meta Ads campaigns.",
+            description:
+              "Run targeted Google Ads and Meta campaigns to generate high-quality leads, increase conversions, and maximize ad spend efficiency.",
             gradient:
               "linear-gradient(145deg, #8b0000 0%, #b71c1c 55%, #c62828 100%)",
+            image: "/Services/cc/ads.png",
           },
           {
             title: "Analytics & Tracking",
-            description: "Performance insights and reporting.",
+            description:
+              "Gain actionable insights with advanced tracking, data analysis, and performance reporting to support informed decision-making.",
             gradient:
               "linear-gradient(145deg, #a71010 0%, #c62828 60%, #d32f2f 100%)",
           },
           {
             title: "Conversion Optimization",
-            description: "Maximize ROI and lead generation.",
+            description:
+              "Improve user journeys and conversion rates through A/B testing, UX enhancements, and data-driven optimization strategies.",
             gradient:
               "linear-gradient(145deg, #c0392b 0%, #d32f2f 55%, #e53935 100%)",
           },

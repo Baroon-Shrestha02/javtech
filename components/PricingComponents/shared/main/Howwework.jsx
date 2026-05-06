@@ -75,7 +75,7 @@ export default function HowWeWork() {
   const [activeStep, setActiveStep] = useState(0);
 
   return (
-    <section className="rounded-[32px] mx-4 md:mx-8 py-12 md:py-20 px-6 md:px-12 my-20">
+    <section className="rounded-[32px] mx-4 md:mx-8 py-12 md:py-20 px-6 md:px-0 my-20">
       <div className="container mx-auto">
         {/* Header */}
         <motion.div

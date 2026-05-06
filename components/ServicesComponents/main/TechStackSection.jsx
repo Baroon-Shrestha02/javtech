@@ -160,8 +160,8 @@ const defaultCategories = [
     description: "Data storage solutions",
     tools: [
       { name: "MongoDB", icon: "/tech/db/mongo.png" },
-      { name: "PostgreSQL", icon: "/tech/db/postgres.png" },
-      { name: "MySQL", icon: "/tech/db/sql.png" },
+      // { name: "PostgreSQL", icon: "/tech/db/postgres.png" },
+      // { name: "MySQL", icon: "/tech/db/sql.png" },
       //   { name: "Redis", icon: "/tech/redis.svg" },
       { name: "Firebase", icon: "/tech/db/firebase.png" },
     ],
@@ -173,7 +173,7 @@ const defaultCategories = [
       { name: "Vercel", icon: "/tech/hosting/vercel.svg" },
       //   { name: "AWS", icon: "/tech/aws.svg" },
       { name: "Netlify", icon: "/tech/hosting/netlify.webp" },
-      { name: "DigitalOcean", icon: "/tech/hosting/digital.svg" },
+      // { name: "DigitalOcean", icon: "/tech/hosting/digital.svg" },
       { name: "CPanel", icon: "/tech/hosting/cp.webp" },
     ],
   },
@@ -183,7 +183,7 @@ const defaultCategories = [
     tools: [
       { name: "Git", icon: "/tech/control/git.png" },
       { name: "GitHub", icon: "/tech/control/github.svg" },
-      { name: "GitHub Actions", icon: "/tech/control/actions.svg" },
+      // { name: "GitHub Actions", icon: "/tech/control/actions.svg" },
     ],
   },
   //   {

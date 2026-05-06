@@ -92,9 +92,9 @@ const pricingDropdownItems = [
     icon: Smartphone,
   },
   {
-    label: "Digital Marketing",
+    label: "Marketing",
     description: "SEO, social, and growth campaigns",
-    slug: "digital-marketing",
+    slug: "marketing",
     icon: Megaphone,
   },
 ];

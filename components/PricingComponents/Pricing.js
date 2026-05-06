@@ -9,7 +9,6 @@ export default function Pricing() {
     <>
       <div className="">
         <WhyJavTech />
-        <HowWeWork />
         <Results />
       </div>
     </>

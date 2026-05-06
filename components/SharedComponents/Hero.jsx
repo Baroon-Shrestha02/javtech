@@ -68,7 +68,7 @@ export default function SplitHero({
 
   return (
     <div className={`min-h-screen ${bg} flex items-center split-hero-${uid}`}>
-      <section className="mx-auto w-full max-w-[1200px] flex flex-col py-10 md:py-14 gap-6 md:gap-8">
+      <section className="mx-auto w-full max-w-[1200px] flex flex-col py-10 md:py-14 gap-6 md:gap-8 px-6 md:px-0">
         {/* Title + Text */}
         <div className="flex flex-col gap-4 md:gap-5">
           {/* Title — letter stagger */}
