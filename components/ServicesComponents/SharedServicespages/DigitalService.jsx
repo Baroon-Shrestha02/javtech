@@ -79,7 +79,7 @@ export default function DigitalService() {
         title="Digital Marketing"
         tagline={"Reach - Engage - Convert.\nPerformance-Driven Growth."}
         description="We deliver data-driven digital marketing strategies aligned with your brand goals, campaign objectives, and growth roadmap to maximize visibility, leads, and ROI."
-        image="/Services/section/digi.avif"
+        image="/services/section/digi.avif"
       />
 
       <ExpertiseGrid
@@ -93,7 +93,7 @@ export default function DigitalService() {
               "Enhance search rankings and drive consistent organic traffic through technical SEO, keyword strategy, and content optimization.",
             gradient:
               "linear-gradient(155deg, #6d0000 0%, #a71010 55%, #c0392b 100%)",
-            image: "/Services/section/seo.avif",
+            image: "/services/section/seo.avif",
           },
           {
             title: "Paid Advertising",
@@ -101,7 +101,7 @@ export default function DigitalService() {
               "Run targeted Google Ads and Meta campaigns to generate high-quality leads, increase conversions, and maximize ad spend efficiency.",
             gradient:
               "linear-gradient(145deg, #8b0000 0%, #b71c1c 55%, #c62828 100%)",
-            image: "/Services/cc/ads.png",
+            image: "/services/cc/ads.png",
           },
           {
             title: "Analytics & Tracking",
@@ -130,7 +130,7 @@ export default function DigitalService() {
         subtitle="Performance Marketing Experts"
         subtitleHighlight="Performance Marketing"
         description="We deliver data-driven marketing strategies designed to maximize ROI and accelerate your business growth."
-        image="/Services/why/digi.jpg"
+        image="/services/why/digi.jpg"
         accentColor="#cc0000"
         features={[
           {

@@ -14,12 +14,9 @@ import {
   Code2,
   Smartphone,
   Megaphone,
-  Search,
   Share2,
   Palette,
   FileText,
-  MousePointerClick,
-  Layout,
 } from "lucide-react";
 
 /* ─────────────────────────────
@@ -99,27 +96,36 @@ const pricingDropdownItems = [
   },
 ];
 
+/* ─────────────────────────────
+   LINKS — all with trailing slashes
+   Matches: trailingSlash: true in next.config.js
+───────────────────────────── */
 const links = [
   { href: "/", label: "Home" },
-  { href: "/about", label: "About Us" },
+  { href: "/about/", label: "About Us" },
+  { href: "/services/", label: "Our Services", megaMenu: true },
+  { href: "/our-works/", label: "Our Works" },
   {
-    href: "/services",
-    label: "Our Services",
-    megaMenu: true,
-  },
-  { href: "/our-works", label: "Our Works" },
-  {
-    href: "/pricing",
+    href: "/pricing/",
     label: "Pricing",
     dropdown: pricingDropdownItems.map((d) => ({
       ...d,
-      href: `/pricing/${d.slug}`,
+      href: `/pricing/${d.slug}/`,
     })),
   },
-  { href: "/contact", label: "Contact Us" },
+  { href: "/contact/", label: "Contact Us" },
 ];
 
 const WA_LINK = "https://wa.me/9779807128557";
+
+/* ─────────────────────────────
+   NORMALIZE — ensures trailing slash
+   for consistent comparisons
+───────────────────────────── */
+const normalize = (path) => {
+  if (!path || path === "/") return "/";
+  return path.endsWith("/") ? path : path + "/";
+};
 
 /* ─────────────────────────────
    MEGA MENU ITEM
@@ -271,9 +277,7 @@ function NavLink({ href, label, active, dropdown, megaMenu }) {
             exit={{ opacity: 0, y: 8 }}
             transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
             className="absolute top-full -left-[230px] z-50"
-            style={{
-              paddingTop: "12px",
-            }}
+            style={{ paddingTop: "12px" }}
           >
             <div
               className="w-[720px] rounded-2xl overflow-hidden border border-gray-100/80"
@@ -287,7 +291,6 @@ function NavLink({ href, label, active, dropdown, megaMenu }) {
               <div className="grid grid-cols-2 gap-6 p-6">
                 {serviceCategories.map((category, catIndex) => (
                   <div key={category.category}>
-                    {/* Category Header */}
                     <div className="mb-4 pb-3 border-b border-gray-100">
                       <h3 className="text-base font-bold text-gray-900 mb-1">
                         {category.category}
@@ -296,13 +299,11 @@ function NavLink({ href, label, active, dropdown, megaMenu }) {
                         {category.description}
                       </p>
                     </div>
-
-                    {/* Category Items */}
                     <div className="space-y-1">
                       {category.items.map((item, itemIndex) => (
                         <MegaMenuItem
                           key={item.slug}
-                          href={`/services/${item.slug}`}
+                          href={`/services/${item.slug}/`}
                           icon={item.icon}
                           label={item.label}
                           description={item.description}
@@ -315,9 +316,8 @@ function NavLink({ href, label, active, dropdown, megaMenu }) {
                 ))}
               </div>
 
-              {/* Footer Link */}
               <Link
-                href="/services"
+                href="/services/"
                 onClick={handleClose}
                 className="flex items-center justify-between px-6 py-3 border-t border-gray-100 text-xs font-medium text-gray-400 hover:text-accent2 hover:bg-gray-50/50 transition-colors duration-150"
               >
@@ -338,9 +338,7 @@ function NavLink({ href, label, active, dropdown, megaMenu }) {
             exit={{ opacity: 0, y: 6 }}
             transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
             className="absolute top-full -left-[100px] z-50"
-            style={{
-              paddingTop: "8px",
-            }}
+            style={{ paddingTop: "8px" }}
           >
             <div
               className="w-[320px] rounded-2xl overflow-hidden border border-gray-100/80"
@@ -398,6 +396,7 @@ export function Header() {
 
   useEffect(() => {
     setMobileOpen(false);
+    setMobileSubmenu(null);
   }, [pathname]);
 
   useEffect(() => {
@@ -407,13 +406,14 @@ export function Header() {
     };
   }, [mobileOpen]);
 
+  /* ── isActive: normalize both sides so trailing slash never causes mismatch ── */
   const isActive = (link) => {
-    if (link.megaMenu) {
-      return pathname.startsWith("/services");
-    }
+    const normalPathname = normalize(pathname);
+    if (link.megaMenu) return normalPathname.startsWith("/services/");
+    if (link.href === "/") return normalPathname === "/";
+    const normalHref = normalize(link.href);
     return (
-      pathname === link.href ||
-      (link.dropdown && pathname.startsWith(link.href + "/"))
+      normalPathname === normalHref || normalPathname.startsWith(normalHref)
     );
   };
 
@@ -429,16 +429,18 @@ export function Header() {
       />
     ));
 
+  /* all service hrefs with trailing slash */
   const allServices = serviceCategories.flatMap((cat) =>
     cat.items.map((item) => ({
       ...item,
-      href: `/services/${item.slug}`,
+      href: `/services/${item.slug}/`,
       category: cat.category,
     })),
   );
 
   return (
     <>
+      {/* ───────── DEFAULT NAVBAR ───────── */}
       <AnimatePresence>
         {!scrolled && (
           <motion.header
@@ -465,7 +467,7 @@ export function Header() {
 
               <div className="hidden lg:flex items-center gap-5 ml-auto">
                 <Link
-                  href="/contact"
+                  href="/contact/"
                   className="flex items-center gap-2 rounded-full bg-[#cc0000] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#aa0000] transition-colors"
                 >
                   Got an Idea
@@ -475,6 +477,7 @@ export function Header() {
                 <a
                   href={WA_LINK}
                   target="_blank"
+                  rel="noreferrer"
                   className="flex items-center gap-2.5"
                 >
                   <MessageCircle size={20} className="text-[#cc0000]" />
@@ -523,6 +526,7 @@ export function Header() {
               <a
                 href={WA_LINK}
                 target="_blank"
+                rel="noreferrer"
                 className="ml-auto hidden lg:flex items-center gap-2 rounded-full bg-[#cc0000] px-5 py-2 text-sm text-white hover:bg-[#aa0000] transition-colors"
               >
                 WhatsApp
@@ -540,6 +544,7 @@ export function Header() {
         )}
       </AnimatePresence>
 
+      {/* ───────── MOBILE MENU ───────── */}
       <AnimatePresence>
         {mobileOpen && (
           <>
@@ -615,7 +620,7 @@ export function Header() {
                             >
                               <div className="pl-3 py-2 flex flex-col gap-1">
                                 <Link
-                                  href={link.href}
+                                  href="/services/"
                                   onClick={() => setMobileOpen(false)}
                                   className="flex items-center justify-between px-4 py-2.5 rounded-lg text-xs font-medium text-gray-400 hover:bg-gray-50 hover:text-[#cc0000] transition-colors"
                                 >
@@ -624,7 +629,9 @@ export function Header() {
                                 </Link>
                                 {allServices.map((service) => {
                                   const Icon = service.icon;
-                                  const subActive = pathname === service.href;
+                                  const subActive =
+                                    normalize(pathname) ===
+                                    normalize(service.href);
                                   return (
                                     <Link
                                       key={service.href}
@@ -698,7 +705,8 @@ export function Header() {
                                 </Link>
                                 {link.dropdown.map((sub) => {
                                   const Icon = sub.icon;
-                                  const subActive = pathname === sub.href;
+                                  const subActive =
+                                    normalize(pathname) === normalize(sub.href);
                                   return (
                                     <Link
                                       key={sub.href}
@@ -745,7 +753,7 @@ export function Header() {
 
               <div className="p-5 border-t border-gray-100 flex flex-col gap-3 shrink-0">
                 <Link
-                  href="/contact"
+                  href="/contact/"
                   onClick={() => setMobileOpen(false)}
                   className="flex items-center justify-center gap-2 bg-[#cc0000] hover:bg-[#aa0000] text-white text-sm font-semibold py-3 rounded-xl transition-colors"
                 >
@@ -756,6 +764,7 @@ export function Header() {
                 <a
                   href={WA_LINK}
                   target="_blank"
+                  rel="noreferrer"
                   className="flex items-center justify-center gap-2 border border-gray-200 hover:border-[#cc0000] hover:text-[#cc0000] text-sm font-medium text-gray-700 py-3 rounded-xl transition-colors"
                 >
                   <MessageCircle size={14} />

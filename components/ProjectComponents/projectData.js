@@ -1,6 +1,6 @@
 const projectsData = [
   {
-    image: "gsonic.jpeg",
+    image: "/gsonic.jpeg",
     title: "Gsonic Electronics",
     link: "https://gsonicelectronic.com",
     subtitle: "Electronic Re-Seller",
@@ -25,7 +25,7 @@ const projectsData = [
       "Improved visibility, broader audience reach, and better customer engagement.",
   },
   {
-    image: "abhiyan.jpeg",
+    image: "/abhiyan.jpeg",
     title: "Abhiyan Education Consultancy",
     link: "https://abhiyanec.com",
     subtitle: "Education Consultancy",
@@ -48,7 +48,7 @@ const projectsData = [
     result: "Increased engagement and improved student inquiries.",
   },
   {
-    image: "HFH.png",
+    image: "/HFH.png",
     title: "Humans for Humanity",
     subtitle: "NGO Website",
     description:

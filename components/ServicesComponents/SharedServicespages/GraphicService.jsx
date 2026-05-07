@@ -79,7 +79,7 @@ export default function GraphicService() {
         title="Graphics Designing"
         tagline={"Design - Identity - Impact.\nVisual Excellence."}
         description="We create compelling visual designs and brand identities that communicate your message clearly, strengthen recognition, and elevate your presence across digital and print platforms."
-        image="/Services/section/graphics.webp"
+        image="/services/section/graphics.webp"
       />
 
       <ExpertiseGrid
@@ -93,7 +93,7 @@ export default function GraphicService() {
               "We create distinctive brand identities including logos, color systems, and guidelines that ensure consistency and strong market recognition.",
             gradient:
               "linear-gradient(155deg, #6d0000 0%, #a71010 55%, #c0392b 100%)",
-            image: "/Services/graphics/brand.avif",
+            image: "/services/graphics/brand.avif",
           },
           {
             title: "Social Media Designs",
@@ -101,7 +101,7 @@ export default function GraphicService() {
               "Eye-catching social media visuals, banners, and ad creatives designed to boost engagement and strengthen your digital presence.",
             gradient:
               "linear-gradient(145deg, #8b0000 0%, #b71c1c 55%, #c62828 100%)",
-            image: "/Services/graphics/two.jpg",
+            image: "/services/graphics/two.jpg",
           },
           {
             title: "UI/UX Graphics",
@@ -131,7 +131,7 @@ export default function GraphicService() {
         subtitle="Creative Visual Solutions"
         subtitleHighlight="Visual Solutions"
         description="We craft compelling visual identities that communicate your brand message and leave a lasting impression."
-        image="/Services/why/graph.jpg"
+        image="/services/why/graph.jpg"
         accentColor="#cc0000"
         features={[
           {

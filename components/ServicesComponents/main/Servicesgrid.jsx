@@ -9,42 +9,42 @@ const services = [
     title: "App Development In Nepal",
     description:
       "Innovative and user-friendly mobile application designed to engage users.",
-    image: "/Services/section/mobile.jpg",
+    image: "/services/section/mobile.jpg",
     href: "/services/app-development",
   },
   {
     title: "Web Development",
     description:
       "Modern websites and web apps developed according to your business needs.",
-    image: "/Services/section/web.png",
+    image: "/services/section/web.png",
     href: "/services/web-development",
   },
   {
     title: "Graphics Designing",
     description:
       "Design eye-catching UI/UX interfaces for effortless user interaction.",
-    image: "/Services/section/graphics.webp",
+    image: "/services/section/graphics.webp",
     href: "/services/graphic-design",
   },
   {
     title: "Digital Marketing",
     description:
       "Custom digital marketing solutions for enhanced visibility and growth.",
-    image: "/Services/section/digi.avif",
+    image: "/services/section/digi.avif",
     href: "/services/digital-marketing",
   },
   {
     title: "Social Media Marketing (SMM)",
     description:
       "Build a strong online presence and engage with your targeted audience.",
-    image: "/Services/ssm/stat.jpg",
+    image: "/services/ssm/stat.jpg",
     href: "/services/social-media-marketing",
   },
   {
     title: "Content Writing & Creation",
     description:
       "Engaging and meaningful content to connect with your audience.",
-    image: "/Services/section/content.jpg",
+    image: "/services/section/content.jpg",
     href: "/services/content-writing",
   },
 ];

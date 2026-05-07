@@ -79,7 +79,7 @@ export default function WebService() {
         title="Web Development"
         tagline={"Build - Scale - Perform.\nModern Web Experiences."}
         description="We design and develop high-performance websites and web applications tailored to your brand vision, campaign objectives, and long-term growth strategy."
-        image="/Services/section/web.png"
+        image="/services/section/web.png"
       />
 
       <ExpertiseGrid
@@ -93,7 +93,7 @@ export default function WebService() {
               "We build high-performing e-commerce platforms using Shopify, WooCommerce, and custom solutions to drive sales and deliver seamless shopping experiences.",
             gradient:
               "linear-gradient(155deg, #6d0000 0%, #a71010 55%, #c0392b 100%)",
-            image: "/Services/web/ec.jpg",
+            image: "/services/web/ec.jpg",
           },
           {
             title: "Web Applications",
@@ -101,7 +101,7 @@ export default function WebService() {
               "Custom web applications including SaaS platforms, dashboards, and admin panels designed for scalability, performance, and business efficiency.",
             gradient:
               "linear-gradient(145deg, #8b0000 0%, #b71c1c 55%, #c62828 100%)",
-            image: "/Services/web/web.png",
+            image: "/services/web/web.png",
           },
           {
             title: "Landing Pages",
@@ -130,7 +130,7 @@ export default function WebService() {
         subtitle="High-Performance Web Solutions"
         subtitleHighlight="Web Solutions"
         description="We engineer fast, scalable, and secure websites that not only look great but drive measurable business outcomes."
-        image="/Services/why/web.webp"
+        image="/services/why/web.webp"
         accentColor="#cc0000"
         features={[
           {

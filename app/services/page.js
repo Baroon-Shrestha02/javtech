@@ -20,7 +20,7 @@ export default function ServicesPage() {
       title: "Web Development",
       description:
         "High-performance, scalable websites built with modern frameworks and optimized for speed, SEO, and user experience.",
-      image: "/Services/section/web.png",
+      image: "/services/section/web.png",
       tags: ["React", "Next.js", "SEO"],
       href: "/services/web-development",
       ctaText: "Explore",
@@ -30,7 +30,7 @@ export default function ServicesPage() {
       title: "App Development",
       description:
         "Robust mobile and web applications tailored to your business needs with seamless performance and intuitive UI/UX.",
-      image: "/Services/section/mobile.jpg",
+      image: "/services/section/mobile.jpg",
       tags: ["Flutter", "React Native", "API"],
       href: "/services/app-development",
       ctaText: "Explore",
@@ -40,7 +40,7 @@ export default function ServicesPage() {
       title: "Search Engine Optimization (SEO)",
       description:
         "Improve your search rankings and drive organic traffic through strategic keyword targeting and technical optimization.",
-      image: "/Services/section/seo.avif",
+      image: "/services/section/seo.avif",
       tags: ["On-Page SEO", "Technical SEO", "Analytics"],
       href: "/services/seo",
       ctaText: "Explore",
@@ -50,7 +50,7 @@ export default function ServicesPage() {
       title: "Social Media Marketing (SMM)",
       description:
         "Build brand awareness and engage your audience with data-driven social media campaigns across major platforms.",
-      image: "/Services/section/ssm.jpg",
+      image: "/services/section/ssm.jpg",
       tags: ["Instagram", "Facebook", "Ads"],
       href: "/services/smm",
       ctaText: "Explore",
@@ -60,7 +60,7 @@ export default function ServicesPage() {
       title: "Content Writing & Creation",
       description:
         "Compelling and SEO-friendly content that communicates your brand message and converts visitors into customers.",
-      image: "/Services/section/content.jpg",
+      image: "/services/section/content.jpg",
       tags: ["Blogs", "Copywriting", "Brand Voice"],
       href: "/services/content-writing",
       ctaText: "Explore",
@@ -70,7 +70,7 @@ export default function ServicesPage() {
       title: "Graphic Design",
       description:
         "Creative visual assets that enhance your brand identity and deliver impactful communication across digital platforms.",
-      image: "/Services/section/graphics.webp",
+      image: "/services/section/graphics.webp",
       tags: ["Branding", "UI Design", "Creatives"],
       href: "/services/graphic-design",
       ctaText: "Explore",
@@ -80,7 +80,7 @@ export default function ServicesPage() {
       title: "Digital Marketing",
       description:
         "End-to-end digital marketing strategies combining SEO, ads, content, and analytics to accelerate business growth.",
-      image: "/Services/section/digi.avif",
+      image: "/services/section/digi.avif",
       tags: ["Strategy", "Funnels", "Performance"],
       href: "/services/digital-marketing",
       ctaText: "Explore",

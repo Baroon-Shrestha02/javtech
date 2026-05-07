@@ -9,21 +9,21 @@ const initialCards = [
     subtitle: "Design • Development",
     description:
       "We crafted a high-conversion fashion e-commerce site with a custom user experience, seamless checkout, and integrated SEO strategies.",
-    bgImage: "/Services/herosection1.jpg",
+    bgImage: "/services/section/web.png",
   },
   {
     title: "Social Media Growth Campaign",
     subtitle: "Instagram • Reels • Ads",
     description:
       "Our reels and motion graphics content helped a local brand triple its engagement, gaining over 15K organic followers in 3 months.",
-    bgImage: "/Services/herosection3.jpg",
+    bgImage: "/services/section/ssm.jpg",
   },
   {
     title: "Poster and Motion Graphics",
     subtitle: "Poster • Brochure • Visuals",
     description:
       "We produced polished explainer videos and product animations for enterprise clients, simplifying complex processes through motion design.",
-    bgImage: "/Services/download.jpg",
+    bgImage: "/services/section/graphics.webp",
   },
 ];
 

@@ -79,7 +79,7 @@ export default function SSMService() {
         title="Social Media Marketing"
         tagline={"Engage - Grow - Convert.\nMulti-Platform Impact."}
         description="We craft and manage tailored social media strategies aligned with your brand goals, campaign objectives, and growth roadmap to maximize reach, engagement, and conversions."
-        image="/Services/section/ssm.jpg"
+        image="/services/section/ssm.jpg"
       />
       <ExpertiseGrid
         eyebrow="SOCIAL MEDIA MARKETING"
@@ -92,7 +92,7 @@ export default function SSMService() {
               "We develop data-driven, platform-specific content strategies to ensure consistent messaging, audience engagement, and long-term brand growth.",
             gradient:
               "linear-gradient(155deg, #6d0000 0%, #a71010 55%, #c0392b 100%)",
-            image: "/Services/ssm/stat.jpg",
+            image: "/services/ssm/stat.jpg",
           },
           {
             title: "Account Management",
@@ -100,7 +100,7 @@ export default function SSMService() {
               "End-to-end social media management including daily posting, audience engagement, and performance monitoring to maintain a strong online presence.",
             gradient:
               "linear-gradient(145deg, #8b0000 0%, #b71c1c 55%, #c62828 100%)",
-            image: "/Services/ssm/acc.avif",
+            image: "/services/ssm/acc.avif",
           },
           {
             title: "Paid Campaigns",
@@ -126,7 +126,7 @@ export default function SSMService() {
         subtitle="Social Growth Specialists"
         subtitleHighlight="Social Growth"
         description="We build and manage social media strategies that increase engagement, visibility, and brand loyalty."
-        image="/Services/why/ssm.jpg"
+        image="/services/why/ssm.jpg"
         accentColor="#cc0000"
         features={[
           {

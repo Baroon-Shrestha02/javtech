@@ -79,7 +79,7 @@ export default function ContentService() {
         title="Content Creation"
         tagline={"Create - Engage - Influence.\nStrategic Storytelling."}
         description="We craft high-quality content tailored to your brand voice, audience needs, and marketing goals to drive engagement, build trust, and deliver measurable impact."
-        image="/Services/section/content.jpg"
+        image="/services/section/content.jpg"
       />
 
       <ExpertiseGrid
@@ -93,7 +93,7 @@ export default function ContentService() {
               "We craft SEO-optimized blogs and articles that boost visibility, drive organic traffic, and establish your brand authority.",
             gradient:
               "linear-gradient(155deg, #6d0000 0%, #a71010 55%, #c0392b 100%)",
-            image: "/Services/cc/cc.webp",
+            image: "/services/cc/cc.webp",
           },
           {
             title: "Website Copywriting",
@@ -101,7 +101,7 @@ export default function ContentService() {
               "High-converting website copy designed to engage visitors, communicate value clearly, and turn traffic into customers.",
             gradient:
               "linear-gradient(145deg, #8b0000 0%, #b71c1c 55%, #c62828 100%)",
-            image: "/Services/cc/cpy.avif",
+            image: "/services/cc/cpy.avif",
           },
           {
             title: "Script Writing",
@@ -130,7 +130,7 @@ export default function ContentService() {
         subtitle="Strategic Content Solutions"
         subtitleHighlight="Content Solutions"
         description="We create impactful content that connects with your audience, strengthens your brand voice, and drives conversions."
-        image="/Services/why/content.jpg"
+        image="/services/why/content.jpg"
         accentColor="#cc0000"
         features={[
           {

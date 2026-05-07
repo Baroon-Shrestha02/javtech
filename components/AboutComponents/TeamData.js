@@ -77,7 +77,7 @@ const teamData = [
     name: "Bhumika Bista",
     role: "Frontend Developer",
     category: "team",
-    img: "team/bhumika.png",
+    img: "/team/bhumika.png",
     description:
       "Believes that the best design is both beautiful and intuitive. Crafts user-friendly interfaces that remove friction and ensure every interaction feels natural.",
   },

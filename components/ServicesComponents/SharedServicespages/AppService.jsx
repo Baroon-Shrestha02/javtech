@@ -80,7 +80,7 @@ export default function AppService() {
         title="App Development"
         tagline={"Build - Launch - Scale.\nSeamless Mobile Experiences."}
         description="We design and develop high-performance mobile applications aligned with your product vision, feature requirements, and long-term scalability goals."
-        image="/Services/section/mobile.jpg"
+        image="/services/section/mobile.jpg"
       />
 
       <ExpertiseGrid
@@ -94,7 +94,7 @@ export default function AppService() {
               "We build high-performance native and cross-platform mobile apps tailored for seamless user experience across both iOS and Android platforms.",
             gradient:
               "linear-gradient(155deg, #6d0000 0%, #a71010 55%, #c0392b 100%)",
-            image: "/Services/app/mobile2.jpg",
+            image: "/services/app/mobile2.jpg",
           },
           {
             title: "Cross-Platform Apps",
@@ -102,7 +102,7 @@ export default function AppService() {
               "Develop once, deploy everywhere. We create efficient cross-platform apps using Flutter and React Native for consistent performance across devices.",
             gradient:
               "linear-gradient(145deg, #8b0000 0%, #b71c1c 55%, #c62828 100%)",
-            image: "/Services/app/mobile.jpg",
+            image: "/services/app/mobile.jpg",
           },
           {
             title: "UI/UX Design",
@@ -131,7 +131,7 @@ export default function AppService() {
         subtitle="Scalable Mobile Experiences"
         subtitleHighlight="Mobile Experiences"
         description="We build intuitive, high-performance mobile applications that deliver seamless user experiences across devices."
-        image="/Services/why/app.webp"
+        image="/services/why/app.webp"
         accentColor="#cc0000"
         features={[
           {
