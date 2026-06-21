@@ -1,5 +1,10 @@
 const projectsData = [
   {
+    // shown on the card (front)
+    thumbnail: "/gsonic.jpeg",
+    // plays on hover
+    video: "/video.MOV",
+    // larger hero image used inside the modal
     image: "/gsonic.jpeg",
     title: "Gsonic Electronics",
     link: "https://gsonicelectronic.com",
@@ -25,6 +30,8 @@ const projectsData = [
       "Improved visibility, broader audience reach, and better customer engagement.",
   },
   {
+    thumbnail: "/abhiyan.jpeg",
+    video: "/abhiyan.mp4",
     image: "/abhiyan.jpeg",
     title: "Abhiyan Education Consultancy",
     link: "https://abhiyanec.com",
@@ -48,6 +55,8 @@ const projectsData = [
     result: "Increased engagement and improved student inquiries.",
   },
   {
+    thumbnail: "/HFH.png",
+    video: "/HFH.mp4",
     image: "/HFH.png",
     title: "Humans for Humanity",
     subtitle: "NGO Website",

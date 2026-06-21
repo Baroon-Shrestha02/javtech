@@ -66,26 +66,35 @@ export default function SplitHero({
   // Split tagline into lines for <br/> rendering
   const taglineLines = tagline.split("\n");
 
+  // Split title into words so it can wrap line-by-line without clipping
+  const words = title.split(" ");
+
   return (
     <div className={`min-h-screen ${bg} flex items-center split-hero-${uid}`}>
       <section className="mx-auto w-full max-w-[1200px] flex flex-col py-10 md:py-14 gap-6 md:gap-8 px-6 md:px-0">
         {/* Title + Text */}
         <div className="flex flex-col gap-4 md:gap-5">
-          {/* Title — letter stagger */}
+          {/* Title — word-wrapping letter stagger */}
           <h1
-            className="flex overflow-hidden font-black leading-[0.95] tracking-[-0.03em] text-black"
+            className="flex flex-wrap gap-x-[0.25em] font-black leading-[1.1] tracking-[-0.03em] text-black"
             style={{
-              fontSize: "clamp(48px, 8vw, 96px)",
+              fontSize: "clamp(36px, 7vw, 82px)",
               perspective: "600px",
             }}
           >
-            {title.split("").map((char, i) => (
-              <span
-                key={i}
-                className="sh-letter inline-block"
-                style={{ transformOrigin: "bottom center" }}
-              >
-                {char === " " ? "\u00A0" : char}
+            {words.map((word, wi) => (
+              // each word is its own overflow-hidden mask so the reveal still works,
+              // and whole words wrap to the next line instead of getting cut off
+              <span key={wi} className="flex overflow-hidden">
+                {word.split("").map((char, ci) => (
+                  <span
+                    key={`${wi}-${ci}`}
+                    className="sh-letter inline-block"
+                    style={{ transformOrigin: "bottom center" }}
+                  >
+                    {char}
+                  </span>
+                ))}
               </span>
             ))}
           </h1>

@@ -85,6 +85,16 @@ export default function ServicesPage() {
       href: "/services/digital-marketing",
       ctaText: "Explore",
     },
+    {
+      category: "Security",
+      title: "Cyber Security",
+      description:
+        "End-to-end digital marketing strategies combining SEO, ads, content, and analytics to accelerate business growth.",
+      image: "/services/section/digi.avif",
+      tags: ["Strategy", "Funnels", "Performance"],
+      href: "/services/digital-marketing",
+      ctaText: "Explore",
+    },
   ];
   return (
     <main className="">

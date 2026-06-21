@@ -1,5 +1,5 @@
 const teamData = [
-  // 👑 LEADERSHIP TEAM
+  // Leadership Team
   {
     id: 101,
     name: "Javed Khan",
@@ -10,6 +10,12 @@ const teamData = [
       "Innovation is not about following a roadmap; it's about building the road that others will follow. At Javtech, we build the path to your digital dominance.",
     description:
       "A true technology visionary with over a decade of experience leading digital transformation initiatives for global enterprises. His Zero-Failure work philosophy inspires the entire company to deliver products and solutions that set new benchmarks.",
+    email: "",
+    phone: "",
+    github: "",
+    linkedin: "",
+    website: "",
+    skills: ["Leadership", "Strategy", "Innovation", "Digital Transformation"],
   },
   {
     id: 102,
@@ -21,6 +27,12 @@ const teamData = [
       "We don't just build for today's needs—we engineer for tomorrow's possibilities, ensuring your business stays ahead of the digital curve.",
     description:
       "The technical powerhouse driving research and development efforts. With an impressive background in digital field, he ensures Javtech remains at the forefront of technological progress, designing future-proof systems.",
+    email: "",
+    phone: "",
+    github: "",
+    linkedin: "",
+    website: "",
+    skills: ["Management", "Research", "Development", "Systems Design"],
   },
   {
     id: 103,
@@ -32,9 +44,14 @@ const teamData = [
       "We don't just hire for skills; we recruit for passion and engineer for greatness",
     description:
       "The architect of Javtech's people-first strategy, specializing in talent acquisition, employee development, and organizational growth. He cultivates an environment of continuous learning and transparency.",
+    email: "",
+    phone: "",
+    github: "",
+    linkedin: "",
+    website: "",
+    skills: ["HR", "Recruitment", "Team Building", "People Strategy"],
   },
 
-  // 👨‍💻 TEAM MEMBERS
   {
     id: 1,
     name: "Sara Lamichhane",
@@ -43,15 +60,27 @@ const teamData = [
     img: "/team/sara.jpg",
     description:
       "A true architect of scalable, powerful systems. With a keen eye for building robust back-end frameworks and seamless front-end integrations, she ensures every project runs smoothly and securely.",
+    email: "sara@gmail.com",
+    phone: "",
+    github: "",
+    linkedin: "",
+    website: "",
+    skills: ["React", "Node.js", "PostgreSQL", "REST APIs"],
   },
   {
     id: 2,
     name: "Barun Shrestha",
     role: "Full Stack Developer",
     category: "team",
-    img: "/team/baroon.png",
+    img: "/team/baron.png",
     description:
       "Builds complex software ecosystems designed to expand effortlessly with your business. Balancing sophisticated database management with slick user interfaces.",
+    email: "boro@gmail.com",
+    phone: "1234567890",
+    github: "",
+    linkedin: "",
+    website: "",
+    skills: ["Next.js", "TypeScript", "Node.js", "MongoDB"],
   },
   {
     id: 3,
@@ -61,6 +90,12 @@ const teamData = [
     img: "/team/biren.jpeg",
     description:
       "The perfect blend of technical precision and elegant design. Known for his zero-failure approach, overseeing the entire development process.",
+    email: "",
+    phone: "",
+    github: "",
+    linkedin: "",
+    website: "",
+    skills: ["React", "Express", "MySQL", "Docker"],
   },
   {
     id: 4,
@@ -70,8 +105,13 @@ const teamData = [
     img: "/team/pushit.png",
     description:
       "A dynamic engineer who bridges the gap between high-performance back-end logic and pixel-perfect front-end artistry. Specializes in transforming complex concepts into captivating visual journeys.",
+    email: "",
+    phone: "",
+    github: "",
+    linkedin: "",
+    website: "",
+    skills: ["React", "Node.js", "Tailwind CSS", "Framer Motion"],
   },
-
   {
     id: 7,
     name: "Bhumika Bista",
@@ -80,6 +120,12 @@ const teamData = [
     img: "/team/bhumika.png",
     description:
       "Believes that the best design is both beautiful and intuitive. Crafts user-friendly interfaces that remove friction and ensure every interaction feels natural.",
+    email: "",
+    phone: "",
+    github: "",
+    linkedin: "",
+    website: "",
+    skills: ["React", "Next.js", "Tailwind CSS", "Figma"],
   },
   {
     id: 8,
@@ -89,6 +135,12 @@ const teamData = [
     img: "/team/sadip-2.png",
     description:
       "Brings speed and precision to frontend development. Expertise in optimizing performance and ensuring flawless display across all devices.",
+    email: "",
+    phone: "",
+    github: "",
+    linkedin: "",
+    website: "",
+    skills: ["JavaScript", "React", "CSS", "Performance"],
   },
   {
     id: 9,
@@ -98,6 +150,12 @@ const teamData = [
     img: "/team/sahitya.jpg",
     description:
       "The voice behind Javtech's message. Specializes in turning complex tech ideas into clear, compelling stories that build brand authority and boost SEO.",
+    email: "",
+    phone: "",
+    github: "",
+    linkedin: "",
+    website: "",
+    skills: ["SEO", "Copywriting", "Storytelling", "Editing"],
   },
 ];
 

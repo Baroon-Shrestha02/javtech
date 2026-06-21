@@ -4,10 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import { SectionHeader } from "../SharedComponents/SectionHeader";
 
 const stats = [
-  { number: "50+", label: "Awards &\nRecognition", dark: true, col: "left" },
-  { number: "900+", label: "Projects\nCompleted", dark: true, col: "right" },
-  { number: "20+", label: "Creative\nMinds", dark: true, col: "left" },
-  { number: "5+", label: "Years of\nExperience", dark: true, col: "right" },
+  { number: "5+", label: "Awards &\nRecognition", dark: true, col: "left" },
+  { number: "15+", label: "Projects\nCompleted", dark: true, col: "right" },
+  { number: "10+", label: "Creative\nMinds", dark: true, col: "left" },
+  { number: "1+", label: "Years of\nExperience", dark: true, col: "right" },
 ];
 
 const PX_PER_CARD = 40;

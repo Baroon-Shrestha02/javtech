@@ -73,6 +73,55 @@ const serviceCategories = [
       },
     ],
   },
+  {
+    category: "Cyber Security",
+    description:
+      "Creating digital experiences through coding, design, and user interaction principles.",
+    items: [
+      {
+        label: "Security Architecture & Infrastructure Hardening",
+        description: "Specialized Custom Website Development Services",
+        slug: "security-architecture",
+        icon: Code2,
+      },
+      {
+        label: "Security Operations Center (SOC) Readiness",
+        description: "Building Custom Apps for Seamless User Experience",
+        slug: "soc",
+        icon: Smartphone,
+      },
+      {
+        label: "Threat Intelligence & Security Monitoring",
+        description: "Building Custom Apps for Seamless User Experience",
+        slug: "threat-intelligence",
+        icon: Smartphone,
+      },
+      {
+        label: "Incident Response & Digital Forensics",
+        description: "Building Custom Apps for Seamless User Experience",
+        slug: "incident-response",
+        icon: Smartphone,
+      },
+      {
+        label: "Zero Trust Security Implementation",
+        description: "Building Custom Apps for Seamless User Experience",
+        slug: "zero-trust-security",
+        icon: Smartphone,
+      },
+      {
+        label: "Cloud & Network Security",
+        description: "Building Custom Apps for Seamless User Experience",
+        slug: "cloud-security",
+        icon: Smartphone,
+      },
+      {
+        label: "Cybersecurity Awareness & Compliance",
+        description: "Building Custom Apps for Seamless User Experience",
+        slug: "cybersecurity-awareness",
+        icon: Smartphone,
+      },
+    ],
+  },
 ];
 
 const pricingDropdownItems = [
@@ -94,6 +143,12 @@ const pricingDropdownItems = [
     slug: "marketing",
     icon: Megaphone,
   },
+  {
+    label: "Cyber Security",
+    description: "SEO, social, and growth campaigns",
+    slug: "security",
+    icon: Megaphone,
+  },
 ];
 
 /* ─────────────────────────────
@@ -113,6 +168,7 @@ const links = [
       href: `/pricing/${d.slug}/`,
     })),
   },
+  { href: "/career/", label: "Careers" },
   { href: "/contact/", label: "Contact Us" },
 ];
 
@@ -280,18 +336,32 @@ function NavLink({ href, label, active, dropdown, megaMenu }) {
             style={{ paddingTop: "12px" }}
           >
             <div
-              className="w-[720px] rounded-2xl overflow-hidden border border-gray-100/80"
+              className="w-[920px] rounded-2xl overflow-hidden border border-gray-100/80 flex flex-col"
               style={{
                 background: "rgba(255,255,255,0.98)",
                 backdropFilter: "blur(24px)",
                 boxShadow:
                   "0 4px 6px -1px rgba(0,0,0,0.05), 0 20px 50px -12px rgba(0,0,0,0.15)",
+                maxHeight: "min(80vh, 560px)",
               }}
             >
-              <div className="grid grid-cols-2 gap-6 p-6">
+              <Link
+                href="/services/"
+                onClick={handleClose}
+                className="flex items-center justify-between px-6 py-3 border-b border-gray-100 text-xs font-semibold text-gray-500 hover:text-accent2 hover:bg-gray-50/50 transition-colors duration-150 shrink-0"
+              >
+                Services Overview
+                <ChevronRight size={12} />
+              </Link>
+
+              <div className="flex gap-6 p-6 flex-1 min-h-0">
                 {serviceCategories.map((category, catIndex) => (
-                  <div key={category.category}>
-                    <div className="mb-4 pb-3 border-b border-gray-100">
+                  <div
+                    key={category.category}
+                    className="flex-1 min-w-0 flex flex-col min-h-0"
+                  >
+                    {/* Pinned header — stays put while items scroll */}
+                    <div className="mb-4 pb-3 border-b border-gray-100 shrink-0">
                       <h3 className="text-base font-bold text-gray-900 mb-1">
                         {category.category}
                       </h3>
@@ -299,10 +369,11 @@ function NavLink({ href, label, active, dropdown, megaMenu }) {
                         {category.description}
                       </p>
                     </div>
-                    <div className="space-y-1">
+                    {/* Independently scrollable item list */}
+                    <div className="space-y-1 flex-1 min-h-0 overflow-y-auto overscroll-contain pr-1 [scrollbar-width:thin] [scrollbar-color:rgba(0,0,0,0.2)_transparent]">
                       {category.items.map((item, itemIndex) => (
                         <MegaMenuItem
-                          key={item.slug}
+                          key={`${category.category}-${itemIndex}`}
                           href={`/services/${item.slug}/`}
                           icon={item.icon}
                           label={item.label}
@@ -315,15 +386,6 @@ function NavLink({ href, label, active, dropdown, megaMenu }) {
                   </div>
                 ))}
               </div>
-
-              <Link
-                href="/services/"
-                onClick={handleClose}
-                className="flex items-center justify-between px-6 py-3 border-t border-gray-100 text-xs font-medium text-gray-400 hover:text-accent2 hover:bg-gray-50/50 transition-colors duration-150"
-              >
-                Services Overview
-                <ChevronRight size={12} />
-              </Link>
             </div>
           </motion.div>
         )}
@@ -341,15 +403,25 @@ function NavLink({ href, label, active, dropdown, megaMenu }) {
             style={{ paddingTop: "8px" }}
           >
             <div
-              className="w-[320px] rounded-2xl overflow-hidden border border-gray-100/80"
+              className="w-[320px] rounded-2xl overflow-hidden border border-gray-100/80 flex flex-col"
               style={{
                 background: "rgba(255,255,255,0.98)",
                 backdropFilter: "blur(20px)",
                 boxShadow:
                   "0 4px 6px -1px rgba(0,0,0,0.05), 0 20px 50px -12px rgba(0,0,0,0.12)",
+                maxHeight: "min(70vh, 420px)",
               }}
             >
-              <div className="p-2">
+              <Link
+                href={href}
+                onClick={handleClose}
+                className="flex items-center justify-between px-5 py-2.5 border-b border-gray-100 text-[11px] font-semibold text-gray-500 hover:text-[#cc0000] hover:bg-gray-50/50 transition-colors duration-150 shrink-0"
+              >
+                {label} Overview
+                <ChevronRight size={12} />
+              </Link>
+
+              <div className="p-2 flex-1 min-h-0 overflow-y-auto overscroll-contain [scrollbar-width:thin] [scrollbar-color:rgba(0,0,0,0.2)_transparent]">
                 {dropdown.map((item, i) => (
                   <DropdownItem
                     key={item.href}
@@ -362,15 +434,6 @@ function NavLink({ href, label, active, dropdown, megaMenu }) {
                   />
                 ))}
               </div>
-
-              <Link
-                href={href}
-                onClick={handleClose}
-                className="flex items-center justify-between px-5 py-2.5 border-t border-gray-100 text-[11px] font-medium text-gray-400 hover:text-[#cc0000] hover:bg-gray-50/50 transition-colors duration-150"
-              >
-                {label} Overview
-                <ChevronRight size={12} />
-              </Link>
             </div>
           </motion.div>
         )}

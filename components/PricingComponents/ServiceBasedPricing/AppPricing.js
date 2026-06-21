@@ -5,6 +5,7 @@ import { Smartphone } from "lucide-react";
 import { PricingSection } from "../shared/Pricingcomponents";
 import HeroSection from "../shared/Hero";
 import { WhatsAppInquiryModal } from "../shared/Whatsappinquirymodal";
+import { WhatsAppCTASection } from "@/components/SharedComponents/Whatsapp";
 
 /* ─────────────────────────────
    APP DEVELOPMENT PRICING
@@ -119,6 +120,9 @@ export default function AppPricing() {
         planName={selectedPlan}
         whatsappNumber="9779807128557"
       />
+      <section className="max-w-5xl mx-auto mb-6 mt-12 pb-16 ">
+        <WhatsAppCTASection />
+      </section>
     </>
   );
 }

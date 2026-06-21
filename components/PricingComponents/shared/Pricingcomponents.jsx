@@ -336,9 +336,6 @@ export function PricingSection({
         {/* Pricing grid */}
         <PricingGrid plans={plans} ctaText={ctaText} ctaHref={ctaHref} />
       </div>
-      <section className="max-w-5xl mx-auto mb-6 mt-12 pb-16 ">
-        <WhatsAppCTASection />
-      </section>
     </section>
   );
 }

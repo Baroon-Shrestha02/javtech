@@ -1,50 +1,47 @@
 "use client";
 
-import { useRef, useLayoutEffect } from "react";
+import { useRef, useLayoutEffect, useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import projectsService from "@/lib/api/services/projects";
 
-const leftCards = [
-  {
-    image: "/home/digital.jpg",
-    title: "Moto Gallery",
-    category: "UI Design",
-    origin: "right bottom",
-  },
-  {
-    image: "/home/mobile.jpg",
-    title: "Floral Studio",
-    category: "Branding",
-    origin: "right center",
-  },
-  {
-    image: "/home/social.jpg",
-    title: "Suzuki Motors",
-    category: "Campaign",
-    origin: "right top",
-  },
+const fallbackLeft = [
+  { image: "/home/digital.jpg", title: "", category: "", origin: "right bottom" },
+  { image: "/home/mobile.jpg", title: "", category: "", origin: "right center" },
+  { image: "/home/social.jpg", title: "", category: "", origin: "right top" },
 ];
 
-const rightCards = [
-  {
-    image: "/home/social.jpg",
-    title: "Art Gallery",
-    category: "Web Design",
-    origin: "left bottom",
-  },
-  {
-    image: "/home/mobile.jpg",
-    title: "Food App",
-    category: "Mobile UI",
-    origin: "left center",
-  },
-  {
-    image: "/home/digital.jpg",
-    title: "Realtime Clock",
-    category: "Product Design",
-    origin: "left top",
-  },
+const fallbackRight = [
+  { image: "/home/social.jpg", title: "", category: "", origin: "left bottom" },
+  { image: "/home/mobile.jpg", title: "", category: "", origin: "left center" },
+  { image: "/home/digital.jpg", title: "", category: "", origin: "left top" },
 ];
+
+const LEFT_ORIGINS = ["right bottom", "right center", "right top"];
+const RIGHT_ORIGINS = ["left bottom", "left center", "left top"];
+
+function pick(list, idx) {
+  return list[idx % list.length];
+}
+
+function buildColumns(projects) {
+  if (!projects || projects.length === 0) {
+    return { left: fallbackLeft, right: fallbackRight };
+  }
+
+  const six = Array.from({ length: 6 }, (_, i) => pick(projects, i));
+  const cardFrom = (p, origin) => ({
+    image: p.thumbnail || p.image || "",
+    title: p.title || "",
+    category: Array.isArray(p.category) ? p.category[0] || "" : p.category || "",
+    origin,
+  });
+
+  return {
+    left: six.slice(0, 3).map((p, i) => cardFrom(p, LEFT_ORIGINS[i])),
+    right: six.slice(3, 6).map((p, i) => cardFrom(p, RIGHT_ORIGINS[i])),
+  };
+}
 
 function ProjectCard({ image, title, category }) {
   return (
@@ -71,6 +68,29 @@ export function OurProjects() {
   const leftColRef = useRef(null);
   const rightColRef = useRef(null);
   const textRef = useRef(null);
+
+  const [{ left: leftCards, right: rightCards }, setColumns] = useState(() =>
+    buildColumns(null),
+  );
+
+  useEffect(() => {
+    let active = true;
+    projectsService
+      .list()
+      .then((data) => {
+        if (!active) return;
+        const list = Array.isArray(data)
+          ? data
+          : (data?.data ?? data?.projects ?? []);
+        setColumns(buildColumns(list));
+      })
+      .catch(() => {
+        // keep fallbacks on error
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   useLayoutEffect(() => {
     gsap.registerPlugin(ScrollTrigger);

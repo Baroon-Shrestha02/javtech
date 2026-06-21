@@ -1,11 +1,95 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useRef,
+  useCallback,
+} from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Globe, Link, WebcamIcon, X } from "lucide-react";
-import projectsData from "./projectData";
+import { Globe } from "lucide-react";
+import { X } from "lucide-react";
+import projectsService from "@/lib/api/services/projects";
 
-//racing, arkob
+/* ---------------------------------------------
+   Backend → UI shape
+---------------------------------------------- */
+const HEIGHT_CYCLE = [400, 500, 350, 450, 380, 420];
+
+function mapProject(p, idx = 0) {
+  const category = Array.isArray(p.category)
+    ? p.category
+    : p.category
+      ? [p.category]
+      : [];
+
+  return {
+    id: p._id || p.id,
+    thumbnail: p.thumbnail || p.image || "",
+    image: p.image || p.thumbnail || "",
+    video: p.video || "",
+    title: p.title || "",
+    subtitle: p.subtitle || "",
+    description: p.description || "",
+    link: p.link || "",
+    year: p.year || "",
+    clientName: p.clientName || "",
+    category,
+    tags: category,
+    status: p.status || "completed",
+    challenge: p.challenge || "",
+    solution: p.solution || "",
+    result: p.result || "",
+    longDescription: p.longDescription || "",
+    longDescription1: p.longDescription1 || "",
+    longDescription2: p.longDescription2 || "",
+    height: HEIGHT_CYCLE[idx % HEIGHT_CYCLE.length],
+  };
+}
+
+function useProjects() {
+  const [state, setState] = useState({
+    projects: [],
+    loading: true,
+    error: null,
+  });
+
+  const load = useCallback(() => {
+    let active = true;
+    setState((s) => ({ ...s, loading: true, error: null }));
+
+    projectsService
+      .list()
+      .then((data) => {
+        if (!active) return;
+        const list = Array.isArray(data)
+          ? data
+          : (data?.data ?? data?.projects ?? []);
+        setState({
+          projects: list.map((p, i) => mapProject(p, i)),
+          loading: false,
+          error: null,
+        });
+      })
+      .catch((err) => {
+        if (!active) return;
+        setState((s) => ({
+          ...s,
+          loading: false,
+          error: err?.message || "Failed to load projects",
+        }));
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  useEffect(() => load(), [load]);
+
+  return { ...state, reload: load };
+}
 
 function Cursor({ isVisible, position, text }) {
   if (!isVisible) return null;
@@ -28,9 +112,52 @@ function Cursor({ isVisible, position, text }) {
 }
 
 function ProjectCard({ project, index, onHover, onLeave, onClick }) {
+  const videoRef = useRef(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const [shouldLoad, setShouldLoad] = useState(false); // lazy-load video on first hover
+  const [videoReady, setVideoReady] = useState(false); // video has enough data to show
+
+  const thumbnail = project.thumbnail || project.image;
+  const hasVideo = Boolean(project.video);
+
+  // The video only fades in once it's hovered AND has buffered enough to play.
+  // Until then the thumbnail stays on screen, so there's never a blank flash.
+  const showVideo = hasVideo && isHovered && videoReady;
+
+  // Drive play/pause from the hover state so it stays in sync even if events
+  // fire out of order.
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v || !hasVideo) return;
+
+    if (isHovered) {
+      const p = v.play();
+      if (p && typeof p.catch === "function") p.catch(() => {});
+    } else {
+      v.pause();
+      // Reset to the first frame only after the fade-out has finished,
+      // otherwise you'd see the video jump while it's still visible.
+      const t = setTimeout(() => {
+        if (videoRef.current) videoRef.current.currentTime = 0;
+      }, 600);
+      return () => clearTimeout(t);
+    }
+  }, [isHovered, hasVideo]);
+
+  const handleEnter = () => {
+    setIsHovered(true);
+    if (hasVideo) setShouldLoad(true);
+    onHover?.();
+  };
+
+  const handleLeave = () => {
+    setIsHovered(false);
+    onLeave?.();
+  };
+
   return (
     <motion.div
-      className="group relative flex flex-col break-inside-avoid mb-12 group"
+      className="group relative flex flex-col break-inside-avoid mb-12"
       layoutId={`card-container-${project.title}`}
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
@@ -43,49 +170,64 @@ function ProjectCard({ project, index, onHover, onLeave, onClick }) {
     >
       <motion.div
         className="relative overflow-hidden shadow-lg cursor-none rounded-xl"
-        onMouseEnter={onHover}
-        onMouseLeave={onLeave}
+        onMouseEnter={handleEnter}
+        onMouseLeave={handleLeave}
         onClick={onClick}
         layoutId={`card-image-${project.title}`}
         whileHover={{ y: -5 }}
         transition={{ duration: 0.3 }}
       >
+        {/* Thumbnail (always rendered, sits underneath the video) */}
         <motion.img
-          src={project.image}
+          src={thumbnail}
           alt={project.title}
-          className="w-full object-cover transition-transform duration-500 group-hover:scale-110"
+          className={`w-full object-cover transition-transform duration-500 ease-out group-hover:scale-110`}
           style={{ height: project.height }}
           layoutId={`image-${project.title}`}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        <div className="absolute bottom-4 left-4 right-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0">
-          <div className="flex flex-wrap gap-1 mb-2">
-            {project.tags.slice(0, 2).map((tag, tagIndex) => (
-              <div
-                key={tag}
-                className="absolute bottom-2 left-6 right-6 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-100"
-              >
-                {/* Tags */}
-                <div className="flex flex-wrap gap-1 mb-3">
-                  {project.tags &&
-                    project.tags.slice(0, 2).map((tag, tagIndex) => (
-                      <span
-                        key={tagIndex}
-                        className="px-2 py-1 bg-black/70 backdrop-blur-sm text-xs rounded-full text-white"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                </div>
-                {/* Description */}
-                <p className="text-white text-md font-light leading-relaxed line-clamp-2">
-                  {project.description}
-                </p>
-              </div>
-            ))}
-          </div>
+
+        {/* Hover video — crossfades in over the thumbnail */}
+        {hasVideo && (
+          <video
+            ref={videoRef}
+            src={shouldLoad ? project.video : undefined}
+            poster={thumbnail}
+            muted
+            loop
+            playsInline
+            preload="none"
+            onCanPlay={() => setVideoReady(true)}
+            onLoadedData={() => setVideoReady(true)}
+            className={`absolute inset-0 w-full h-full object-cover transition-[opacity,transform] duration-700 ease-out group-hover:scale-110 ${
+              showVideo ? "opacity-100" : "opacity-0"
+            }`}
+            style={{ height: project.height }}
+          />
+        )}
+
+        {/* Darkening gradient on hover */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+
+        {/* Tags + description overlay */}
+        <div className="absolute bottom-4 left-4 right-4 text-white opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100 pointer-events-none">
+          {project.tags && project.tags.length > 0 && (
+            <div className="flex flex-wrap gap-1 mb-3">
+              {project.tags.slice(0, 2).map((tag, tagIndex) => (
+                <span
+                  key={tagIndex}
+                  className="px-2 py-1 bg-black/70 backdrop-blur-sm text-xs rounded-full text-white"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+          <p className="text-white text-md font-light leading-relaxed line-clamp-2">
+            {project.description}
+          </p>
         </div>
       </motion.div>
+
       <div className="mt-4 px-2">
         <motion.h3
           className="text-lg md:text-xl font-semibold text-gray-900 line-clamp-2"
@@ -105,26 +247,25 @@ export function AllProjects() {
     position: { x: 0, y: 0 },
     text: "View Project",
   });
-  const [showAllMedia, setShowAllMedia] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(null);
-  const [loadingMedia, setLoadingMedia] = useState(false);
-  const [visibleCounts, setVisibleCounts] = useState({});
-  const [loadingStates, setLoadingStates] = useState({});
 
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== "undefined" ? window.innerWidth : 1024,
   );
   const [activeCategory, setActiveCategory] = useState("All");
 
+  const { projects, loading, error, reload } = useProjects();
+
   // Calculate categories with counts
   const categories = useMemo(() => {
-    const categoryCount = projectsData.reduce((acc, project) => {
-      const categories = Array.isArray(project.category)
+    const categoryCount = projects.reduce((acc, project) => {
+      const cats = Array.isArray(project.category)
         ? project.category
         : [project.category];
 
-      categories.forEach((cat) => {
+      cats.forEach((cat) => {
+        if (!cat) return;
         acc[cat] = (acc[cat] || 0) + 1;
       });
 
@@ -132,42 +273,26 @@ export function AllProjects() {
     }, {});
 
     return [
-      { name: "All", count: projectsData.length },
+      { name: "All", count: projects.length },
       ...Object.entries(categoryCount).map(([name, count]) => ({
         name,
         count,
       })),
     ];
-  }, []);
-
-  const handleLoadMore = (projectKey, totalAssets) => {
-    setLoadingStates((prev) => ({ ...prev, [projectKey]: true }));
-
-    setTimeout(() => {
-      setVisibleCounts((prev) => {
-        const current = prev[projectKey] || 6;
-        return {
-          ...prev,
-          [projectKey]: Math.min(current + 6, totalAssets),
-        };
-      });
-
-      setLoadingStates((prev) => ({ ...prev, [projectKey]: false }));
-    }, 1200);
-  };
+  }, [projects]);
 
   // Filter projects based on active category
   const filteredProjects = useMemo(() => {
     if (activeCategory === "All") {
-      return projectsData;
+      return projects;
     }
-    return projectsData.filter((project) => {
-      const categories = Array.isArray(project.category)
+    return projects.filter((project) => {
+      const cats = Array.isArray(project.category)
         ? project.category
         : [project.category];
-      return categories.includes(activeCategory);
+      return cats.includes(activeCategory);
     });
-  }, [activeCategory]);
+  }, [activeCategory, projects]);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -248,25 +373,6 @@ export function AllProjects() {
     };
   }, [selectedProject]);
 
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === "Escape") {
-        setSelectedProject(null); // close modal
-      }
-    };
-
-    if (selectedProject) {
-      document.addEventListener("keydown", handleKeyDown);
-    }
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [selectedProject]);
-
-  function SmallerCategories() {
-    return <></>;
-  }
   return (
     <div className="container mx-auto px-6 py-20 min-h-screen relative">
       <div className="mb-16 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
@@ -308,7 +414,7 @@ export function AllProjects() {
               >
                 <span className="font-medium">{category.name}</span>
                 <motion.span
-                  className={`ml-20 px-2 py-1 rounded-full  text-md font-semibold minw-[24px] text-center ${
+                  className={`ml-20 px-2 py-1 rounded-full text-md font-semibold min-w-[24px] text-center ${
                     activeCategory === category.name
                       ? "bg-white/20"
                       : "text-gray-600"
@@ -333,31 +439,70 @@ export function AllProjects() {
         </AnimatePresence>
       )}
 
-      {/* Masonry Grid */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activeCategory}
-          className="columns-1 md:columns-2 xl:columns-3 gap-6 space-y-0"
-          style={{ columnFill: "balance" }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          {filteredProjects.map((project, index) => (
-            <ProjectCard
-              key={`${project.title}-${activeCategory}`}
-              project={project}
-              index={index}
-              onHover={handleMouseEnter}
-              onLeave={handleMouseLeave}
-              onClick={() => handleProjectClick(project, index)}
-            />
+      {/* Loading */}
+      {loading && (
+        <div className="columns-1 md:columns-2 xl:columns-3 gap-6 space-y-0">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="break-inside-avoid mb-12 animate-pulse">
+              <div
+                className="w-full rounded-xl bg-gray-100"
+                style={{ height: HEIGHT_CYCLE[i % HEIGHT_CYCLE.length] }}
+              />
+              <div className="mt-4 h-5 w-2/3 bg-gray-100 rounded" />
+              <div className="mt-2 h-1 w-8 bg-gray-200 rounded" />
+            </div>
           ))}
-        </motion.div>
-      </AnimatePresence>
+        </div>
+      )}
 
-      {/* Modal */}
+      {/* Error */}
+      {!loading && error && (
+        <div className="max-w-md mx-auto text-center py-16">
+          <p className="text-xs font-bold tracking-[0.2em] uppercase text-red-600 mb-3">
+            Couldn&rsquo;t load projects
+          </p>
+          <p className="text-gray-600 mb-6">{error}</p>
+          <button
+            onClick={reload}
+            className="inline-flex items-center px-5 py-2.5 rounded-full bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition-colors"
+          >
+            Try again
+          </button>
+        </div>
+      )}
+
+      {!loading && !error && projects.length === 0 && (
+        <p className="text-center text-gray-400 py-16">
+          No projects to show yet.
+        </p>
+      )}
+
+      {/* Masonry Grid */}
+      {!loading && !error && projects.length > 0 && (
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeCategory}
+            className="columns-1 md:columns-2 xl:columns-3 gap-6 space-y-0"
+            style={{ columnFill: "balance" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            {filteredProjects.map((project, index) => (
+              <ProjectCard
+                key={`${project.id || project.title}-${activeCategory}`}
+                project={project}
+                index={index}
+                onHover={handleMouseEnter}
+                onLeave={handleMouseLeave}
+                onClick={() => handleProjectClick(project, index)}
+              />
+            ))}
+          </motion.div>
+        </AnimatePresence>
+      )}
+
       {/* Modal */}
       <AnimatePresence>
         {selectedProject && (
@@ -382,7 +527,7 @@ export function AllProjects() {
             >
               {/* Close button */}
               <motion.button
-                className="fixed top-6 right-6 -translat-x-1/2 z-[10000] flex items-center gap-2 text-white hover:text-gray-300 transition-colors px-4 py-2 rounded-full bg-red-600 backdrop-blur-sm"
+                className="fixed top-6 right-6 z-[10000] flex items-center gap-2 text-white hover:text-gray-300 transition-colors px-4 py-2 rounded-full bg-red-600 backdrop-blur-sm"
                 onClick={handleCloseModal}
                 initial={{ opacity: 0, scale: 0.8, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -447,11 +592,7 @@ export function AllProjects() {
                             {selectedProject.subtitle}
                           </motion.p>
                           {selectedProject.link && (
-                            <motion.p
-                              className="text-lg md:text-xl font-extralight flex items-center gap-2 text-gray-300 mb-6"
-                              layoutId={`subtitle-${selectedProject.title}`}
-                              transition={{ duration: 0.6, ease: "easeInOut" }}
-                            >
+                            <p className="text-lg md:text-xl font-extralight flex items-center gap-2 text-gray-300 mb-6">
                               <a
                                 href={selectedProject.link}
                                 target="_blank"
@@ -461,7 +602,7 @@ export function AllProjects() {
                                 <Globe size={20} />
                                 {selectedProject.title}
                               </a>
-                            </motion.p>
+                            </p>
                           )}
                         </motion.div>
 
@@ -482,7 +623,6 @@ export function AllProjects() {
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.7, duration: 0.6 }}
                         >
-                          {/* <div className="mb-3">What we did:</div> */}
                           <div className="flex items-center gap-2 flex-wrap">
                             {selectedProject.tags.map((tag, tagIndex) => (
                               <motion.span
@@ -545,6 +685,30 @@ export function AllProjects() {
                   </div>
                 </motion.div>
 
+                {/* Showcase image (between challenge and what-we-did) */}
+                {selectedProject.image && (
+                  <motion.div
+                    className="bg-white/5 backdrop-blur-sm py-10 px-6 md:px-10 border-t border-white/10"
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 1.5, duration: 0.6 }}
+                  >
+                    <div className="max-w-7xl mx-auto">
+                      <h3 className="text-lg md:text-xl font-bold text-white mb-4">
+                        Project showcase
+                      </h3>
+                      <div className="relative overflow-hidden rounded-2xl shadow-2xl bg-black/40">
+                        <img
+                          src={selectedProject.image}
+                          alt={`${selectedProject.title} showcase`}
+                          loading="lazy"
+                          className="w-full h-auto max-h-[600px] object-cover"
+                        />
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+
                 <motion.div
                   className="bg-white/5 backdrop-blur-sm py-10 px-6 md:px-10 border-t border-white/10"
                   initial={{ opacity: 0, y: 50 }}
@@ -586,26 +750,21 @@ export function AllProjects() {
                         className="space-y-6 container mx-auto px-4 md:px-6 py-8 bg-black/40 backdrop-blur rounded-2xl shadow-lg"
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.2 }}
                         transition={{ delay: 0.3, duration: 0.6 }}
                       >
-                        {/* Main Heading */}
                         <motion.h2
                           className="text-2xl md:text-3xl font-bold text-white"
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true }}
                           transition={{ delay: 0.4, duration: 0.5 }}
                         >
                           About {selectedProject.title}
                         </motion.h2>
 
-                        {/* Section 1: About the Client */}
                         <motion.div
                           className="space-y-2"
                           initial={{ opacity: 0, y: 15 }}
                           animate={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true }}
                           transition={{ delay: 0.5, duration: 0.5 }}
                         >
                           <h3 className="text-lg md:text-xl font-extrabold text-gray-300">
@@ -616,37 +775,37 @@ export function AllProjects() {
                           </p>
                         </motion.div>
 
-                        {/* Section 2: What We Did */}
-                        <motion.div
-                          className="space-y-2"
-                          initial={{ opacity: 0, y: 15 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: 0.6, duration: 0.5 }}
-                        >
-                          <h3 className="text-lg md:text-xl font-extrabold text-gray-300">
-                            Our Approach & Solution
-                          </h3>
-                          <p className="text-base md:text-lg text-gray-200 leading-relaxed text-justify">
-                            {selectedProject.longDescription1}
-                          </p>
-                        </motion.div>
+                        {selectedProject.longDescription1 && (
+                          <motion.div
+                            className="space-y-2"
+                            initial={{ opacity: 0, y: 15 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.6, duration: 0.5 }}
+                          >
+                            <h3 className="text-lg md:text-xl font-extrabold text-gray-300">
+                              Our Approach & Solution
+                            </h3>
+                            <p className="text-base md:text-lg text-gray-200 leading-relaxed text-justify">
+                              {selectedProject.longDescription1}
+                            </p>
+                          </motion.div>
+                        )}
 
-                        {/* Section 3: Outcome */}
-                        <motion.div
-                          className="space-y-2"
-                          initial={{ opacity: 0, y: 15 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: 0.7, duration: 0.5 }}
-                        >
-                          <h3 className="text-lg md:text-xl font-extrabold text-gray-300">
-                            Results & Impact
-                          </h3>
-                          <p className="text-base md:text-lg text-gray-200 leading-relaxed text-justify">
-                            {selectedProject.longDescription2}
-                          </p>
-                        </motion.div>
+                        {selectedProject.longDescription2 && (
+                          <motion.div
+                            className="space-y-2"
+                            initial={{ opacity: 0, y: 15 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.7, duration: 0.5 }}
+                          >
+                            <h3 className="text-lg md:text-xl font-extrabold text-gray-300">
+                              Results & Impact
+                            </h3>
+                            <p className="text-base md:text-lg text-gray-200 leading-relaxed text-justify">
+                              {selectedProject.longDescription2}
+                            </p>
+                          </motion.div>
+                        )}
                       </motion.div>
                     )}
                   </motion.div>

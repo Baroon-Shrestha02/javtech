@@ -5,6 +5,7 @@ import { Megaphone } from "lucide-react";
 import { PricingSection } from "../shared/Pricingcomponents";
 import HeroSection from "../shared/Hero";
 import { WhatsAppInquiryModal } from "../shared/Whatsappinquirymodal";
+import { WhatsAppCTASection } from "@/components/SharedComponents/Whatsapp";
 
 /* ─────────────────────────────
    DIGITAL MARKETING PRICING
@@ -119,6 +120,10 @@ export default function DigitalMarketingPricing() {
         planName={selectedPlan}
         whatsappNumber="9779807128557"
       />
+
+      <section className="max-w-5xl mx-auto mb-6 mt-12 pb-16 ">
+        <WhatsAppCTASection />
+      </section>
     </>
   );
 }
