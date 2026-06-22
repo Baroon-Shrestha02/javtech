@@ -1,15 +1,7 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
-import {
-  MapPin,
-  Clock,
-  Calendar,
-  Check,
-  ArrowUpRight,
-  Bookmark,
-} from "lucide-react";
+import { MapPin, Clock, Calendar, Check, ArrowUpRight } from "lucide-react";
 
 /* ---- Skill pill ---- */
 function SkillTag({ label, active }) {
@@ -17,8 +9,8 @@ function SkillTag({ label, active }) {
     <span
       className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold"
       style={{
-        backgroundColor: active ? "#d9edb0" : "#ededed",
-        color: active ? "#3f4a2a" : "#6b7280",
+        backgroundColor: active ? "#fbe3e2" : "#ededed",
+        color: active ? "#9c2226" : "#6b7280",
       }}
     >
       {active && <Check size={13} strokeWidth={3} />}
@@ -27,27 +19,25 @@ function SkillTag({ label, active }) {
   );
 }
 
-export default function JobCard({
-  company = "ConsenSys",
-  category = "Product",
-  isNew = true,
-  title = "Project Management of Launch initiative",
-  pay = "$15k",
-  description = "We're looking for a Senior Frontend Developer to lead the development of fast, accessible, and polished web applications.\n\nYou'll architect reusable component systems, mentor junior developers, and work closely with our design team to ship great user experiences.\n\nResponsibilities:\n- Build and maintain production React / Next.js applications\n- Establish frontend standards, code reviews, and best practices\n- Collaborate with designers and backend engineers on new features\n\nRequirements:\n- Strong experience with React, Next.js, and TypeScript\n- Solid understanding of responsive design and Tailwind CSS\n- Experience with performance optimization and accessibility",
-  image = "/company-placeholder.jpg",
-  imageAlt,
-  location = "Work from anywhere",
-  timezone = "EST only",
-  hours = "40 hrs/week",
-  skills = [
-    { label: "Project Management", active: true },
-    { label: "Web3", active: true },
-    { label: "Agile", active: false },
-  ],
-  onSave = () => {},
-  onViewJob = () => {},
-  onApplyJob = () => {},
-}) {
+export default function CareerCard({ job, onViewJob, onApplyJob }) {
+  if (!job) return null;
+
+  const {
+    company = "Javtech InfoSys",
+    category = "",
+    isNew = false,
+    isClosed = false,
+    title = "",
+    pay = "Competitive",
+    description = "",
+    image = "logo.png",
+    imageAlt,
+    location = "Work from anywhere",
+    timezone = "Any timezone",
+    hours = "Full Time",
+    skills = [],
+  } = job;
+
   return (
     <div
       className="w-full max-w-md overflow-hidden rounded-2xl border bg-white"
@@ -55,34 +45,35 @@ export default function JobCard({
     >
       {/* Top: thumbnail + headline */}
       <div className="flex gap-3.5 p-3.5">
-        <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-2xl bg-gray-100">
-          <img
-            src={image}
-            alt={imageAlt || `${company} logo`}
-            fill
-            sizes="96px"
-            className="object-cover"
-          />
-        </div>
-
         <div className="min-w-0 flex-1">
           <div className="mb-1 flex items-center gap-1.5">
             <span
               className="truncate text-sm font-semibold"
-              style={{ color: "#1e2a78" }}
+              style={{ color: "#0a0a0a" }}
             >
               {company}
             </span>
-            <span className="text-xs" style={{ color: "#9aa0ab" }}>
-              · {category}
-            </span>
-            {isNew && (
+            {category && (
+              <span className="text-xs" style={{ color: "#9aa0ab" }}>
+                · {category}
+              </span>
+            )}
+            {isClosed ? (
               <span
                 className="ml-auto rounded-full px-2 py-0.5 text-[11px] font-medium"
-                style={{ backgroundColor: "#eef2fb", color: "#5b6fae" }}
+                style={{ backgroundColor: "#f3f4f6", color: "#6b7280" }}
               >
-                New
+                Closed
               </span>
+            ) : (
+              isNew && (
+                <span
+                  className="ml-auto rounded-full px-2 py-0.5 text-[11px] font-medium"
+                  style={{ backgroundColor: "#fbe3e2", color: "#9c2226" }}
+                >
+                  New
+                </span>
+              )
             )}
           </div>
 
@@ -93,15 +84,20 @@ export default function JobCard({
             {title}
           </h2>
 
-          <span
-            className="text-base font-semibold"
-            style={{ color: "#111827" }}
-          >
+          <span className="text-sm font-semibold" style={{ color: "#111827" }}>
             {pay}
           </span>
         </div>
       </div>
-      <div className="line-clamp-4 px-4 ">{description}</div>
+
+      {description && (
+        <div
+          className="line-clamp-4 whitespace-pre-line px-4 text-sm"
+          style={{ color: "#4b5563" }}
+        >
+          {description}
+        </div>
+      )}
 
       {/* Meta */}
       <div className="px-3.5">
@@ -136,19 +132,20 @@ export default function JobCard({
       {/* Actions */}
       <div className="flex items-center gap-2.5 p-3.5">
         <button
-          onClick={onViewJob}
+          onClick={() => onViewJob?.(job)}
           className="flex flex-1 items-center justify-center gap-1.5 rounded-full py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
-          style={{ backgroundColor: "#0a0a0a" }}
+          style={{ backgroundColor: "#C8262A" }}
         >
           View Job
           <ArrowUpRight size={16} strokeWidth={2.5} />
         </button>
         <button
-          onClick={onApplyJob}
-          className="flex-1 rounded-full border-2 py-2.5 text-sm font-semibold transition hover:bg-gray-50"
+          onClick={() => onApplyJob?.(job)}
+          disabled={isClosed}
+          className="flex-1 rounded-full border-2 py-2.5 text-sm font-semibold transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
           style={{ borderColor: "#0a0a0a", color: "#0a0a0a" }}
         >
-          Apply Job
+          {isClosed ? "Closed" : "Apply Job"}
         </button>
       </div>
     </div>

@@ -1,5 +1,4 @@
 import CareerMain from "@/components/CareerComponents/CareerMain";
-import WhyWorkWithUs from "@/components/CareerComponents/WhyWorkWithUs";
 
 export const metadata = {
   title: "Career",
@@ -8,12 +7,6 @@ export const metadata = {
   alternates: { canonical: "/career" },
 };
 
-const roles = [
-  "Senior Full-stack Engineer (Next.js)",
-  "Product Designer (UI/UX)",
-  "DevOps / Platform Engineer",
-];
-
 export default function CareerPage() {
   return (
     <main className="section">
@@ -21,16 +14,7 @@ export default function CareerPage() {
         <h1 className="section-title">Career</h1>
         <p className="lead">
           We hire people who like autonomy, clear communication, and shipping.
-          Replace these titles with your real openings.
         </p>
-        <div className="glass max-w-3xl p-7">
-          <h2 className="mt-0 text-xl font-semibold">Open roles</h2>
-          <ul className="m-0 list-disc space-y-2 pl-5 leading-relaxed">
-            {roles.map((r) => (
-              <li key={r}>{r}</li>
-            ))}
-          </ul>
-        </div>
       </div>
 
       <CareerMain />
