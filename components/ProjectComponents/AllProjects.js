@@ -8,13 +8,10 @@ import React, {
   useCallback,
 } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Globe } from "lucide-react";
+import { Globe, CheckCircle2, Clock, LayoutGrid } from "lucide-react";
 import { X } from "lucide-react";
 import projectsService from "@/lib/api/services/projects";
 
-/* ---------------------------------------------
-   Backend → UI shape
----------------------------------------------- */
 const HEIGHT_CYCLE = [400, 500, 350, 450, 380, 420];
 
 function mapProject(p, idx = 0) {
@@ -111,21 +108,94 @@ function Cursor({ isVisible, position, text }) {
   );
 }
 
+// "all" | "completed" | "running"
+const STATUS_FILTERS = [
+  {
+    key: "all",
+    label: "All",
+    icon: <LayoutGrid size={13} />,
+    activeClass: "bg-white text-gray-900 shadow-md",
+  },
+  {
+    key: "completed",
+    label: "Completed",
+    icon: <CheckCircle2 size={13} />,
+    activeClass: "bg-[#C8262A] text-white shadow-md",
+  },
+  {
+    key: "running",
+    label: "Running",
+    icon: <Clock size={13} />,
+    activeClass: "bg-yellow-400 text-gray-900 shadow-md",
+  },
+];
+
+function StatusFilterBar({ active, counts, onChange }) {
+  return (
+    <motion.div
+      className="inline-flex items-center gap-1 bg-gray-100/80 backdrop-blur-sm rounded-2xl p-1.5"
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: 0.1 }}
+    >
+      {STATUS_FILTERS.map((f) => {
+        const isActive = active === f.key;
+        return (
+          <motion.button
+            key={f.key}
+            onClick={() => onChange(f.key)}
+            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
+              isActive
+                ? f.activeClass
+                : "text-gray-500 hover:text-gray-800 hover:bg-white/60"
+            }`}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+          >
+            {f.key !== "all" && isActive && (
+              <span className="relative flex h-2 w-2">
+                <span
+                  className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
+                    f.key === "running" ? "bg-gray-700" : "bg-white"
+                  }`}
+                />
+                <span
+                  className={`relative inline-flex rounded-full h-2 w-2 ${
+                    f.key === "running" ? "bg-gray-800" : "bg-white"
+                  }`}
+                />
+              </span>
+            )}
+            {f.icon}
+            {f.label}
+            <span
+              className={`text-xs px-1.5 py-0.5 rounded-full font-semibold min-w-[20px] text-center ${
+                isActive
+                  ? f.key === "all"
+                    ? "bg-gray-100 text-gray-700"
+                    : "bg-black/15 text-inherit"
+                  : "bg-gray-200 text-gray-500"
+              }`}
+            >
+              {counts[f.key]}
+            </span>
+          </motion.button>
+        );
+      })}
+    </motion.div>
+  );
+}
+
 function ProjectCard({ project, index, onHover, onLeave, onClick }) {
   const videoRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
-  const [shouldLoad, setShouldLoad] = useState(false); // lazy-load video on first hover
-  const [videoReady, setVideoReady] = useState(false); // video has enough data to show
+  const [shouldLoad, setShouldLoad] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
 
   const thumbnail = project.thumbnail || project.image;
   const hasVideo = Boolean(project.video);
-
-  // The video only fades in once it's hovered AND has buffered enough to play.
-  // Until then the thumbnail stays on screen, so there's never a blank flash.
   const showVideo = hasVideo && isHovered && videoReady;
 
-  // Drive play/pause from the hover state so it stays in sync even if events
-  // fire out of order.
   useEffect(() => {
     const v = videoRef.current;
     if (!v || !hasVideo) return;
@@ -135,8 +205,6 @@ function ProjectCard({ project, index, onHover, onLeave, onClick }) {
       if (p && typeof p.catch === "function") p.catch(() => {});
     } else {
       v.pause();
-      // Reset to the first frame only after the fade-out has finished,
-      // otherwise you'd see the video jump while it's still visible.
       const t = setTimeout(() => {
         if (videoRef.current) videoRef.current.currentTime = 0;
       }, 600);
@@ -154,6 +222,25 @@ function ProjectCard({ project, index, onHover, onLeave, onClick }) {
     setIsHovered(false);
     onLeave?.();
   };
+
+  const statusConfig =
+    project.status === "completed"
+      ? {
+          label: "Completed",
+          icon: <CheckCircle2 size={11} />,
+          cls: "bg-[#C8262A] text-white",
+        }
+      : project.status === "in-progress"
+        ? {
+            label: "In Progress",
+            icon: <Clock size={11} />,
+            cls: "bg-yellow-400/90 text-gray-900",
+          }
+        : {
+            label: "Upcoming",
+            icon: <Clock size={11} />,
+            cls: "bg-blue-400/90 text-white",
+          };
 
   return (
     <motion.div
@@ -177,16 +264,24 @@ function ProjectCard({ project, index, onHover, onLeave, onClick }) {
         whileHover={{ y: -5 }}
         transition={{ duration: 0.3 }}
       >
-        {/* Thumbnail (always rendered, sits underneath the video) */}
+        {/* Status badge — top-left corner */}
+        <div
+          className={`absolute top-3 left-3 z-10 flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold backdrop-blur-sm shadow-sm ${statusConfig.cls}`}
+        >
+          {statusConfig.icon}
+          {statusConfig.label}
+        </div>
+
+        {/* Thumbnail */}
         <motion.img
           src={thumbnail}
           alt={project.title}
-          className={`w-full object-cover transition-transform duration-500 ease-out group-hover:scale-110`}
+          className="w-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
           style={{ height: project.height }}
           layoutId={`image-${project.title}`}
         />
 
-        {/* Hover video — crossfades in over the thumbnail */}
+        {/* Hover video */}
         {hasVideo && (
           <video
             ref={videoRef}
@@ -249,26 +344,44 @@ export function AllProjects() {
   });
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(null);
-
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== "undefined" ? window.innerWidth : 1024,
   );
   const [activeCategory, setActiveCategory] = useState("All");
+  const [statusFilter, setStatusFilter] = useState("all");
 
   const { projects, loading, error, reload } = useProjects();
 
-  // Calculate categories with counts
+  // Status counts (scoped to current category)
+  const statusCounts = useMemo(() => {
+    const categoryFiltered =
+      activeCategory === "All"
+        ? projects
+        : projects.filter((p) => {
+            const cats = Array.isArray(p.category) ? p.category : [p.category];
+            return cats.includes(activeCategory);
+          });
+
+    return {
+      all: categoryFiltered.length,
+      completed: categoryFiltered.filter((p) => p.status === "completed")
+        .length,
+      running: categoryFiltered.filter(
+        (p) => p.status === "in-progress" || p.status === "upcoming",
+      ).length,
+    };
+  }, [projects, activeCategory]);
+
+  // Categories with counts
   const categories = useMemo(() => {
     const categoryCount = projects.reduce((acc, project) => {
       const cats = Array.isArray(project.category)
         ? project.category
         : [project.category];
-
       cats.forEach((cat) => {
         if (!cat) return;
         acc[cat] = (acc[cat] || 0) + 1;
       });
-
       return acc;
     }, {});
 
@@ -281,18 +394,27 @@ export function AllProjects() {
     ];
   }, [projects]);
 
-  // Filter projects based on active category
+  // Final filtered list: category + status
   const filteredProjects = useMemo(() => {
-    if (activeCategory === "All") {
-      return projects;
+    let list = projects;
+
+    if (activeCategory !== "All") {
+      list = list.filter((p) => {
+        const cats = Array.isArray(p.category) ? p.category : [p.category];
+        return cats.includes(activeCategory);
+      });
     }
-    return projects.filter((project) => {
-      const cats = Array.isArray(project.category)
-        ? project.category
-        : [project.category];
-      return cats.includes(activeCategory);
-    });
-  }, [activeCategory, projects]);
+
+    if (statusFilter === "completed") {
+      list = list.filter((p) => p.status === "completed");
+    } else if (statusFilter === "running") {
+      list = list.filter(
+        (p) => p.status === "in-progress" || p.status === "upcoming",
+      );
+    }
+
+    return list;
+  }, [activeCategory, statusFilter, projects]);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -301,11 +423,9 @@ export function AllProjects() {
         position: { x: e.clientX, y: e.clientY },
       }));
     };
-
     if (cursorState.isVisible) {
       document.addEventListener("mousemove", handleMouseMove);
     }
-
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
     };
@@ -317,14 +437,12 @@ export function AllProjects() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Lock body scroll when modal is open
   useEffect(() => {
     if (selectedProject) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
     }
-
     return () => {
       document.body.style.overflow = "unset";
     };
@@ -352,22 +470,13 @@ export function AllProjects() {
     setSelectedIndex(null);
   };
 
-  const handleCategoryChange = (categoryName) => {
-    setActiveCategory(categoryName);
-  };
-
-  // Handle escape key to close modal
   useEffect(() => {
     const handleEscape = (e) => {
-      if (e.key === "Escape") {
-        handleCloseModal();
-      }
+      if (e.key === "Escape") handleCloseModal();
     };
-
     if (selectedProject) {
       document.addEventListener("keydown", handleEscape);
     }
-
     return () => {
       document.removeEventListener("keydown", handleEscape);
     };
@@ -375,7 +484,7 @@ export function AllProjects() {
 
   return (
     <div className="container mx-auto px-6 py-20 min-h-screen relative">
-      <div className="mb-16 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
+      <div className="mb-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
         <div className="flex-1">
           <div className="text-4xl md:text-6xl text-gray-900 mb-4">
             Our{" "}
@@ -400,7 +509,7 @@ export function AllProjects() {
             {categories.map((category, index) => (
               <motion.button
                 key={category.name}
-                onClick={() => handleCategoryChange(category.name)}
+                onClick={() => setActiveCategory(category.name)}
                 className={`flex items-center justify-between w-full text-left transition-all duration-300 group ${
                   activeCategory === category.name
                     ? "bg-gradient-to-r from-purple-600 to-blue-600 text-transparent bg-clip-text"
@@ -428,6 +537,31 @@ export function AllProjects() {
           </motion.div>
         </div>
       </div>
+
+      {/* Status filter bar */}
+      {!loading && !error && projects.length > 0 && (
+        <div className="mb-10 flex items-center gap-4">
+          <StatusFilterBar
+            active={statusFilter}
+            counts={statusCounts}
+            onChange={setStatusFilter}
+          />
+          {statusFilter !== "all" && (
+            <motion.p
+              className="text-sm text-gray-400"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              Showing{" "}
+              <span className="font-medium text-gray-700">
+                {filteredProjects.length}
+              </span>{" "}
+              {statusFilter === "completed" ? "completed" : "in-progress"}{" "}
+              project{filteredProjects.length !== 1 ? "s" : ""}
+            </motion.p>
+          )}
+        </div>
+      )}
 
       {windowWidth >= 768 && (
         <AnimatePresence>
@@ -477,11 +611,33 @@ export function AllProjects() {
         </p>
       )}
 
+      {/* Empty filtered state */}
+      {!loading &&
+        !error &&
+        projects.length > 0 &&
+        filteredProjects.length === 0 && (
+          <motion.div
+            className="text-center py-20"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            {statusFilter === "completed" ? (
+              <CheckCircle2 size={40} className="mx-auto text-gray-200 mb-4" />
+            ) : (
+              <Clock size={40} className="mx-auto text-gray-200 mb-4" />
+            )}
+            <p className="text-gray-400">
+              No {statusFilter === "completed" ? "completed" : "in-progress"}{" "}
+              projects in this category.
+            </p>
+          </motion.div>
+        )}
+
       {/* Masonry Grid */}
-      {!loading && !error && projects.length > 0 && (
+      {!loading && !error && filteredProjects.length > 0 && (
         <AnimatePresence mode="wait">
           <motion.div
-            key={activeCategory}
+            key={`${activeCategory}-${statusFilter}`}
             className="columns-1 md:columns-2 xl:columns-3 gap-6 space-y-0"
             style={{ columnFill: "balance" }}
             initial={{ opacity: 0 }}
@@ -491,7 +647,7 @@ export function AllProjects() {
           >
             {filteredProjects.map((project, index) => (
               <ProjectCard
-                key={`${project.id || project.title}-${activeCategory}`}
+                key={`${project.id || project.title}-${activeCategory}-${statusFilter}`}
                 project={project}
                 index={index}
                 onHover={handleMouseEnter}
@@ -507,7 +663,6 @@ export function AllProjects() {
       <AnimatePresence>
         {selectedProject && (
           <>
-            {/* Modal Backdrop */}
             <motion.div
               className="fixed inset-0 bg-black/95 backdrop-blur-sm z-[9998]"
               initial={{ opacity: 0 }}
@@ -517,7 +672,6 @@ export function AllProjects() {
               onClick={handleCloseModal}
             />
 
-            {/* Modal Content */}
             <motion.div
               className="fixed inset-0 z-[9999] overflow-y-auto"
               initial={{ opacity: 0 }}
@@ -525,7 +679,6 @@ export function AllProjects() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
-              {/* Close button */}
               <motion.button
                 className="fixed top-6 right-6 z-[10000] flex items-center gap-2 text-white hover:text-gray-300 transition-colors px-4 py-2 rounded-full bg-red-600 backdrop-blur-sm"
                 onClick={handleCloseModal}
@@ -541,11 +694,10 @@ export function AllProjects() {
               </motion.button>
 
               <div className="min-h-screen flex flex-col">
-                {/* Hero Section */}
+                {/* Hero */}
                 <div className="flex-1 flex items-center justify-center p-6 md:p-8">
                   <div className="max-w-7xl w-full">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
-                      {/* Image */}
                       <motion.div
                         className="relative overflow-hidden rounded-2xl shadow-2xl"
                         layoutId={`card-image-${selectedProject.title}`}
@@ -558,10 +710,9 @@ export function AllProjects() {
                           layoutId={`image-${selectedProject.title}`}
                           transition={{ duration: 0.6, ease: "easeInOut" }}
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                       </motion.div>
 
-                      {/* Content */}
                       <div className="text-white space-y-6">
                         <motion.div
                           initial={{ opacity: 0, x: 50 }}
@@ -573,7 +724,27 @@ export function AllProjects() {
                               {selectedProject.year}
                             </span>
                             <span>•</span>
-                            <span>{selectedProject.title}</span>
+                            {/* Status badge in modal */}
+                            <span
+                              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${
+                                selectedProject.status === "completed"
+                                  ? "bg-[#C8262A] text-green-400 border border-green-500/30"
+                                  : selectedProject.status === "in-progress"
+                                    ? "bg-yellow-400/20 text-yellow-300 border border-yellow-400/30"
+                                    : "bg-blue-400/20 text-blue-300 border border-blue-400/30"
+                              }`}
+                            >
+                              {selectedProject.status === "completed" ? (
+                                <CheckCircle2 size={11} />
+                              ) : (
+                                <Clock size={11} />
+                              )}
+                              {selectedProject.status === "completed"
+                                ? "Completed"
+                                : selectedProject.status === "in-progress"
+                                  ? "In Progress"
+                                  : "Upcoming"}
+                            </span>
                           </div>
 
                           <motion.h1
@@ -591,6 +762,7 @@ export function AllProjects() {
                           >
                             {selectedProject.subtitle}
                           </motion.p>
+
                           {selectedProject.link && (
                             <p className="text-lg md:text-xl font-extralight flex items-center gap-2 text-gray-300 mb-6">
                               <a
@@ -606,7 +778,6 @@ export function AllProjects() {
                           )}
                         </motion.div>
 
-                        {/* Short Description */}
                         <motion.p
                           className="text-base md:text-lg text-gray-200 leading-relaxed"
                           initial={{ opacity: 0, y: 20 }}
@@ -616,7 +787,6 @@ export function AllProjects() {
                           {selectedProject.description}
                         </motion.p>
 
-                        {/* Tags */}
                         <motion.div
                           className="flex flex-col"
                           initial={{ opacity: 0, y: 20 }}
@@ -685,7 +855,7 @@ export function AllProjects() {
                   </div>
                 </motion.div>
 
-                {/* Showcase image (between challenge and what-we-did) */}
+                {/* Showcase image */}
                 {selectedProject.image && (
                   <motion.div
                     className="bg-white/5 backdrop-blur-sm py-10 px-6 md:px-10 border-t border-white/10"
@@ -745,6 +915,7 @@ export function AllProjects() {
                         ))}
                       </div>
                     </motion.div>
+
                     {selectedProject.longDescription && (
                       <motion.div
                         className="space-y-6 container mx-auto px-4 md:px-6 py-8 bg-black/40 backdrop-blur rounded-2xl shadow-lg"

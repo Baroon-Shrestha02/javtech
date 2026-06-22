@@ -792,7 +792,17 @@ function mapMember(m) {
     website: m.website || "",
     skills: Array.isArray(m.skills) ? m.skills : [],
     section: m.section || "team",
+    isActive: m.isActive !== false,
   };
+}
+
+// Public site must only ever render active members.
+// Backend field is `isActive` (Boolean, default true). The API already
+// filters these out server-side by default (teamService.listGrouped()
+// must NOT send includeInactive=true), but we filter again here as a
+// defensive second layer in case that ever changes.
+function isActiveMember(m) {
+  return m.isActive !== false;
 }
 
 function useTeamMembers() {
@@ -824,6 +834,10 @@ function useTeamMembers() {
           leadersRaw = Array.isArray(data?.leaders) ? data.leaders : [];
           teamRaw = Array.isArray(data?.team) ? data.team : [];
         }
+
+        // Public site: only active members are shown.
+        leadersRaw = leadersRaw.filter(isActiveMember);
+        teamRaw = teamRaw.filter(isActiveMember);
 
         setState({
           leaders: leadersRaw.map(mapMember),

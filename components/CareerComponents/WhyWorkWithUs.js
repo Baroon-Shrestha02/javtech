@@ -72,30 +72,30 @@ export default function WhyWorkWithUs({
   title = "Why Work with Us?",
   highlight = "with Us?",
   subtitle = "Experience a Workplace Where Passion Meets Purpose!",
-  accentColor = "#16a34a",
+  accentColor = "#C8262A",
   intro = {
     heading: "Join the Mission to Shape the Future",
     description:
       "Be part of an innovative, mission-driven team focused on equipping the next generation with essential skills that pave the way for success.",
-    image: "/why-work/team.png",
+    image: "/career/joinmission.avif",
   },
   features = [
     {
       title: "Drive Growth",
       description:
         "Contribute to national progress by advancing skill development.",
-      image: "/why-work/growth.png",
+      image: "/career/drivegrowth.avif",
     },
     {
       title: "Unlock Opportunities",
       description: "Grow your own career while opening doors for others.",
-      image: "/why-work/opportunities.png",
+      image: "/career/openopportunity.avif",
     },
     {
       title: "Innovative Culture",
       description:
         "Collaborate in a dynamic, creative, and forward-thinking team.",
-      image: "/why-work/culture.png",
+      image: "/career/innovativeculture.avif",
       wide: true, // spans both columns
     },
   ],
@@ -129,7 +129,7 @@ export default function WhyWorkWithUs({
         </Reveal>
 
         {/* Body */}
-        <div className="mt-16 grid grid-cols-1 lg:grid-cols-2">
+        <div className="mt-16 grid grid-cols-1 gap-15 lg:grid-cols-2">
           {/* Left intro column */}
           <Reveal delay={100} className="flex flex-col">
             <h3 className="text-3xl font-bold leading-tight text-gray-900 md:text-4xl">
@@ -138,12 +138,14 @@ export default function WhyWorkWithUs({
             <p className="mt-5 max-w-xl text-base leading-relaxed text-gray-600 md:text-lg">
               {intro.description}
             </p>
-            <div className="mt-10 flex flex-1 items-end">
-              <img
-                src={intro.image}
-                alt={intro.heading}
-                className="w-full max-w-md object-contain"
-              />
+            <div className="mt-10 flex-1">
+              <div className="relative h-64 w-full overflow-hidden rounded-2xl sm:h-80 lg:h-full lg:min-h-[320px]">
+                <img
+                  src={intro.image}
+                  alt={intro.heading}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              </div>
             </div>
           </Reveal>
 
