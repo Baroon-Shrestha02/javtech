@@ -268,10 +268,10 @@ const defaultGroups = [
             icon: "/tech/security/splunk.png",
           },
           { name: "IBM QRadar", icon: "/tech/security/qradar.png" },
-          { name: "Wazuh", icon: "/tech/security/siem/wazuh.png" },
+          { name: "Wazuh", icon: "/services/graphics/wazuh.webp" },
           {
             name: "Microsoft Sentinel",
-            icon: "/tech/security/siem/sentinel.png",
+            icon: "/services/graphics/microsoft-sentinel.webp",
           },
         ],
       },
@@ -281,19 +281,19 @@ const defaultGroups = [
         tools: [
           {
             name: "CrowdStrike Falcon",
-            icon: "/tech/security/endpoint/crowdstrike.png",
+            icon: "/services/graphics/crowdstrike.webp",
           },
           {
             name: "Microsoft Defender for Endpoint",
-            icon: "/tech/security/endpoint/defender.png",
+            icon: "/services/graphics/microsoft-defender.webp",
           },
           {
             name: "SentinelOne",
-            icon: "/tech/security/endpoint/sentinelone.png",
+            icon: "/services/graphics/sentinelone.webp",
           },
           {
             name: "Sophos Intercept X",
-            icon: "/tech/security/endpoint/sophos.png",
+            icon: "/services/graphics/Sophos.webp",
           },
         ],
       },
@@ -301,10 +301,10 @@ const defaultGroups = [
         label: "Digital Forensics",
         description: "Digital forensics & threat intelligence",
         tools: [
-          { name: "Wireshark", icon: "/tech/security/forensics/wireshark.png" },
-          { name: "Autopsy", icon: "/tech/security/forensics/autopsy.png" },
-          { name: "Maltego", icon: "/tech/security/forensics/maltego.png" },
-          { name: "MISP", icon: "/tech/security/forensics/misp.png" },
+          { name: "Wireshark", icon: "/services/graphics/wireshark.webp" },
+          { name: "Autopsy", icon: "/services/graphics/autospy.webp" },
+          { name: "Maltego", icon: "/services/graphics/maltego.webp" },
+          { name: "MISP", icon: "/services/graphics/misp.webp" },
         ],
       },
     ],

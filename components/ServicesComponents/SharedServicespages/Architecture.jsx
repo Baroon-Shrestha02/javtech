@@ -86,7 +86,7 @@ export default function Architecture() {
               "Deploy and optimize firewalls, network segmentation, VPNs, and access controls to protect your organization from unauthorized access and network-based threats.",
             gradient:
               "linear-gradient(155deg, #6d0000 0%, #a71010 55%, #c0392b 100%)",
-            image: "/services/cyber/firewall.jpg",
+            image: "/services/web/firewall&.avif",
           },
           {
             title: "Server Hardening",
@@ -94,7 +94,7 @@ export default function Architecture() {
               "Secure Windows and Linux servers through configuration hardening, patch management, service optimization, and attack surface reduction.",
             gradient:
               "linear-gradient(145deg, #8b0000 0%, #b71c1c 55%, #c62828 100%)",
-            image: "/services/cyber/server-hardening.jpg",
+            image: "/services/web/server.avif",
           },
           {
             title: "Endpoint Protection",
@@ -128,7 +128,7 @@ export default function Architecture() {
         subtitle="Enterprise-Grade Protection"
         subtitleHighlight="Protection"
         description="We deliver proactive, intelligent cybersecurity that defends your business against evolving threats, backed by certified experts and AI-driven defense."
-        image="/services/why/cybersecurity.webp"
+        image="/services/web/why.jpg"
         accentColor="#cc0000"
         features={[
           {
