@@ -6,67 +6,96 @@ import { SectionHeader } from "../SharedComponents/SectionHeader";
 
 const testimonials = [
   {
-    name: "Humans for Humanity",
-    role: "Coordinator",
-    rating: 5,
-    avatarBg: "#3d3472",
+    quote:
+      "JavTech built us a clean, fast eCommerce platform that finally gave GSonic a proper digital presence. Sales have been consistently growing since launch and our customers love the experience.",
+    name: "GSonic Team",
+    role: "eCommerce Platform",
+    company: "GSonic Electronic",
+    avatarBg: "GS",
+    image: "/clients/gsonic.png",
   },
   {
-    name: "Gsonic Electronics",
-    role: "Managing Director",
-    rating: 5,
-    avatarBg: "#d97b1a",
+    quote:
+      "Our NGO needed a reliable app to organize events, manage volunteers, and run charity drives — JavTech delivered exactly that. The app has helped us reach more people and make a bigger impact.",
+    name: "H4H Team",
+    role: "NGO Mobile App",
+    company: "Humans for Humanity",
+    avatarBg: "HH",
+    image: "/clients/HFH.png",
   },
   {
-    name: "Sajilo Hardware",
-    role: "Brand Manager",
-    rating: 5,
-    avatarBg: "#1e7a5f",
+    quote:
+      "JavTech understood what an education consultancy needs — trust, clarity, and a professional look. The website they built for us has significantly improved how students and parents perceive us.",
+    name: "Abhiyan Team",
+    role: "Education Consultancy",
+    company: "Abhiyan Education Consultancy",
+    avatarBg: "AE",
+    image: "/abhiyan.jpeg",
   },
   {
-    name: "Raunak Construction",
-    role: "Operations Head",
-    rating: 4,
-    avatarBg: "#922b21",
+    quote:
+      "We wanted our jewellery showcased the way it deserves — rich, elegant, and trustworthy online. JavTech's design captures that perfectly, and customers now browse our collections with real confidence before visiting the store.",
+    name: "Vaishno Team",
+    role: "Jewellery Showcase Website",
+    company: "Vaishno Jewellery",
+    avatarBg: "VJ",
+    image: "/projects/vaishno.jpeg",
   },
   {
-    name: "Ghar Sewa",
-    role: "Founder",
-    rating: 5,
-    avatarBg: "#2e5d8a",
+    quote:
+      "Selling books online meant we needed search and browsing that just works. JavTech built us a fast, organized store where readers can find exactly what they're looking for in seconds.",
+    name: "Bajra Books Team",
+    role: "Online Bookstore",
+    company: "Bajra Books",
+    avatarBg: "BB",
+    image: "/projects/bajra.png",
   },
   {
-    name: "Cozy Curtains",
-    role: "E-commerce Lead",
-    rating: 5,
-    avatarBg: "#a93226",
+    quote:
+      "Hardware shopping online can get messy with so many SKUs and categories. JavTech gave us a platform that keeps everything organized, making it easy for tradespeople and homeowners alike to find the right tools.",
+    name: "Sajilo Team",
+    role: "Online Hardware Store",
+    company: "Sajilo Hardware",
+    avatarBg: "SH",
+    image: "/projects/sajilo.png",
   },
   {
-    name: "Abhiyan Education COnsulatancy",
-    role: "Director",
-    rating: 4,
-    avatarBg: "#1e7a5f",
+    quote:
+      "As a construction company, we needed a website that reflects the scale and reliability of our work. JavTech delivered a strong, professional site that has helped us win client trust before the first meeting even happens.",
+    name: "Raunak Team",
+    role: "Construction Company Website",
+    company: "Raunak Construction",
+    avatarBg: "RC",
+    image: "/projects/raunak2.png",
   },
   {
-    name: "Jagni pay",
-    role: "CEO",
-    rating: 5,
-    avatarBg: "#3d3472",
+    quote:
+      "Curtains are a visual product — customers need to see fabric, texture, and style clearly. JavTech built us a beautiful online store that showcases every design and has made online selling so much easier for us.",
+    name: "Cozy Curtains Team",
+    role: "Online Curtains Store",
+    company: "Cozy Curtains",
+    avatarBg: "CC",
+    image: "/projects/cozy.png",
   },
   {
-    name: "Bajra Books",
-    role: "Product Manager",
-    rating: 5,
-    avatarBg: "#d97b1a",
+    quote:
+      "Connecting customers to home services like AC repair and dish washing needed a smooth, reliable app. JavTech built Ghar Sewa to handle bookings end-to-end, and it's made running our service network so much simpler.",
+    name: "Ghar Sewa Team",
+    role: "Home Services Mobile App",
+    company: "Ghar Sewa Nepal",
+    avatarBg: "GS",
+    image: "/projects/gharsewa.png",
   },
   {
-    name: "Vaishno Jewellery",
-    role: "COO",
-    rating: 4,
-    avatarBg: "#2e5d8a",
+    quote:
+      "A digital wallet has to feel instant and completely secure — there's no room for compromise. JavTech built Jagni Pay with exactly that focus, and our users trust the app with their everyday transactions.",
+    name: "Jagni Pay Team",
+    role: "Mobile Banking / Wallet App",
+    company: "Jagni Pay",
+    avatarBg: "JP",
+    image: "/projects/jagni-pay.jpeg",
   },
 ];
-
 function Stars({ count }) {
   return (
     <span
@@ -82,17 +111,32 @@ function Stars({ count }) {
 function TestimonialCard({ t }) {
   return (
     <div className="w-64 sm:w-72 flex-shrink-0 bg-[#f5f5f0] rounded-2xl p-5 shadow-xl mx-3">
-      <div
-        className="w-10 h-10 rounded-full flex items-center justify-center mb-3"
-        style={{ background: t.avatarBg }}
-      >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="8" r="4" fill="#fff" />
-          <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" fill="#fff" />
-        </svg>
+      {/* Avatar + title side by side */}
+      <div className="flex items-center gap-3 mb-3">
+        <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center bg-gray-200 flex-shrink-0">
+          {t.image ? (
+            <img
+              src={t.image}
+              alt={t.name}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <span className="text-xs font-bold text-gray-600">
+              {t.avatarBg}
+            </span>
+          )}
+        </div>
+        <div className="min-w-0">
+          <p className="text-sm font-bold text-gray-900 leading-tight line-clamp-2">
+            {t.name}
+          </p>
+          <p className="text-xs text-gray-500 leading-tight">{t.role}</p>
+        </div>
       </div>
-      <p className="text-sm font-bold text-gray-900">{t.name}</p>
-      <p className="text-xs text-gray-500 leading-tight mb-2">{t.role}</p>
+
+      <p className="text-xs text-gray-500 leading-tight mb-2 line-clamp-2">
+        {t.quote}
+      </p>
       <Stars count={t.rating} />
     </div>
   );
