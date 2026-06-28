@@ -168,7 +168,7 @@ const links = [
       href: `/pricing/${d.slug}/`,
     })),
   },
-  { href: "/career/", label: "Careers" },
+  // { href: "/career/", label: "Careers" },
   { href: "/contact/", label: "Contact Us" },
 ];
 

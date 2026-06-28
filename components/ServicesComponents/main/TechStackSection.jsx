@@ -268,10 +268,10 @@ const defaultGroups = [
             icon: "/tech/security/splunk.png",
           },
           { name: "IBM QRadar", icon: "/tech/security/qradar.png" },
-          { name: "Wazuh", icon: "/tech/security/siem/wazuh.png" },
+          { name: "Wazuh", icon: "/tech/security/wazuh.png" },
           {
             name: "Microsoft Sentinel",
-            icon: "/tech/security/siem/sentinel.png",
+            icon: "/tech/security/senti.png",
           },
         ],
       },
@@ -281,19 +281,19 @@ const defaultGroups = [
         tools: [
           {
             name: "CrowdStrike Falcon",
-            icon: "/tech/security/endpoint/crowdstrike.png",
+            icon: "/tech/security/falcon.png",
           },
           {
             name: "Microsoft Defender for Endpoint",
-            icon: "/tech/security/endpoint/defender.png",
+            icon: "/tech/security/def.webp",
           },
           {
             name: "SentinelOne",
-            icon: "/tech/security/endpoint/sentinelone.png",
+            icon: "/tech/security/sentione.png",
           },
           {
             name: "Sophos Intercept X",
-            icon: "/tech/security/endpoint/sophos.png",
+            icon: "/tech/security/sophos.png",
           },
         ],
       },
@@ -301,10 +301,10 @@ const defaultGroups = [
         label: "Digital Forensics",
         description: "Digital forensics & threat intelligence",
         tools: [
-          { name: "Wireshark", icon: "/tech/security/forensics/wireshark.png" },
-          { name: "Autopsy", icon: "/tech/security/forensics/autopsy.png" },
-          { name: "Maltego", icon: "/tech/security/forensics/maltego.png" },
-          { name: "MISP", icon: "/tech/security/forensics/misp.png" },
+          { name: "Wireshark", icon: "/tech/security/shark.png" },
+          { name: "Autopsy", icon: "/tech/security/autospy.webp" },
+          { name: "Maltego", icon: "/tech/security/maltego.svg" },
+          { name: "MISP", icon: "/tech/security/misp.png" },
         ],
       },
     ],

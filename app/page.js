@@ -43,9 +43,9 @@ export default function HomePage() {
             image: "/Services/app/mobile.jpg",
           },
           {
-            title: "UI/UX Design",
+            title: "Advnaced Cyber Security",
             description:
-              "We craft intuitive and visually engaging user interfaces focused on seamless user experience, ensuring higher engagement and satisfaction.",
+              "Our cybersecurity services include risk assessment, penetration testing, threat monitoring, incident response, and security hardening to defend against modern cyber threats.",
             gradient:
               "linear-gradient(145deg, #a71010 0%, #c62828 60%, #d32f2f 100%)",
           },

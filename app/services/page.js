@@ -90,7 +90,7 @@ export default function ServicesPage() {
       title: "Cyber Security",
       description:
         "End-to-end digital marketing strategies combining SEO, ads, content, and analytics to accelerate business growth.",
-      image: "/services/section/digi.avif",
+      image: "/cyber/why.png",
       tags: ["Strategy", "Funnels", "Performance"],
       href: "/services/digital-marketing",
       ctaText: "Explore",
