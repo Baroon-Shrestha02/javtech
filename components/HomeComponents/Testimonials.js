@@ -34,6 +34,69 @@ const testimonials = [
     initials: "AE",
     image: "/abhiyan.jpeg",
   },
+  {
+    quote:
+      "We wanted our jewellery showcased the way it deserves — rich, elegant, and trustworthy online. JavTech's design captures that perfectly, and customers now browse our collections with real confidence before visiting the store.",
+    name: "Vaishno Team",
+    role: "Jewellery Showcase Website",
+    company: "Vaishno Jewellery",
+    initials: "VJ",
+    image: "/projects/vaishno.jpeg",
+  },
+  {
+    quote:
+      "Selling books online meant we needed search and browsing that just works. JavTech built us a fast, organized store where readers can find exactly what they're looking for in seconds.",
+    name: "Bajra Books Team",
+    role: "Online Bookstore",
+    company: "Bajra Books",
+    initials: "BB",
+    image: "/projects/bajra.png",
+  },
+  {
+    quote:
+      "Hardware shopping online can get messy with so many SKUs and categories. JavTech gave us a platform that keeps everything organized, making it easy for tradespeople and homeowners alike to find the right tools.",
+    name: "Sajilo Team",
+    role: "Online Hardware Store",
+    company: "Sajilo Hardware",
+    initials: "SH",
+    image: "/projects/sajilo.png",
+  },
+  {
+    quote:
+      "As a construction company, we needed a website that reflects the scale and reliability of our work. JavTech delivered a strong, professional site that has helped us win client trust before the first meeting even happens.",
+    name: "Raunak Team",
+    role: "Construction Company Website",
+    company: "Raunak Construction",
+    initials: "RC",
+    image: "/projects/raunak2.png",
+  },
+  {
+    quote:
+      "Curtains are a visual product — customers need to see fabric, texture, and style clearly. JavTech built us a beautiful online store that showcases every design and has made online selling so much easier for us.",
+    name: "Cozy Curtains Team",
+    role: "Online Curtains Store",
+    company: "Cozy Curtains",
+    initials: "CC",
+    image: "/projects/cozy.png",
+  },
+  {
+    quote:
+      "Connecting customers to home services like AC repair and dish washing needed a smooth, reliable app. JavTech built Ghar Sewa to handle bookings end-to-end, and it's made running our service network so much simpler.",
+    name: "Ghar Sewa Team",
+    role: "Home Services Mobile App",
+    company: "Ghar Sewa",
+    initials: "GS",
+    image: "/projects/gharsewa.png",
+  },
+  {
+    quote:
+      "A digital wallet has to feel instant and completely secure — there's no room for compromise. JavTech built Jagni Pay with exactly that focus, and our users trust the app with their everyday transactions.",
+    name: "Jagni Pay Team",
+    role: "Mobile Banking / Wallet App",
+    company: "Jagni Pay",
+    initials: "JP",
+    image: "/projects/jagni-pay.jpeg",
+  },
 ];
 
 const gradients = [

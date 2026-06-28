@@ -5,9 +5,16 @@ import { motion, useAnimationFrame } from "motion/react";
 
 const partners = [
   { name: "HFH", logo: "/HFH.png" },
-  { name: "Government", logo: "/gsonic.jpeg" },
-  { name: "Realme", logo: "/abhiyan.jpeg" },
-  { name: "Gadgetbyte", logo: "/logo.png" },
+  { name: "Gsonic", logo: "/gsonic.jpeg" },
+  { name: "Abhiyan", logo: "/abhiyan.jpeg" },
+  { name: "Javtech", logo: "/logo.png", scale: 1.4 },
+  { name: "Vaishno Jewellery", logo: "/projects/vaishno.jpeg", scale: 1.2 },
+  { name: "Bajra Books", logo: "/projects/bajra.jpeg" },
+  { name: "Sajilo Hardware", logo: "/projects/sajilo.png", scale: 2 },
+  { name: "Raunak COnstruction", logo: "/projects/raunak.png" },
+  { name: "Cozy Curtains", logo: "/projects/cozy.jpeg" },
+  { name: "Ghar Sewa", logo: "/projects/gharsewa.avif" },
+  { name: "Jagni Pay", logo: "/projects/jagni-pay.jpeg", scale: 1.4 },
 ];
 
 const allPartners = [...partners, ...partners];
@@ -49,17 +56,22 @@ export function PartnersSlider() {
           {allPartners.map((partner, index) => (
             <motion.div
               key={index}
-              className="flex items-center justify-center h-20 w-48 shrink-0 cursor-pointer"
+              className="flex items-center justify-center h-20 w-40 shrink-0 cursor-pointer"
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3 }}
             >
-              <img
-                src={partner.logo}
-                alt={partner.name}
-                width={250}
-                height={100}
-                className="object-contain max-h-16 w-auto"
-              />
+              <div
+                className="relative h-16 w-[140px] flex items-center justify-center"
+                style={{ transform: `scale(${partner.scale || 1})` }}
+              >
+                <Image
+                  src={partner.logo}
+                  alt={partner.name}
+                  fill
+                  className="object-contain"
+                  sizes="140px"
+                />
+              </div>
             </motion.div>
           ))}
         </div>

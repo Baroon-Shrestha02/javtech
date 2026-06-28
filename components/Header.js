@@ -450,6 +450,7 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileSubmenu, setMobileSubmenu] = useState(null);
+  const [mobileCategory, setMobileCategory] = useState(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -460,6 +461,7 @@ export function Header() {
   useEffect(() => {
     setMobileOpen(false);
     setMobileSubmenu(null);
+    setMobileCategory(null);
   }, [pathname]);
 
   useEffect(() => {
@@ -491,15 +493,6 @@ export function Header() {
         megaMenu={link.megaMenu}
       />
     ));
-
-  /* all service hrefs with trailing slash */
-  const allServices = serviceCategories.flatMap((cat) =>
-    cat.items.map((item) => ({
-      ...item,
-      href: `/services/${item.slug}/`,
-      category: cat.category,
-    })),
-  );
 
   return (
     <>
@@ -681,7 +674,7 @@ export function Header() {
                               }}
                               className="overflow-hidden"
                             >
-                              <div className="pl-3 py-2 flex flex-col gap-1">
+                              <div className="pl-3 py-2 flex flex-col gap-3">
                                 <Link
                                   href="/services/"
                                   onClick={() => setMobileOpen(false)}
@@ -690,28 +683,82 @@ export function Header() {
                                   All Services
                                   <ChevronRight size={12} />
                                 </Link>
-                                {allServices.map((service) => {
-                                  const Icon = service.icon;
-                                  const subActive =
-                                    normalize(pathname) ===
-                                    normalize(service.href);
+
+                                {/* Grouped by category, matching the desktop mega menu — each category is its own accordion */}
+                                {serviceCategories.map((category) => {
+                                  const catExpanded =
+                                    mobileCategory === category.category;
                                   return (
-                                    <Link
-                                      key={service.href}
-                                      href={service.href}
-                                      onClick={() => setMobileOpen(false)}
-                                      className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-colors
-                                        ${
-                                          subActive
-                                            ? "bg-red-50 text-[#cc0000]"
-                                            : "text-gray-600 hover:bg-gray-50"
-                                        }`}
-                                    >
-                                      <Icon size={14} />
-                                      <span className="text-xs">
-                                        {service.label}
-                                      </span>
-                                    </Link>
+                                    <div key={category.category}>
+                                      <button
+                                        onClick={() =>
+                                          setMobileCategory(
+                                            catExpanded
+                                              ? null
+                                              : category.category,
+                                          )
+                                        }
+                                        className="w-full flex justify-between items-center px-4 pb-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-400 hover:text-[#cc0000] transition-colors"
+                                      >
+                                        {category.category}
+                                        <motion.span
+                                          animate={{
+                                            rotate: catExpanded ? 180 : 0,
+                                          }}
+                                          transition={{ duration: 0.2 }}
+                                        >
+                                          <ChevronDown size={12} />
+                                        </motion.span>
+                                      </button>
+
+                                      <AnimatePresence initial={false}>
+                                        {catExpanded && (
+                                          <motion.div
+                                            initial={{ height: 0, opacity: 0 }}
+                                            animate={{
+                                              height: "auto",
+                                              opacity: 1,
+                                            }}
+                                            exit={{ height: 0, opacity: 0 }}
+                                            transition={{
+                                              duration: 0.22,
+                                              ease: [0.22, 1, 0.36, 1],
+                                            }}
+                                            className="overflow-hidden"
+                                          >
+                                            <div className="flex flex-col gap-1 pt-1">
+                                              {category.items.map((service) => {
+                                                const Icon = service.icon;
+                                                const href = `/services/${service.slug}/`;
+                                                const subActive =
+                                                  normalize(pathname) ===
+                                                  normalize(href);
+                                                return (
+                                                  <Link
+                                                    key={href}
+                                                    href={href}
+                                                    onClick={() =>
+                                                      setMobileOpen(false)
+                                                    }
+                                                    className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-colors
+                                                      ${
+                                                        subActive
+                                                          ? "bg-red-50 text-[#cc0000]"
+                                                          : "text-gray-600 hover:bg-gray-50"
+                                                      }`}
+                                                  >
+                                                    <Icon size={14} />
+                                                    <span className="text-xs">
+                                                      {service.label}
+                                                    </span>
+                                                  </Link>
+                                                );
+                                              })}
+                                            </div>
+                                          </motion.div>
+                                        )}
+                                      </AnimatePresence>
+                                    </div>
                                   );
                                 })}
                               </div>

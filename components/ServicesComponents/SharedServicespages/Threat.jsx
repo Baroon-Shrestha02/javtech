@@ -86,7 +86,7 @@ export default function Threat() {
               "Leverage global threat intelligence feeds and attacker insights to identify emerging cyber threats relevant to your organization.",
             gradient:
               "linear-gradient(155deg, #6d0000 0%, #a71010 55%, #c0392b 100%)",
-            image: "/services/cyber/threat-intelligence.jpg",
+            image: "/services/web/threat.jpg  ",
           },
           {
             title: "Security Monitoring",
@@ -94,7 +94,7 @@ export default function Threat() {
               "Continuous monitoring of networks, endpoints, cloud environments, and security events to maintain complete operational visibility.",
             gradient:
               "linear-gradient(145deg, #8b0000 0%, #b71c1c 55%, #c62828 100%)",
-            image: "/services/cyber/security-monitoring.jpg",
+            image: "/services/web/securitymonitoring.jpg",
           },
           {
             title: "Behavioral Analytics",
@@ -129,7 +129,7 @@ export default function Threat() {
         subtitle="Enterprise-Grade Protection"
         subtitleHighlight="Protection"
         description="We deliver proactive, intelligent cybersecurity that defends your business against evolving threats, backed by certified experts and AI-driven defense."
-        image="/services/why/cybersecurity.webp"
+        image="/services/web/why.jpg"
         accentColor="#cc0000"
         features={[
           {

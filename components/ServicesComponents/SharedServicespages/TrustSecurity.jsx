@@ -83,7 +83,7 @@ export default function TrustSecurity() {
               "Centralize and secure user identities with modern identity management, access governance, and authentication controls.",
             gradient:
               "linear-gradient(155deg, #6d0000 0%, #a71010 55%, #c0392b 100%)",
-            image: "/services/cyber/identity-access.jpg",
+            image: "/services/web/identity.avif",
           },
           {
             title: "Multi-Factor Authentication",
@@ -91,7 +91,7 @@ export default function TrustSecurity() {
               "Strengthen account security with MFA solutions that verify user identities before granting access to critical systems.",
             gradient:
               "linear-gradient(145deg, #8b0000 0%, #b71c1c 55%, #c62828 100%)",
-            image: "/services/cyber/mfa.jpg",
+            image: "/services/web/multi.avif",
           },
           {
             title: "Least-Privilege Access Control",
@@ -126,7 +126,7 @@ export default function TrustSecurity() {
         subtitle="Enterprise-Grade Protection"
         subtitleHighlight="Protection"
         description="We deliver proactive, intelligent cybersecurity that defends your business against evolving threats, backed by certified experts and AI-driven defense."
-        image="/services/why/cybersecurity.webp"
+        image="/services/web/why.jpg"
         accentColor="#cc0000"
         features={[
           {
