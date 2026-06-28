@@ -8,42 +8,288 @@ import React, {
   useCallback,
 } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Globe, CheckCircle2, Clock, LayoutGrid } from "lucide-react";
-import { X } from "lucide-react";
+import {
+  Globe,
+  CheckCircle2,
+  Clock,
+  LayoutGrid,
+  X,
+  Image as ImageIcon,
+  Video,
+  Monitor,
+} from "lucide-react";
 import projectsService from "@/lib/api/services/projects";
 
-const HEIGHT_CYCLE = [400, 500, 350, 450, 380, 420];
+/* -------------------------------------------------------------------------- */
+/*                              Media utilities                               */
+/* -------------------------------------------------------------------------- */
 
-function mapProject(p, idx = 0) {
-  const category = Array.isArray(p.category)
-    ? p.category
-    : p.category
-      ? [p.category]
-      : [];
+function getMediaUrl(media) {
+  if (!media) return "";
+
+  if (typeof media === "string") {
+    return media;
+  }
+
+  return media.url || media.secure_url || media.src || "";
+}
+
+function formatVideoDuration(seconds) {
+  if (!Number.isFinite(seconds)) return null;
+
+  const totalSeconds = Math.floor(seconds);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const remainingSeconds = totalSeconds % 60;
+
+  if (hours > 0) {
+    return `${hours}:${String(minutes).padStart(2, "0")}:${String(
+      remainingSeconds,
+    ).padStart(2, "0")}`;
+  }
+
+  return `${minutes}:${String(remainingSeconds).padStart(2, "0")}`;
+}
+
+function getAspectRatio(width, height) {
+  if (!width || !height) return null;
+
+  const ratio = width / height;
+
+  if (Math.abs(ratio - 16 / 9) < 0.03) return "16:9";
+  if (Math.abs(ratio - 4 / 3) < 0.03) return "4:3";
+  if (Math.abs(ratio - 3 / 2) < 0.03) return "3:2";
+  if (Math.abs(ratio - 1) < 0.03) return "1:1";
+  if (Math.abs(ratio - 4 / 5) < 0.03) return "4:5";
+  if (Math.abs(ratio - 9 / 16) < 0.03) return "9:16";
+
+  return `${ratio.toFixed(2)}:1`;
+}
+
+function useMediaDimensions(imageSrc, videoSrc) {
+  const [imageSize, setImageSize] = useState({
+    width: null,
+    height: null,
+    loading: false,
+    error: false,
+  });
+
+  const [videoSize, setVideoSize] = useState({
+    width: null,
+    height: null,
+    duration: null,
+    loading: false,
+    error: false,
+  });
+
+  useEffect(() => {
+    if (!imageSrc) {
+      setImageSize({
+        width: null,
+        height: null,
+        loading: false,
+        error: false,
+      });
+
+      return;
+    }
+
+    let active = true;
+
+    setImageSize({
+      width: null,
+      height: null,
+      loading: true,
+      error: false,
+    });
+
+    const image = new window.Image();
+
+    image.onload = () => {
+      if (!active) return;
+
+      setImageSize({
+        width: image.naturalWidth,
+        height: image.naturalHeight,
+        loading: false,
+        error: false,
+      });
+    };
+
+    image.onerror = () => {
+      if (!active) return;
+
+      setImageSize({
+        width: null,
+        height: null,
+        loading: false,
+        error: true,
+      });
+    };
+
+    image.src = imageSrc;
+
+    return () => {
+      active = false;
+      image.onload = null;
+      image.onerror = null;
+    };
+  }, [imageSrc]);
+
+  useEffect(() => {
+    if (!videoSrc) {
+      setVideoSize({
+        width: null,
+        height: null,
+        duration: null,
+        loading: false,
+        error: false,
+      });
+
+      return;
+    }
+
+    let active = true;
+
+    setVideoSize({
+      width: null,
+      height: null,
+      duration: null,
+      loading: true,
+      error: false,
+    });
+
+    const video = document.createElement("video");
+
+    video.preload = "metadata";
+    video.muted = true;
+    video.playsInline = true;
+
+    video.onloadedmetadata = () => {
+      if (!active) return;
+
+      setVideoSize({
+        width: video.videoWidth,
+        height: video.videoHeight,
+        duration: Number.isFinite(video.duration) ? video.duration : null,
+        loading: false,
+        error: false,
+      });
+    };
+
+    video.onerror = () => {
+      if (!active) return;
+
+      setVideoSize({
+        width: null,
+        height: null,
+        duration: null,
+        loading: false,
+        error: true,
+      });
+    };
+
+    video.src = videoSrc;
+    video.load();
+
+    return () => {
+      active = false;
+
+      video.onloadedmetadata = null;
+      video.onerror = null;
+
+      video.pause();
+      video.removeAttribute("src");
+      video.load();
+    };
+  }, [videoSrc]);
 
   return {
-    id: p._id || p.id,
-    thumbnail: p.thumbnail || p.image || "",
-    image: p.image || p.thumbnail || "",
-    video: p.video || "",
-    title: p.title || "",
-    subtitle: p.subtitle || "",
-    description: p.description || "",
-    link: p.link || "",
-    year: p.year || "",
-    clientName: p.clientName || "",
-    category,
-    tags: category,
-    status: p.status || "completed",
-    challenge: p.challenge || "",
-    solution: p.solution || "",
-    result: p.result || "",
-    longDescription: p.longDescription || "",
-    longDescription1: p.longDescription1 || "",
-    longDescription2: p.longDescription2 || "",
-    height: HEIGHT_CYCLE[idx % HEIGHT_CYCLE.length],
+    imageSize,
+    videoSize,
   };
 }
+
+/* -------------------------------------------------------------------------- */
+/*                             Project utilities                              */
+/* -------------------------------------------------------------------------- */
+
+function normalizeStatus(status) {
+  const value = String(status || "")
+    .trim()
+    .toLowerCase();
+
+  if (value === "completed" || value === "complete") {
+    return "completed";
+  }
+
+  if (
+    value === "running" ||
+    value === "in-progress" ||
+    value === "in progress" ||
+    value === "ongoing"
+  ) {
+    return "in-progress";
+  }
+
+  if (value === "upcoming" || value === "pending") {
+    return "upcoming";
+  }
+
+  return "completed";
+}
+
+function isRunningProject(project) {
+  return (
+    project.status === "in-progress" ||
+    project.status === "upcoming" ||
+    project.status === "running"
+  );
+}
+
+function mapProject(project) {
+  const category = Array.isArray(project.category)
+    ? project.category
+    : project.category
+      ? [project.category]
+      : [];
+
+  const thumbnail = getMediaUrl(project.thumbnail);
+  const image = getMediaUrl(project.image);
+  const video = getMediaUrl(project.video);
+
+  return {
+    id: project._id || project.id,
+
+    thumbnail: thumbnail || image,
+    image: image || thumbnail,
+    video,
+
+    title: project.title || "",
+    subtitle: project.subtitle || "",
+    description: project.description || "",
+    link: project.link || "",
+    year: project.year || "",
+    clientName: project.clientName || "",
+
+    category,
+    tags: category,
+
+    status: normalizeStatus(project.status),
+
+    challenge: project.challenge || "",
+    solution: project.solution || "",
+    result: project.result || "",
+
+    longDescription: project.longDescription || "",
+    longDescription1: project.longDescription1 || "",
+    longDescription2: project.longDescription2 || "",
+  };
+}
+
+/* -------------------------------------------------------------------------- */
+/*                              Projects request                              */
+/* -------------------------------------------------------------------------- */
 
 function useProjects() {
   const [state, setState] = useState({
@@ -54,27 +300,35 @@ function useProjects() {
 
   const load = useCallback(() => {
     let active = true;
-    setState((s) => ({ ...s, loading: true, error: null }));
+
+    setState((previous) => ({
+      ...previous,
+      loading: true,
+      error: null,
+    }));
 
     projectsService
       .list()
       .then((data) => {
         if (!active) return;
+
         const list = Array.isArray(data)
           ? data
           : (data?.data ?? data?.projects ?? []);
+
         setState({
-          projects: list.map((p, i) => mapProject(p, i)),
+          projects: list.map((project) => mapProject(project)),
           loading: false,
           error: null,
         });
       })
-      .catch((err) => {
+      .catch((error) => {
         if (!active) return;
-        setState((s) => ({
-          ...s,
+
+        setState((previous) => ({
+          ...previous,
           loading: false,
-          error: err?.message || "Failed to load projects",
+          error: error?.message || "Failed to load projects",
         }));
       });
 
@@ -83,32 +337,44 @@ function useProjects() {
     };
   }, []);
 
-  useEffect(() => load(), [load]);
+  useEffect(() => {
+    return load();
+  }, [load]);
 
-  return { ...state, reload: load };
+  return {
+    ...state,
+    reload: load,
+  };
 }
+
+/* -------------------------------------------------------------------------- */
+/*                                Cursor                                      */
+/* -------------------------------------------------------------------------- */
 
 function Cursor({ isVisible, position, text }) {
   if (!isVisible) return null;
 
   return (
     <motion.div
-      className="fixed pointer-events-none z-30 bg-accent2 text-white px-4 py-2 text-sm font-medium rounded-xl"
+      className="fixed pointer-events-none z-30 rounded-xl bg-accent2 px-4 py-2 text-sm font-medium text-white"
       style={{
         left: position.x,
         top: position.y,
         transform: "translate(-50%, -50%)",
       }}
-      initial={{ scale: 0 }}
-      animate={{ scale: 1 }}
-      exit={{ scale: 0 }}
+      initial={{ opacity: 0, scale: 0 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0 }}
     >
       {text}
     </motion.div>
   );
 }
 
-// "all" | "completed" | "running"
+/* -------------------------------------------------------------------------- */
+/*                              Status filter                                 */
+/* -------------------------------------------------------------------------- */
+
 const STATUS_FILTERS = [
   {
     key: "all",
@@ -120,7 +386,7 @@ const STATUS_FILTERS = [
     key: "completed",
     label: "Completed",
     icon: <CheckCircle2 size={13} />,
-    activeClass: "bg-[#C8262A] text-white shadow-md",
+    activeClass: "bg-green-400 text-white shadow-md",
   },
   {
     key: "running",
@@ -133,51 +399,57 @@ const STATUS_FILTERS = [
 function StatusFilterBar({ active, counts, onChange }) {
   return (
     <motion.div
-      className="inline-flex items-center gap-1 bg-gray-100/80 backdrop-blur-sm rounded-2xl p-1.5"
+      className="inline-flex items-center gap-1 rounded-2xl bg-gray-100/80 p-1.5 backdrop-blur-sm"
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: 0.1 }}
     >
-      {STATUS_FILTERS.map((f) => {
-        const isActive = active === f.key;
+      {STATUS_FILTERS.map((filter) => {
+        const isActive = active === filter.key;
+
         return (
           <motion.button
-            key={f.key}
-            onClick={() => onChange(f.key)}
-            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
+            key={filter.key}
+            type="button"
+            onClick={() => onChange(filter.key)}
+            className={`flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-sm font-medium transition-all duration-200 ${
               isActive
-                ? f.activeClass
-                : "text-gray-500 hover:text-gray-800 hover:bg-white/60"
+                ? filter.activeClass
+                : "text-gray-500 hover:bg-white/60 hover:text-gray-800"
             }`}
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
           >
-            {f.key !== "all" && isActive && (
+            {filter.key !== "all" && isActive && (
               <span className="relative flex h-2 w-2">
                 <span
-                  className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
-                    f.key === "running" ? "bg-gray-700" : "bg-white"
+                  className={`absolute inline-flex h-full w-full animate-ping rounded-full opacity-75 ${
+                    filter.key === "running" ? "bg-gray-700" : "bg-white"
                   }`}
                 />
+
                 <span
-                  className={`relative inline-flex rounded-full h-2 w-2 ${
-                    f.key === "running" ? "bg-gray-800" : "bg-white"
+                  className={`relative inline-flex h-2 w-2 rounded-full ${
+                    filter.key === "running" ? "bg-gray-800" : "bg-white"
                   }`}
                 />
               </span>
             )}
-            {f.icon}
-            {f.label}
+
+            {filter.icon}
+
+            {filter.label}
+
             <span
-              className={`text-xs px-1.5 py-0.5 rounded-full font-semibold min-w-[20px] text-center ${
+              className={`min-w-[20px] rounded-full px-1.5 py-0.5 text-center text-xs font-semibold ${
                 isActive
-                  ? f.key === "all"
+                  ? filter.key === "all"
                     ? "bg-gray-100 text-gray-700"
                     : "bg-black/15 text-inherit"
                   : "bg-gray-200 text-gray-500"
               }`}
             >
-              {counts[f.key]}
+              {counts[filter.key]}
             </span>
           </motion.button>
         );
@@ -186,35 +458,56 @@ function StatusFilterBar({ active, counts, onChange }) {
   );
 }
 
+/* -------------------------------------------------------------------------- */
+/*                              Project card                                  */
+/* -------------------------------------------------------------------------- */
+
 function ProjectCard({ project, index, onHover, onLeave, onClick }) {
   const videoRef = useRef(null);
+
   const [isHovered, setIsHovered] = useState(false);
-  const [shouldLoad, setShouldLoad] = useState(false);
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
 
-  const thumbnail = project.thumbnail || project.image;
+  /*
+   * This is the same image source used in the modal.
+   */
+  const projectImage = project.image || project.thumbnail;
+
   const hasVideo = Boolean(project.video);
   const showVideo = hasVideo && isHovered && videoReady;
 
   useEffect(() => {
-    const v = videoRef.current;
-    if (!v || !hasVideo) return;
+    const video = videoRef.current;
+
+    if (!video || !hasVideo) return;
 
     if (isHovered) {
-      const p = v.play();
-      if (p && typeof p.catch === "function") p.catch(() => {});
+      const playPromise = video.play();
+
+      if (playPromise && typeof playPromise.catch === "function") {
+        playPromise.catch(() => {});
+      }
     } else {
-      v.pause();
-      const t = setTimeout(() => {
-        if (videoRef.current) videoRef.current.currentTime = 0;
+      video.pause();
+
+      const resetTimer = setTimeout(() => {
+        if (videoRef.current) {
+          videoRef.current.currentTime = 0;
+        }
       }, 600);
-      return () => clearTimeout(t);
+
+      return () => clearTimeout(resetTimer);
     }
   }, [isHovered, hasVideo]);
 
   const handleEnter = () => {
     setIsHovered(true);
-    if (hasVideo) setShouldLoad(true);
+
+    if (hasVideo) {
+      setShouldLoadVideo(true);
+    }
+
     onHover?.();
   };
 
@@ -228,165 +521,231 @@ function ProjectCard({ project, index, onHover, onLeave, onClick }) {
       ? {
           label: "Completed",
           icon: <CheckCircle2 size={11} />,
-          cls: "bg-[#C8262A] text-white",
+          className: "bg-green-400 text-white",
         }
       : project.status === "in-progress"
         ? {
             label: "In Progress",
             icon: <Clock size={11} />,
-            cls: "bg-yellow-400/90 text-gray-900",
+            className: "bg-yellow-400/90 text-gray-900",
           }
         : {
             label: "Upcoming",
             icon: <Clock size={11} />,
-            cls: "bg-blue-400/90 text-white",
+            className: "bg-blue-500/90 text-white",
           };
 
   return (
-    <motion.div
-      className="group relative flex flex-col break-inside-avoid mb-12"
-      layoutId={`card-container-${project.title}`}
+    <motion.article
+      className="group relative mb-12 flex break-inside-avoid flex-col"
+      layout
+      layoutId={`card-container-${project.id || project.title}`}
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{
-        delay: index * 0.1,
+        delay: Math.min(index * 0.08, 0.5),
         duration: 0.6,
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
     >
       <motion.div
-        className="relative overflow-hidden shadow-lg cursor-none rounded-xl"
+        className="
+          relative
+          h-[300px]
+          w-full
+          cursor-none
+          overflow-hidden
+          rounded-xl
+          bg-gray-100
+          shadow-lg
+          md:h-[400px]
+          lg:h-[500px]
+        "
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
         onClick={onClick}
-        layoutId={`card-image-${project.title}`}
+        layoutId={`card-image-${project.id || project.title}`}
         whileHover={{ y: -5 }}
         transition={{ duration: 0.3 }}
       >
-        {/* Status badge — top-left corner */}
         <div
-          className={`absolute top-3 left-3 z-10 flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold backdrop-blur-sm shadow-sm ${statusConfig.cls}`}
+          className={`
+            absolute left-3 top-3 z-20
+            flex items-center gap-1
+            rounded-full px-2.5 py-1
+            text-xs font-semibold
+            shadow-sm backdrop-blur-sm
+            ${statusConfig.className}
+          `}
         >
           {statusConfig.icon}
           {statusConfig.label}
         </div>
 
-        {/* Thumbnail */}
-        <motion.img
-          src={thumbnail}
-          alt={project.title}
-          className="w-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-          style={{ height: project.height }}
-          layoutId={`image-${project.title}`}
-        />
+        {projectImage ? (
+          <motion.img
+            src={projectImage}
+            alt={project.title}
+            loading="lazy"
+            decoding="async"
+            className="
+              absolute inset-0
+              h-full w-full
+              object-cover
+              transition-transform
+              duration-700
+              ease-out
+              group-hover:scale-110
+            "
+            layoutId={`image-${project.id || project.title}`}
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center text-sm text-gray-400">
+            No image available
+          </div>
+        )}
 
-        {/* Hover video */}
         {hasVideo && (
           <video
             ref={videoRef}
-            src={shouldLoad ? project.video : undefined}
-            poster={thumbnail}
+            src={shouldLoadVideo ? project.video : undefined}
+            poster={projectImage}
             muted
             loop
             playsInline
             preload="none"
             onCanPlay={() => setVideoReady(true)}
             onLoadedData={() => setVideoReady(true)}
-            className={`absolute inset-0 w-full h-full object-cover transition-[opacity,transform] duration-700 ease-out group-hover:scale-110 ${
-              showVideo ? "opacity-100" : "opacity-0"
-            }`}
-            style={{ height: project.height }}
+            onError={() => setVideoReady(false)}
+            className={`
+              absolute inset-0 z-[5]
+              h-full w-full
+              object-cover
+              transition-[opacity,transform]
+              duration-700
+              ease-out
+              group-hover:scale-110
+              ${showVideo ? "opacity-100" : "opacity-0"}
+            `}
           />
         )}
 
-        {/* Darkening gradient on hover */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+        <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-        {/* Tags + description overlay */}
-        <div className="absolute bottom-4 left-4 right-4 text-white opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100 pointer-events-none">
-          {project.tags && project.tags.length > 0 && (
-            <div className="flex flex-wrap gap-1 mb-3">
+        <div className="pointer-events-none absolute bottom-4 left-4 right-4 z-20 translate-y-4 text-white opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+          {project.tags?.length > 0 && (
+            <div className="mb-3 flex flex-wrap gap-1">
               {project.tags.slice(0, 2).map((tag, tagIndex) => (
                 <span
-                  key={tagIndex}
-                  className="px-2 py-1 bg-black/70 backdrop-blur-sm text-xs rounded-full text-white"
+                  key={`${tag}-${tagIndex}`}
+                  className="rounded-full bg-black/70 px-2 py-1 text-xs text-white backdrop-blur-sm"
                 >
                   {tag}
                 </span>
               ))}
             </div>
           )}
-          <p className="text-white text-md font-light leading-relaxed line-clamp-2">
-            {project.description}
-          </p>
+
+          {project.description && (
+            <p className="line-clamp-2 text-base font-light leading-relaxed text-white">
+              {project.description}
+            </p>
+          )}
         </div>
       </motion.div>
 
       <div className="mt-4 px-2">
         <motion.h3
-          className="text-lg md:text-xl font-semibold text-gray-900 line-clamp-2"
-          layoutId={`title-${project.title}`}
+          className="line-clamp-2 text-lg font-semibold text-gray-900 md:text-xl"
+          layoutId={`title-${project.id || project.title}`}
         >
           {project.title}
         </motion.h3>
-        <div className="w-8 h-1 bg-black/40 rounded-full mt-2 transition-all duration-500 ease-in-out group-hover:w-16 group-hover:bg-black"></div>
+
+        <div className="mt-2 h-1 w-8 rounded-full bg-black/40 transition-all duration-500 ease-in-out group-hover:w-16 group-hover:bg-black" />
       </div>
-    </motion.div>
+    </motion.article>
   );
 }
+
+/* -------------------------------------------------------------------------- */
+/*                              All projects                                  */
+/* -------------------------------------------------------------------------- */
 
 export function AllProjects() {
   const [cursorState, setCursorState] = useState({
     isVisible: false,
-    position: { x: 0, y: 0 },
+    position: {
+      x: 0,
+      y: 0,
+    },
     text: "View Project",
   });
+
   const [selectedProject, setSelectedProject] = useState(null);
-  const [selectedIndex, setSelectedIndex] = useState(null);
-  const [windowWidth, setWindowWidth] = useState(
-    typeof window !== "undefined" ? window.innerWidth : 1024,
-  );
+  const [windowWidth, setWindowWidth] = useState(1024);
   const [activeCategory, setActiveCategory] = useState("All");
   const [statusFilter, setStatusFilter] = useState("all");
 
   const { projects, loading, error, reload } = useProjects();
 
-  // Status counts (scoped to current category)
+  /*
+   * The same source is used by both ProjectCard and the modal hero.
+   */
+  const selectedImageSource =
+    selectedProject?.image || selectedProject?.thumbnail || "";
+
+  const { imageSize, videoSize } = useMediaDimensions(
+    selectedImageSource,
+    selectedProject?.video || "",
+  );
+
   const statusCounts = useMemo(() => {
     const categoryFiltered =
       activeCategory === "All"
         ? projects
-        : projects.filter((p) => {
-            const cats = Array.isArray(p.category) ? p.category : [p.category];
-            return cats.includes(activeCategory);
+        : projects.filter((project) => {
+            const categories = Array.isArray(project.category)
+              ? project.category
+              : [project.category];
+
+            return categories.includes(activeCategory);
           });
 
     return {
       all: categoryFiltered.length,
-      completed: categoryFiltered.filter((p) => p.status === "completed")
-        .length,
-      running: categoryFiltered.filter(
-        (p) => p.status === "in-progress" || p.status === "upcoming",
+
+      completed: categoryFiltered.filter(
+        (project) => project.status === "completed",
       ).length,
+
+      running: categoryFiltered.filter((project) => isRunningProject(project))
+        .length,
     };
   }, [projects, activeCategory]);
 
-  // Categories with counts
   const categories = useMemo(() => {
-    const categoryCount = projects.reduce((acc, project) => {
-      const cats = Array.isArray(project.category)
+    const categoryCount = projects.reduce((accumulator, project) => {
+      const projectCategories = Array.isArray(project.category)
         ? project.category
         : [project.category];
-      cats.forEach((cat) => {
-        if (!cat) return;
-        acc[cat] = (acc[cat] || 0) + 1;
+
+      projectCategories.forEach((category) => {
+        if (!category) return;
+
+        accumulator[category] = (accumulator[category] || 0) + 1;
       });
-      return acc;
+
+      return accumulator;
     }, {});
 
     return [
-      { name: "All", count: projects.length },
+      {
+        name: "All",
+        count: projects.length,
+      },
+
       ...Object.entries(categoryCount).map(([name, count]) => ({
         name,
         count,
@@ -394,105 +753,145 @@ export function AllProjects() {
     ];
   }, [projects]);
 
-  // Final filtered list: category + status
   const filteredProjects = useMemo(() => {
     let list = projects;
 
     if (activeCategory !== "All") {
-      list = list.filter((p) => {
-        const cats = Array.isArray(p.category) ? p.category : [p.category];
-        return cats.includes(activeCategory);
+      list = list.filter((project) => {
+        const projectCategories = Array.isArray(project.category)
+          ? project.category
+          : [project.category];
+
+        return projectCategories.includes(activeCategory);
       });
     }
 
     if (statusFilter === "completed") {
-      list = list.filter((p) => p.status === "completed");
-    } else if (statusFilter === "running") {
-      list = list.filter(
-        (p) => p.status === "in-progress" || p.status === "upcoming",
-      );
+      list = list.filter((project) => project.status === "completed");
+    }
+
+    if (statusFilter === "running") {
+      list = list.filter((project) => isRunningProject(project));
     }
 
     return list;
   }, [activeCategory, statusFilter, projects]);
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
-      setCursorState((prev) => ({
-        ...prev,
-        position: { x: e.clientX, y: e.clientY },
+    const handleMouseMove = (event) => {
+      setCursorState((previous) => ({
+        ...previous,
+        position: {
+          x: event.clientX,
+          y: event.clientY,
+        },
       }));
     };
+
     if (cursorState.isVisible) {
       document.addEventListener("mousemove", handleMouseMove);
     }
+
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
     };
   }, [cursorState.isVisible]);
 
   useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    handleResize();
+
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   useEffect(() => {
     if (selectedProject) {
       document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "";
     }
+
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "";
     };
   }, [selectedProject]);
 
+  useEffect(() => {
+    return () => {
+      document.body.style.cursor = "auto";
+    };
+  }, []);
+
   const handleMouseEnter = () => {
-    setCursorState((prev) => ({ ...prev, isVisible: true }));
+    setCursorState((previous) => ({
+      ...previous,
+      isVisible: true,
+    }));
+
     document.body.style.cursor = "none";
   };
 
   const handleMouseLeave = () => {
-    setCursorState((prev) => ({ ...prev, isVisible: false }));
+    setCursorState((previous) => ({
+      ...previous,
+      isVisible: false,
+    }));
+
     document.body.style.cursor = "auto";
   };
 
-  const handleProjectClick = (project, index) => {
+  const handleProjectClick = (project) => {
     setSelectedProject(project);
-    setSelectedIndex(index);
+
     document.body.style.cursor = "auto";
-    setCursorState((prev) => ({ ...prev, isVisible: false }));
+
+    setCursorState((previous) => ({
+      ...previous,
+      isVisible: false,
+    }));
   };
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setSelectedProject(null);
-    setSelectedIndex(null);
-  };
+    document.body.style.cursor = "auto";
+  }, []);
 
   useEffect(() => {
-    const handleEscape = (e) => {
-      if (e.key === "Escape") handleCloseModal();
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        handleCloseModal();
+      }
     };
+
     if (selectedProject) {
       document.addEventListener("keydown", handleEscape);
     }
+
     return () => {
       document.removeEventListener("keydown", handleEscape);
     };
-  }, [selectedProject]);
+  }, [selectedProject, handleCloseModal]);
 
   return (
-    <div className="container mx-auto px-6 py-20 min-h-screen relative">
-      <div className="mb-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
+    <div className="container relative mx-auto min-h-screen px-6 py-20">
+      {/* Header */}
+      <div className="mb-10 flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-center">
         <div className="flex-1">
-          <div className="text-4xl md:text-6xl text-gray-900 mb-4">
+          <div className="mb-4 text-4xl text-gray-900 md:text-6xl">
             Our{" "}
-            <span className="logo bg-gradient-to-r from-red-600 to-black bg-clip-text text-transparent font-bold">
+            <span className="logo bg-gradient-to-r from-red-600 to-black bg-clip-text font-bold text-transparent">
               Works
             </span>
           </div>
-          <div className="max-w-2xl text-lg md:text-xl font-extralight text-gray-600">
+
+          <div className="max-w-2xl text-lg font-extralight text-gray-600 md:text-xl">
             Showcasing our collection of ideas that we&apos;ve brought to life —
             crafted with strategy, creativity, and purpose.
           </div>
@@ -509,21 +908,25 @@ export function AllProjects() {
             {categories.map((category, index) => (
               <motion.button
                 key={category.name}
+                type="button"
                 onClick={() => setActiveCategory(category.name)}
-                className={`flex items-center justify-between w-full text-left transition-all duration-300 group ${
+                className={`group flex w-full items-center justify-between text-left transition-all duration-300 ${
                   activeCategory === category.name
-                    ? "bg-gradient-to-r from-purple-600 to-blue-600 text-transparent bg-clip-text"
+                    ? "bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent"
                     : "text-gray-700 hover:text-gray-900"
                 }`}
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 + 0.3 }}
+                transition={{
+                  delay: index * 0.1 + 0.3,
+                }}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
                 <span className="font-medium">{category.name}</span>
+
                 <motion.span
-                  className={`ml-20 px-2 py-1 rounded-full text-md font-semibold min-w-[24px] text-center ${
+                  className={`ml-20 min-w-[24px] rounded-full px-2 py-1 text-center text-base font-semibold ${
                     activeCategory === category.name
                       ? "bg-white/20"
                       : "text-gray-600"
@@ -538,14 +941,15 @@ export function AllProjects() {
         </div>
       </div>
 
-      {/* Status filter bar */}
+      {/* Status filter */}
       {!loading && !error && projects.length > 0 && (
-        <div className="mb-10 flex items-center gap-4">
+        <div className="mb-10 flex flex-wrap items-center gap-4">
           <StatusFilterBar
             active={statusFilter}
             counts={statusCounts}
             onChange={setStatusFilter}
           />
+
           {statusFilter !== "all" && (
             <motion.p
               className="text-sm text-gray-400"
@@ -557,12 +961,14 @@ export function AllProjects() {
                 {filteredProjects.length}
               </span>{" "}
               {statusFilter === "completed" ? "completed" : "in-progress"}{" "}
-              project{filteredProjects.length !== 1 ? "s" : ""}
+              project
+              {filteredProjects.length !== 1 ? "s" : ""}
             </motion.p>
           )}
         </div>
       )}
 
+      {/* Custom cursor */}
       {windowWidth >= 768 && (
         <AnimatePresence>
           <Cursor
@@ -575,15 +981,14 @@ export function AllProjects() {
 
       {/* Loading */}
       {loading && (
-        <div className="columns-1 md:columns-2 xl:columns-3 gap-6 space-y-0">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="break-inside-avoid mb-12 animate-pulse">
-              <div
-                className="w-full rounded-xl bg-gray-100"
-                style={{ height: HEIGHT_CYCLE[i % HEIGHT_CYCLE.length] }}
-              />
-              <div className="mt-4 h-5 w-2/3 bg-gray-100 rounded" />
-              <div className="mt-2 h-1 w-8 bg-gray-200 rounded" />
+        <div className="columns-1 gap-6 space-y-0 md:columns-2 xl:columns-3">
+          {Array.from({ length: 6 }).map((_, index) => (
+            <div key={index} className="mb-12 break-inside-avoid animate-pulse">
+              <div className="h-[300px] w-full rounded-xl bg-gray-100 md:h-[400px] lg:h-[500px]" />
+
+              <div className="mt-4 h-5 w-2/3 rounded bg-gray-100" />
+
+              <div className="mt-2 h-1 w-8 rounded bg-gray-200" />
             </div>
           ))}
         </div>
@@ -591,22 +996,26 @@ export function AllProjects() {
 
       {/* Error */}
       {!loading && error && (
-        <div className="max-w-md mx-auto text-center py-16">
-          <p className="text-xs font-bold tracking-[0.2em] uppercase text-red-600 mb-3">
-            Couldn&rsquo;t load projects
+        <div className="mx-auto max-w-md py-16 text-center">
+          <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-red-600">
+            Couldn&apos;t load projects
           </p>
-          <p className="text-gray-600 mb-6">{error}</p>
+
+          <p className="mb-6 text-gray-600">{error}</p>
+
           <button
+            type="button"
             onClick={reload}
-            className="inline-flex items-center px-5 py-2.5 rounded-full bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition-colors"
+            className="inline-flex items-center rounded-full bg-red-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-red-700"
           >
             Try again
           </button>
         </div>
       )}
 
+      {/* No projects */}
       {!loading && !error && projects.length === 0 && (
-        <p className="text-center text-gray-400 py-16">
+        <p className="py-16 text-center text-gray-400">
           No projects to show yet.
         </p>
       )}
@@ -617,15 +1026,16 @@ export function AllProjects() {
         projects.length > 0 &&
         filteredProjects.length === 0 && (
           <motion.div
-            className="text-center py-20"
+            className="py-20 text-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
             {statusFilter === "completed" ? (
-              <CheckCircle2 size={40} className="mx-auto text-gray-200 mb-4" />
+              <CheckCircle2 size={40} className="mx-auto mb-4 text-gray-200" />
             ) : (
-              <Clock size={40} className="mx-auto text-gray-200 mb-4" />
+              <Clock size={40} className="mx-auto mb-4 text-gray-200" />
             )}
+
             <p className="text-gray-400">
               No {statusFilter === "completed" ? "completed" : "in-progress"}{" "}
               projects in this category.
@@ -633,13 +1043,15 @@ export function AllProjects() {
           </motion.div>
         )}
 
-      {/* Masonry Grid */}
+      {/* Project grid */}
       {!loading && !error && filteredProjects.length > 0 && (
         <AnimatePresence mode="wait">
           <motion.div
             key={`${activeCategory}-${statusFilter}`}
-            className="columns-1 md:columns-2 xl:columns-3 gap-6 space-y-0"
-            style={{ columnFill: "balance" }}
+            className="columns-1 gap-6 space-y-0 md:columns-2 xl:columns-3"
+            style={{
+              columnFill: "balance",
+            }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -652,24 +1064,23 @@ export function AllProjects() {
                 index={index}
                 onHover={handleMouseEnter}
                 onLeave={handleMouseLeave}
-                onClick={() => handleProjectClick(project, index)}
+                onClick={() => handleProjectClick(project)}
               />
             ))}
           </motion.div>
         </AnimatePresence>
       )}
 
-      {/* Modal */}
+      {/* Project modal */}
       <AnimatePresence>
         {selectedProject && (
           <>
             <motion.div
-              className="fixed inset-0 bg-black/95 backdrop-blur-sm z-[9998]"
+              className="fixed inset-0 z-[9998] bg-black/95 backdrop-blur-sm"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              onClick={handleCloseModal}
             />
 
             <motion.div
@@ -679,59 +1090,109 @@ export function AllProjects() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
+              {/* Close button */}
               <motion.button
-                className="fixed top-6 right-6 z-[10000] flex items-center gap-2 text-white hover:text-gray-300 transition-colors px-4 py-2 rounded-full bg-red-600 backdrop-blur-sm"
+                type="button"
+                aria-label="Close project modal"
+                className="fixed right-4 top-4 z-[10000] flex items-center gap-2 rounded-full bg-red-600 px-4 py-2 text-white transition-colors hover:bg-red-700 hover:text-white md:right-6 md:top-6"
                 onClick={handleCloseModal}
-                initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.8 }}
+                initial={{
+                  opacity: 0,
+                  scale: 0.8,
+                  y: 20,
+                }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  y: 0,
+                }}
+                exit={{
+                  opacity: 0,
+                  scale: 0.8,
+                }}
                 transition={{ delay: 0.2 }}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 <X size={20} />
-                <span className="text-sm">Esc to close</span>
+
+                <span className="hidden text-sm sm:inline">Esc to close</span>
               </motion.button>
 
-              <div className="min-h-screen flex flex-col">
+              <div className="flex min-h-screen flex-col">
                 {/* Hero */}
-                <div className="flex-1 flex items-center justify-center p-6 md:p-8">
-                  <div className="max-w-7xl w-full">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
+                <div className="flex flex-1 items-center justify-center p-6 pt-24 md:p-8 md:pt-24">
+                  <div className="w-full max-w-7xl">
+                    <div className="grid grid-cols-1 items-center gap-8 md:gap-12 lg:grid-cols-2">
+                      {/* Same image size as outer card */}
                       <motion.div
-                        className="relative overflow-hidden rounded-2xl shadow-2xl"
-                        layoutId={`card-image-${selectedProject.title}`}
-                        transition={{ duration: 0.6, ease: "easeInOut" }}
+                        className="
+                          relative
+                          h-[300px]
+                          w-full
+                          overflow-hidden
+                          rounded-2xl
+                          bg-black/40
+                          shadow-2xl
+                          md:h-[400px]
+                          lg:h-[500px]
+                        "
+                        layoutId={`card-image-${
+                          selectedProject.id || selectedProject.title
+                        }`}
+                        transition={{
+                          duration: 0.6,
+                          ease: "easeInOut",
+                        }}
                       >
-                        <motion.img
-                          src={selectedProject.image}
-                          alt={selectedProject.title}
-                          className="w-full h-[300px] md:h-[400px] lg:h-[500px] object-cover"
-                          layoutId={`image-${selectedProject.title}`}
-                          transition={{ duration: 0.6, ease: "easeInOut" }}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                        {selectedImageSource ? (
+                          <motion.img
+                            src={selectedImageSource}
+                            alt={selectedProject.title}
+                            className="absolute inset-0 h-full w-full object-cover"
+                            layoutId={`image-${
+                              selectedProject.id || selectedProject.title
+                            }`}
+                            transition={{
+                              duration: 0.6,
+                              ease: "easeInOut",
+                            }}
+                          />
+                        ) : (
+                          <div className="absolute inset-0 flex items-center justify-center text-gray-400">
+                            No image available
+                          </div>
+                        )}
+
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
                       </motion.div>
 
-                      <div className="text-white space-y-6">
+                      {/* Project content */}
+                      <div className="space-y-6 text-white">
                         <motion.div
                           initial={{ opacity: 0, x: 50 }}
                           animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.3, duration: 0.6 }}
+                          transition={{
+                            delay: 0.3,
+                            duration: 0.6,
+                          }}
                         >
-                          <div className="flex items-center gap-4 text-sm text-gray-400 mb-4">
-                            <span className="bg-white/10 px-2 py-1 rounded">
-                              {selectedProject.year}
-                            </span>
-                            <span>•</span>
-                            {/* Status badge in modal */}
+                          <div className="mb-4 flex flex-wrap items-center gap-3 text-sm text-gray-400">
+                            {selectedProject.year && (
+                              <span className="rounded bg-white/10 px-2 py-1">
+                                {selectedProject.year}
+                              </span>
+                            )}
+
+                            {selectedProject.year && <span>•</span>}
+
                             <span
-                              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${
+                              className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold ${
                                 selectedProject.status === "completed"
-                                  ? "bg-[#C8262A] text-green-400 border border-green-500/30"
+                                  ? "border-green-500/30 bg-green-500/20 text-green-200"
                                   : selectedProject.status === "in-progress"
-                                    ? "bg-yellow-400/20 text-yellow-300 border border-yellow-400/30"
-                                    : "bg-blue-400/20 text-blue-300 border border-blue-400/30"
+                                    ? "border-yellow-400/30 bg-yellow-400/20 text-yellow-300"
+                                    : "border-blue-400/30 bg-blue-400/20 text-blue-300"
                               }`}
                             >
                               {selectedProject.status === "completed" ? (
@@ -739,6 +1200,7 @@ export function AllProjects() {
                               ) : (
                                 <Clock size={11} />
                               )}
+
                               {selectedProject.status === "completed"
                                 ? "Completed"
                                 : selectedProject.status === "in-progress"
@@ -748,56 +1210,76 @@ export function AllProjects() {
                           </div>
 
                           <motion.h1
-                            className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"
-                            layoutId={`title-${selectedProject.title}`}
-                            transition={{ duration: 0.6, ease: "easeInOut" }}
+                            className="text-3xl font-bold leading-tight md:text-4xl lg:text-5xl"
+                            layoutId={`title-${
+                              selectedProject.id || selectedProject.title
+                            }`}
+                            transition={{
+                              duration: 0.6,
+                              ease: "easeInOut",
+                            }}
                           >
                             {selectedProject.title}
                           </motion.h1>
 
-                          <motion.p
-                            className="text-lg md:text-xl font-extralight text-gray-300 mb-6"
-                            layoutId={`subtitle-${selectedProject.title}`}
-                            transition={{ duration: 0.6, ease: "easeInOut" }}
-                          >
-                            {selectedProject.subtitle}
-                          </motion.p>
+                          {selectedProject.subtitle && (
+                            <motion.p
+                              className="mb-6 mt-3 text-lg font-extralight text-gray-300 md:text-xl"
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{
+                                delay: 0.4,
+                                duration: 0.5,
+                              }}
+                            >
+                              {selectedProject.subtitle}
+                            </motion.p>
+                          )}
 
                           {selectedProject.link && (
-                            <p className="text-lg md:text-xl font-extralight flex items-center gap-2 text-gray-300 mb-6">
+                            <p className="mb-6 text-lg font-extralight text-gray-300 md:text-xl">
                               <a
                                 href={selectedProject.link}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center gap-2 hover:text-white transition-colors"
+                                className="inline-flex items-center gap-2 transition-colors hover:text-white"
                               >
                                 <Globe size={20} />
+
                                 {selectedProject.title}
                               </a>
                             </p>
                           )}
                         </motion.div>
 
-                        <motion.p
-                          className="text-base md:text-lg text-gray-200 leading-relaxed"
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.5, duration: 0.6 }}
-                        >
-                          {selectedProject.description}
-                        </motion.p>
+                        {selectedProject.description && (
+                          <motion.p
+                            className="text-base leading-relaxed text-gray-200 md:text-lg"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{
+                              delay: 0.5,
+                              duration: 0.6,
+                            }}
+                          >
+                            {selectedProject.description}
+                          </motion.p>
+                        )}
 
-                        <motion.div
-                          className="flex flex-col"
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.7, duration: 0.6 }}
-                        >
-                          <div className="flex items-center gap-2 flex-wrap">
+                        {selectedProject.tags?.length > 0 && (
+                          <motion.div
+                            className="flex flex-wrap items-center gap-2"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{
+                              delay: 0.7,
+                              duration: 0.6,
+                            }}
+                          >
                             {selectedProject.tags.map((tag, tagIndex) => (
                               <motion.span
-                                key={tagIndex}
-                                className="px-3 py-1 bg-white/10 text-white rounded-full text-sm backdrop-blur-sm border border-white/20"
+                                key={`${tag}-${tagIndex}`}
+                                className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-sm text-white backdrop-blur-sm"
                                 whileHover={{
                                   scale: 1.05,
                                   backgroundColor: "rgba(255,255,255,0.2)",
@@ -806,142 +1288,198 @@ export function AllProjects() {
                                 {tag}
                               </motion.span>
                             ))}
-                          </div>
-                        </motion.div>
+                          </motion.div>
+                        )}
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Challenge / Solution / Result */}
-                <motion.div
-                  className="bg-white/5 backdrop-blur-sm p-6 md:p-8 border-t border-white/10"
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.1, duration: 0.6 }}
-                >
-                  <div className="max-w-7xl mx-auto">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 text-white">
-                      {["challenge", "solution", "result"].map(
-                        (key, i) =>
-                          selectedProject[key] && (
-                            <motion.div
-                              key={key}
-                              initial={{ opacity: 0, y: 20 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{
-                                delay: 1.3 + i * 0.1,
-                                duration: 0.6,
-                              }}
-                            >
-                              <h3
-                                className={`text-lg font-semibold mb-3 ${
-                                  key === "challenge"
-                                    ? "text-purple-400"
-                                    : key === "solution"
-                                      ? "text-blue-400"
-                                      : "text-green-400"
-                                }`}
+                {/* Challenge, solution and result */}
+                {(selectedProject.challenge ||
+                  selectedProject.solution ||
+                  selectedProject.result) && (
+                  <motion.div
+                    className="border-t border-white/10 bg-white/5 p-6 backdrop-blur-sm md:p-8"
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      delay: 1.1,
+                      duration: 0.6,
+                    }}
+                  >
+                    <div className="mx-auto max-w-7xl">
+                      <div className="grid grid-cols-1 gap-6 text-white md:grid-cols-3 md:gap-8">
+                        {["challenge", "solution", "result"].map(
+                          (key, index) => {
+                            if (!selectedProject[key]) return null;
+
+                            return (
+                              <motion.div
+                                key={key}
+                                initial={{
+                                  opacity: 0,
+                                  y: 20,
+                                }}
+                                animate={{
+                                  opacity: 1,
+                                  y: 0,
+                                }}
+                                transition={{
+                                  delay: 1.3 + index * 0.1,
+                                  duration: 0.6,
+                                }}
                               >
-                                {key.charAt(0).toUpperCase() + key.slice(1)}
-                              </h3>
-                              <p className="text-gray-300 text-sm md:text-base">
-                                {selectedProject[key]}
-                              </p>
-                            </motion.div>
-                          ),
-                      )}
+                                <h3
+                                  className={`mb-3 text-lg font-semibold ${
+                                    key === "challenge"
+                                      ? "text-purple-400"
+                                      : key === "solution"
+                                        ? "text-blue-400"
+                                        : "text-green-400"
+                                  }`}
+                                >
+                                  {key.charAt(0).toUpperCase() + key.slice(1)}
+                                </h3>
+
+                                <p className="text-sm leading-relaxed text-gray-300 md:text-base">
+                                  {selectedProject[key]}
+                                </p>
+                              </motion.div>
+                            );
+                          },
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
+                  </motion.div>
+                )}
 
                 {/* Showcase image */}
-                {selectedProject.image && (
+                {selectedImageSource && (
                   <motion.div
-                    className="bg-white/5 backdrop-blur-sm py-10 px-6 md:px-10 border-t border-white/10"
+                    className="border-t border-white/10 bg-white/5 px-6 py-10 backdrop-blur-sm md:px-10"
                     initial={{ opacity: 0, y: 40 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1.5, duration: 0.6 }}
+                    transition={{
+                      delay: 1.5,
+                      duration: 0.6,
+                    }}
                   >
-                    <div className="max-w-7xl mx-auto">
-                      <h3 className="text-lg md:text-xl font-bold text-white mb-4">
+                    <div className="mx-auto max-w-7xl">
+                      <h3 className="mb-4 text-lg font-bold text-white md:text-xl">
                         Project showcase
                       </h3>
-                      <div className="relative overflow-hidden rounded-2xl shadow-2xl bg-black/40">
+
+                      <div className="relative overflow-hidden rounded-2xl bg-black/40 shadow-2xl">
                         <img
-                          src={selectedProject.image}
+                          src={selectedImageSource}
                           alt={`${selectedProject.title} showcase`}
                           loading="lazy"
-                          className="w-full h-auto max-h-[600px] object-cover"
+                          className="max-h-[600px] w-full object-cover"
                         />
                       </div>
                     </div>
                   </motion.div>
                 )}
 
+                {/* Long descriptions */}
                 <motion.div
-                  className="bg-white/5 backdrop-blur-sm py-10 px-6 md:px-10 border-t border-white/10"
+                  className="border-t border-white/10 bg-white/5 px-6 py-10 backdrop-blur-sm md:px-10"
                   initial={{ opacity: 0, y: 50 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.7, duration: 0.6 }}
+                  transition={{
+                    delay: 1.7,
+                    duration: 0.6,
+                  }}
                 >
                   <motion.div
-                    className="container mx-auto flex flex-col gap-6 mb-12"
+                    className="container mx-auto mb-12 flex flex-col gap-6"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.55, duration: 0.6 }}
+                    transition={{
+                      delay: 0.55,
+                      duration: 0.6,
+                    }}
                   >
-                    <motion.div
-                      className="flex flex-col"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.7, duration: 0.6 }}
-                    >
-                      <div className="mb-3 text-lg md:text-xl mt-4 font-bold text-white">
-                        What we did:
-                      </div>
-                      <div className="flex items-center gap-2 flex-wrap">
-                        {selectedProject.tags.map((tag, tagIndex) => (
-                          <motion.span
-                            key={tagIndex}
-                            className="px-3 py-1 bg-white/10 text-white rounded-full text-sm backdrop-blur-sm border border-white/20"
-                            whileHover={{
-                              scale: 1.05,
-                              backgroundColor: "rgba(255,255,255,0.2)",
-                            }}
-                          >
-                            {tag}
-                          </motion.span>
-                        ))}
-                      </div>
-                    </motion.div>
+                    {selectedProject.tags?.length > 0 && (
+                      <motion.div
+                        className="flex flex-col"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{
+                          delay: 0.7,
+                          duration: 0.6,
+                        }}
+                      >
+                        <div className="mb-3 mt-4 text-lg font-bold text-white md:text-xl">
+                          What we did:
+                        </div>
+
+                        <div className="flex flex-wrap items-center gap-2">
+                          {selectedProject.tags.map((tag, tagIndex) => (
+                            <motion.span
+                              key={`${tag}-${tagIndex}`}
+                              className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-sm text-white backdrop-blur-sm"
+                              whileHover={{
+                                scale: 1.05,
+                                backgroundColor: "rgba(255,255,255,0.2)",
+                              }}
+                            >
+                              {tag}
+                            </motion.span>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
 
                     {selectedProject.longDescription && (
                       <motion.div
-                        className="space-y-6 container mx-auto px-4 md:px-6 py-8 bg-black/40 backdrop-blur rounded-2xl shadow-lg"
+                        className="container mx-auto space-y-6 rounded-2xl bg-black/40 px-4 py-8 shadow-lg backdrop-blur md:px-6"
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3, duration: 0.6 }}
+                        transition={{
+                          delay: 0.3,
+                          duration: 0.6,
+                        }}
                       >
                         <motion.h2
-                          className="text-2xl md:text-3xl font-bold text-white"
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.4, duration: 0.5 }}
+                          className="text-2xl font-bold text-white md:text-3xl"
+                          initial={{
+                            opacity: 0,
+                            y: 10,
+                          }}
+                          animate={{
+                            opacity: 1,
+                            y: 0,
+                          }}
+                          transition={{
+                            delay: 0.4,
+                            duration: 0.5,
+                          }}
                         >
                           About {selectedProject.title}
                         </motion.h2>
 
                         <motion.div
                           className="space-y-2"
-                          initial={{ opacity: 0, y: 15 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.5, duration: 0.5 }}
+                          initial={{
+                            opacity: 0,
+                            y: 15,
+                          }}
+                          animate={{
+                            opacity: 1,
+                            y: 0,
+                          }}
+                          transition={{
+                            delay: 0.5,
+                            duration: 0.5,
+                          }}
                         >
-                          <h3 className="text-lg md:text-xl font-extrabold text-gray-300">
+                          <h3 className="text-lg font-extrabold text-gray-300 md:text-xl">
                             {selectedProject.title}
                           </h3>
-                          <p className="text-base md:text-lg text-gray-200 leading-relaxed text-justify">
+
+                          <p className="text-justify text-base leading-relaxed text-gray-200 md:text-lg">
                             {selectedProject.longDescription}
                           </p>
                         </motion.div>
@@ -949,14 +1487,24 @@ export function AllProjects() {
                         {selectedProject.longDescription1 && (
                           <motion.div
                             className="space-y-2"
-                            initial={{ opacity: 0, y: 15 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.6, duration: 0.5 }}
+                            initial={{
+                              opacity: 0,
+                              y: 15,
+                            }}
+                            animate={{
+                              opacity: 1,
+                              y: 0,
+                            }}
+                            transition={{
+                              delay: 0.6,
+                              duration: 0.5,
+                            }}
                           >
-                            <h3 className="text-lg md:text-xl font-extrabold text-gray-300">
-                              Our Approach & Solution
+                            <h3 className="text-lg font-extrabold text-gray-300 md:text-xl">
+                              Our Approach &amp; Solution
                             </h3>
-                            <p className="text-base md:text-lg text-gray-200 leading-relaxed text-justify">
+
+                            <p className="text-justify text-base leading-relaxed text-gray-200 md:text-lg">
                               {selectedProject.longDescription1}
                             </p>
                           </motion.div>
@@ -965,14 +1513,24 @@ export function AllProjects() {
                         {selectedProject.longDescription2 && (
                           <motion.div
                             className="space-y-2"
-                            initial={{ opacity: 0, y: 15 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.7, duration: 0.5 }}
+                            initial={{
+                              opacity: 0,
+                              y: 15,
+                            }}
+                            animate={{
+                              opacity: 1,
+                              y: 0,
+                            }}
+                            transition={{
+                              delay: 0.7,
+                              duration: 0.5,
+                            }}
                           >
-                            <h3 className="text-lg md:text-xl font-extrabold text-gray-300">
-                              Results & Impact
+                            <h3 className="text-lg font-extrabold text-gray-300 md:text-xl">
+                              Results &amp; Impact
                             </h3>
-                            <p className="text-base md:text-lg text-gray-200 leading-relaxed text-justify">
+
+                            <p className="text-justify text-base leading-relaxed text-gray-200 md:text-lg">
                               {selectedProject.longDescription2}
                             </p>
                           </motion.div>

@@ -5,16 +5,14 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import projectsService from "@/lib/api/services/projects";
 
-const fallbackLeft = [
-  { image: "/home/digital.jpg", title: "", category: "", origin: "right bottom" },
-  { image: "/home/mobile.jpg", title: "", category: "", origin: "right center" },
-  { image: "/home/social.jpg", title: "", category: "", origin: "right top" },
-];
-
-const fallbackRight = [
-  { image: "/home/social.jpg", title: "", category: "", origin: "left bottom" },
-  { image: "/home/mobile.jpg", title: "", category: "", origin: "left center" },
-  { image: "/home/digital.jpg", title: "", category: "", origin: "left top" },
+// ─── Fallbacks ────────────────────────────────────────────────────────────────
+const FALLBACK_PROJECTS = [
+  { image: "/home/digital.jpg", category: "Brand Strategy", num: "01" },
+  { image: "/home/mobile.jpg", category: "Digital Experience", num: "02" },
+  { image: "/home/social.jpg", category: "Motion Design", num: "03" },
+  { image: "/home/social.jpg", category: "Mobile App", num: "04" },
+  { image: "/home/mobile.jpg", category: "Web Platform", num: "05" },
+  { image: "/home/digital.jpg", category: "Social Campaign", num: "06" },
 ];
 
 const LEFT_ORIGINS = ["right bottom", "right center", "right top"];
@@ -26,53 +24,141 @@ function pick(list, idx) {
 
 function buildColumns(projects) {
   if (!projects || projects.length === 0) {
-    return { left: fallbackLeft, right: fallbackRight };
+    return {
+      left: FALLBACK_PROJECTS.slice(0, 3).map((p, i) => ({
+        ...p,
+        origin: LEFT_ORIGINS[i],
+      })),
+      right: FALLBACK_PROJECTS.slice(3, 6).map((p, i) => ({
+        ...p,
+        origin: RIGHT_ORIGINS[i],
+      })),
+    };
   }
 
   const six = Array.from({ length: 6 }, (_, i) => pick(projects, i));
-  const cardFrom = (p, origin) => ({
+
+  const toCard = (p, i, origins) => ({
     image: p.thumbnail || p.image || "",
-    title: p.title || "",
-    category: Array.isArray(p.category) ? p.category[0] || "" : p.category || "",
-    origin,
+    category: Array.isArray(p.category)
+      ? p.category[0] || ""
+      : p.category || "",
+    num: String(i + 1).padStart(2, "0"),
+    origin: origins[i],
   });
 
   return {
-    left: six.slice(0, 3).map((p, i) => cardFrom(p, LEFT_ORIGINS[i])),
-    right: six.slice(3, 6).map((p, i) => cardFrom(p, RIGHT_ORIGINS[i])),
+    left: six.slice(0, 3).map((p, i) => toCard(p, i, LEFT_ORIGINS)),
+    right: six.slice(3, 6).map((p, i) => toCard(p, i + 3, RIGHT_ORIGINS)),
   };
 }
 
-function ProjectCard({ image, title, category }) {
+// ─── Single card ─────────────────────────────────────────────────────────────
+function ProjectCard({ image, category, num, origin, flex }) {
   return (
-    <div className="relative w-full h-full rounded-xl overflow-hidden group">
-      {/* FIX: image now fills the parent properly */}
-      <img
-        src={image}
-        alt={title}
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-      />
-      {/* <div className="absolute inset-0 bg-black/20 group-hover:bg-black/55 transition-colors duration-500" /> */}
-      {/* <div className="absolute bottom-4 left-4 right-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10">
-        <p className="text-xs tracking-widest uppercase text-white/70">
-          {category}
-        </p>
-        <h3 className="text-lg font-semibold">{title}</h3>
-      </div> */}
+    <div className="project-card" style={{ transformOrigin: origin, flex }}>
+      {/* image */}
+      <div className="card-inner">
+        <img src={image} alt={category} className="card-img" />
+        <div className="card-overlay" />
+      </div>
+
+      {/* index */}
+      <span className="card-num">{num}</span>
+
+      {/* category tag */}
+      <span className="card-tag">{category}</span>
+
+      {/* subtle border */}
+      <div className="card-border" />
+
+      <style>{`
+        .project-card {
+          position: relative;
+          min-height: 0;
+          border-radius: 14px;
+          overflow: hidden;
+          will-change: transform;
+        }
+        .card-inner {
+          position: absolute;
+          inset: 0;
+          border-radius: 14px;
+          overflow: hidden;
+        }
+        .card-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+          transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .project-card:hover .card-img {
+          transform: scale(1.04);
+        }
+        .card-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            160deg,
+            rgba(10, 10, 10, 0) 40%,
+            rgba(10, 10, 10, 0.65) 100%
+          );
+          pointer-events: none;
+        }
+        .card-num {
+          position: absolute;
+          top: 14px;
+          left: 16px;
+          font-size: 11px;
+          letter-spacing: 0.22em;
+          color: rgba(245, 242, 237, 0.3);
+          font-weight: 500;
+          text-transform: uppercase;
+          opacity: 0;
+          transition: opacity 0.4s 0.1s;
+        }
+        .card-tag {
+          position: absolute;
+          bottom: 14px;
+          left: 16px;
+          font-size: 10px;
+          letter-spacing: 0.2em;
+          color: rgba(184, 149, 106, 0.85);
+          text-transform: uppercase;
+          font-weight: 600;
+          opacity: 0;
+          transform: translateY(6px);
+          transition: opacity 0.4s 0.05s, transform 0.4s 0.05s;
+        }
+        .project-card.is-revealed .card-num { opacity: 1; }
+        .project-card.is-revealed .card-tag { opacity: 1; transform: translateY(0); }
+        .card-border {
+          position: absolute;
+          inset: 0;
+          border-radius: 14px;
+          border: 1px solid rgba(245, 242, 237, 0.07);
+          pointer-events: none;
+          z-index: 2;
+        }
+      `}</style>
     </div>
   );
 }
 
+// ─── Section ─────────────────────────────────────────────────────────────────
 export function OurProjects() {
   const sectionRef = useRef(null);
   const leftColRef = useRef(null);
   const rightColRef = useRef(null);
   const textRef = useRef(null);
+  const progRef = useRef(null);
 
   const [{ left: leftCards, right: rightCards }, setColumns] = useState(() =>
     buildColumns(null),
   );
 
+  // Fetch real projects
   useEffect(() => {
     let active = true;
     projectsService
@@ -84,155 +170,368 @@ export function OurProjects() {
           : (data?.data ?? data?.projects ?? []);
         setColumns(buildColumns(list));
       })
-      .catch(() => {
-        // keep fallbacks on error
-      });
+      .catch(() => {});
     return () => {
       active = false;
     };
   }, []);
 
+  // GSAP scroll animation
   useLayoutEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      const leftCardEls = leftColRef.current.querySelectorAll(".project-card");
-      const rightCardEls =
-        rightColRef.current.querySelectorAll(".project-card");
+      const leftEls = leftColRef.current.querySelectorAll(".project-card");
+      const rightEls = rightColRef.current.querySelectorAll(".project-card");
+      const text = textRef.current;
 
-      // Master timeline tied to scroll
+      const eyebrow = text.querySelector(".t-eyebrow");
+      const hl1 = text.querySelector(".t-h1");
+      const hl2 = text.querySelector(".t-h2");
+      const rule = text.querySelector(".t-rule");
+      const subs = text.querySelectorAll(".t-sub");
+      const cta = text.querySelector(".t-cta");
+
+      // Initial states
+      gsap.set([hl1, hl2], {
+        opacity: 0,
+        y: 50,
+        filter: "blur(10px)",
+        scale: 0.96,
+      });
+      gsap.set([eyebrow, ...subs, cta], { opacity: 0, y: 16 });
+      gsap.set(rule, { opacity: 0, scaleX: 0 });
+
+      // Master scrub timeline
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: "+=200%",
-          scrub: 1,
+          end: "+=220%",
+          scrub: 1.3,
           pin: true,
           anticipatePin: 1,
+          onUpdate: (self) => {
+            if (progRef.current) {
+              progRef.current.style.width = `${self.progress * 100}%`;
+            }
+            // reveal card meta once columns are spread
+            const revealed = self.progress > 0.55;
+            [...leftEls, ...rightEls].forEach((c) =>
+              c.classList.toggle("is-revealed", revealed),
+            );
+          },
         },
       });
 
-      // Phase 1: cards slide outward + tilt (staggered, bottom card moves most)
+      // Phase 1 — columns fan outward with per-card depth
       tl.to(
-        leftCardEls,
+        leftEls,
         {
-          xPercent: (i) => -(45 - i * 8), // -45, -37, -29
-          rotation: (i) => -(18 - i * 6), // -18, -12, -6
+          xPercent: (i) => -(52 - i * 10), // −52, −42, −32
+          rotation: (i) => -(16 - i * 5), // −16, −11, −6
+          scale: (i) => 1 - i * 0.015,
           ease: "power2.inOut",
-          stagger: 0.08,
+          stagger: 0.06,
         },
         0,
       ).to(
-        rightCardEls,
+        rightEls,
         {
-          xPercent: (i) => 45 - i * 8,
-          rotation: (i) => 18 - i * 6,
+          xPercent: (i) => 52 - i * 10,
+          rotation: (i) => 16 - i * 5,
+          scale: (i) => 1 - i * 0.015,
           ease: "power2.inOut",
-          stagger: 0.08,
+          stagger: 0.06,
         },
         0,
       );
 
-      // Phase 2: text reveal — clip-path wipe from left to right
-      const textEls = textRef.current.querySelectorAll(".reveal");
-
-      gsap.set(textEls, {
-        clipPath: "inset(0 100% 0 0)",
-        opacity: 0,
-      });
-
+      // Phase 2 — text reveal with blur-focus effect
       tl.to(
-        textEls,
+        eyebrow,
         {
-          clipPath: "inset(0 0% 0 0)",
           opacity: 1,
-          duration: 1,
+          y: 0,
+          duration: 0.55,
           ease: "power3.out",
-          stagger: 0.15,
         },
-        0.6, // start after cards have begun separating
+        0.45,
       );
 
-      // Divider scales from left
-      tl.fromTo(
-        ".divider-line",
-        { scaleX: 0, opacity: 0 },
-        { scaleX: 1, opacity: 1, duration: 0.8, ease: "power2.out" },
-        1.0,
+      tl.to(
+        hl1,
+        {
+          opacity: 1,
+          y: 0,
+          filter: "blur(0px)",
+          scale: 1,
+          duration: 0.9,
+          ease: "power3.out",
+        },
+        0.6,
+      );
+
+      tl.to(
+        hl2,
+        {
+          opacity: 1,
+          y: 0,
+          filter: "blur(0px)",
+          scale: 1,
+          duration: 0.9,
+          ease: "power3.out",
+        },
+        0.72,
+      );
+
+      tl.to(
+        rule,
+        {
+          opacity: 1,
+          scaleX: 1,
+          duration: 0.65,
+          ease: "power2.out",
+          transformOrigin: "left center",
+        },
+        0.9,
+      );
+
+      tl.to(
+        [...subs],
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.55,
+          ease: "power2.out",
+          stagger: 0.1,
+        },
+        1.05,
+      );
+
+      tl.to(
+        cta,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          ease: "power2.out",
+        },
+        1.2,
       );
     }, sectionRef);
 
     return () => ctx.revert();
   }, []);
 
+  // Flex ratios give the columns a balanced but varied height rhythm
+  const leftFlex = [1.15, 0.85, 1];
+  const rightFlex = [1, 0.85, 1.15];
+
   return (
     <section
       ref={sectionRef}
-      className="relative h-screen w-full overflow-hidden bg-black my-16"
+      className="projects-section my-16"
+      style={{
+        position: "relative",
+        height: "100vh",
+        width: "100%",
+        overflow: "hidden",
+        background: "#0a0a0a",
+      }}
     >
-      <div className="relative h-screen w-[75vw] mx-auto py-10">
-        {/* Card grid — explicit height so images fill */}
-        <div className="h-full grid grid-cols-2 gap-4">
-          {/* LEFT COLUMN */}
-          <div ref={leftColRef} className="flex flex-col h-full gap-4">
-            {leftCards.map((card, i) => (
-              <div
-                key={`left-${i}`}
-                className="project-card flex-1 min-h-0 rounded-xl overflow-hidden will-change-transform"
-                style={{ transformOrigin: card.origin }}
-              >
-                <ProjectCard {...card} />
-              </div>
-            ))}
-          </div>
+      {/* Grain texture */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          pointerEvents: "none",
+          zIndex: 30,
+          opacity: 0.035,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+          backgroundSize: "200px 200px",
+        }}
+      />
 
-          {/* RIGHT COLUMN */}
-          <div ref={rightColRef} className="flex flex-col h-full gap-4">
-            {rightCards.map((card, i) => (
-              <div
-                key={`right-${i}`}
-                className="project-card flex-1 min-h-0 rounded-xl overflow-hidden will-change-transform"
-                style={{ transformOrigin: card.origin }}
-              >
-                <ProjectCard {...card} />
-              </div>
-            ))}
-          </div>
-        </div>
+      {/* Scroll progress bar */}
+      <div
+        ref={progRef}
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          height: 2,
+          width: 0,
+          background: "rgba(184,149,106,0.55)",
+          zIndex: 25,
+          transition: "width 0.05s linear",
+        }}
+      />
 
-        {/* Center text */}
+      {/* Card grid */}
+      <div
+        style={{
+          position: "relative",
+          height: "100vh",
+          width: "min(78vw, 1100px)",
+          margin: "0 auto",
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: 18,
+          padding: "32px 0",
+        }}
+      >
+        {/* Left column */}
         <div
-          ref={textRef}
-          className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-20 px-4"
+          ref={leftColRef}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 16,
+            height: "100%",
+          }}
         >
-          <p className="reveal text-xs tracking-[0.35em] uppercase text-white/60 mb-4">
-            Selected Work
-          </p>
-
-          <h2
-            className="reveal font-black text-center leading-none text-white"
-            style={{ fontSize: "clamp(2.5rem, 6vw, 5rem)" }}
-          >
-            Turning Dreams
-          </h2>
-
-          <h2
-            className="reveal font-black text-center leading-none text-white/60 mb-5"
-            style={{ fontSize: "clamp(2.5rem, 6vw, 5rem)" }}
-          >
-            to Reality
-          </h2>
-
-          <div className="divider-line w-12 h-px bg-white/40 mb-5 origin-left" />
-
-          <p className="reveal text-white/80 text-sm text-center leading-relaxed">
-            Solutions crafted with purpose,
-          </p>
-          <p className="reveal text-white/80 text-sm text-center leading-relaxed">
-            designed to make an impact.
-          </p>
+          {leftCards.map((card, i) => (
+            <ProjectCard key={`L${i}`} {...card} flex={leftFlex[i]} />
+          ))}
         </div>
+
+        {/* Right column */}
+        <div
+          ref={rightColRef}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 16,
+            height: "100%",
+          }}
+        >
+          {rightCards.map((card, i) => (
+            <ProjectCard key={`R${i}`} {...card} flex={rightFlex[i]} />
+          ))}
+        </div>
+      </div>
+
+      {/* Center overlay text */}
+      <div
+        ref={textRef}
+        style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 20,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          pointerEvents: "none",
+        }}
+      >
+        {/* Eyebrow */}
+        <p
+          className="t-eyebrow"
+          style={{
+            fontSize: 10,
+            letterSpacing: "0.45em",
+            textTransform: "uppercase",
+            color: "rgba(184,149,106,0.75)",
+            marginBottom: 22,
+            fontWeight: 500,
+          }}
+        >
+          Selected Work
+        </p>
+
+        {/* Main headlines — blur-focus reveal */}
+        <h2
+          className="t-h1"
+          style={{
+            fontSize: "clamp(2.8rem, 5.5vw, 5rem)",
+            fontWeight: 900,
+            textAlign: "center",
+            letterSpacing: "-0.02em",
+            lineHeight: 0.95,
+            color: "#f5f2ed",
+            willChange: "transform, opacity, filter",
+          }}
+        >
+          Turning Dreams
+        </h2>
+
+        <h2
+          className="t-h2"
+          style={{
+            fontSize: "clamp(2.8rem, 5.5vw, 5rem)",
+            fontWeight: 900,
+            textAlign: "center",
+            letterSpacing: "-0.02em",
+            lineHeight: 0.95,
+            color: "rgba(245,242,237,0.28)",
+            marginBottom: 0,
+            willChange: "transform, opacity, filter",
+          }}
+        >
+          to Reality
+        </h2>
+
+        {/* Gold rule */}
+        <div
+          className="t-rule"
+          style={{
+            width: 40,
+            height: 1,
+            background: "rgba(184,149,106,0.55)",
+            margin: "26px auto 22px",
+            transformOrigin: "left center",
+          }}
+        />
+
+        {/* Body copy */}
+        <p className="t-sub" style={subStyle}>
+          Solutions crafted with purpose,
+        </p>
+        <p className="t-sub" style={subStyle}>
+          designed to make an impact.
+        </p>
+
+        {/* CTA pill — pointer-events re-enabled */}
+        <a
+          className="t-cta"
+          href="/our-works"
+          style={{
+            pointerEvents: "auto",
+            marginTop: 28,
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 8,
+            padding: "10px 22px",
+            borderRadius: 100,
+            border: "1px solid rgba(184,149,106,0.4)",
+            color: "rgba(184,149,106,0.9)",
+            fontSize: 11,
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            fontWeight: 500,
+            textDecoration: "none",
+            cursor: "pointer",
+          }}
+        >
+          View all projects
+          <span
+            style={{ display: "inline-block", transition: "transform 0.3s" }}
+          >
+            →
+          </span>
+        </a>
       </div>
     </section>
   );
 }
+
+const subStyle = {
+  fontSize: 13,
+  color: "rgba(245,242,237,0.5)",
+  textAlign: "center",
+  lineHeight: 1.75,
+  letterSpacing: "0.04em",
+};

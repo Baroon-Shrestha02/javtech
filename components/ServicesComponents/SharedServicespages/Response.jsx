@@ -86,7 +86,7 @@ export default function Response() {
               "Rapid containment and response services designed to minimize damage, reduce downtime, and restore business operations quickly.",
             gradient:
               "linear-gradient(155deg, #6d0000 0%, #a71010 55%, #c0392b 100%)",
-            image: "/services/web/cyber.avif",
+            image: "/cyber/sos.png",
           },
           {
             title: "Digital Forensics",
@@ -94,7 +94,7 @@ export default function Response() {
               "Conduct detailed forensic investigations to uncover attack origins, trace malicious activity, and preserve legally defensible evidence.",
             gradient:
               "linear-gradient(145deg, #8b0000 0%, #b71c1c 55%, #c62828 100%)",
-            image: "/services/web/forensic.avif",
+            image: "/cyber/digi.png",
           },
           {
             title: "Ransomware Response",
@@ -128,7 +128,7 @@ export default function Response() {
         subtitle="Enterprise-Grade Protection"
         subtitleHighlight="Protection"
         description="We deliver proactive, intelligent cybersecurity that defends your business against evolving threats, backed by certified experts and AI-driven defense."
-        image="/services/web/why.jpg"
+        image="/cyber/why.png"
         accentColor="#cc0000"
         features={[
           {

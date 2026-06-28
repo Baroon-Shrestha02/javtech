@@ -86,7 +86,7 @@ export default function CyberAwareness() {
               "Engaging training programs that teach employees how to recognize, avoid, and report cybersecurity threats.",
             gradient:
               "linear-gradient(155deg, #6d0000 0%, #a71010 55%, #c0392b 100%)",
-            image: "/services/web/training.avif",
+            image: "/cyber/awareness.png",
           },
           {
             title: "Phishing Simulations",
@@ -94,7 +94,7 @@ export default function CyberAwareness() {
               "Real-world phishing exercises that test employee readiness and improve their ability to identify malicious communications.",
             gradient:
               "linear-gradient(145deg, #8b0000 0%, #b71c1c 55%, #c62828 100%)",
-            image: "/services/web/phising.avif",
+            image: "/cyber/phising.png",
           },
           {
             title: "Compliance Readiness",
@@ -129,7 +129,7 @@ export default function CyberAwareness() {
         subtitle="Enterprise-Grade Protection"
         subtitleHighlight="Protection"
         description="We deliver proactive, intelligent cybersecurity that defends your business against evolving threats, backed by certified experts and AI-driven defense."
-        image="/services/web/why.jpg"
+        image="/cyber/why.png"
         accentColor="#cc0000"
         features={[
           {

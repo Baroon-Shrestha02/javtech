@@ -84,7 +84,7 @@ export default function CyberSecurity() {
               "We simulate real-world attacks to uncover vulnerabilities before malicious actors can exploit them, across web, network, and application layers.",
             gradient:
               "linear-gradient(155deg, #6d0000 0%, #a71010 55%, #c0392b 100%)",
-            image: "/services/web/ethical.avif",
+            image: "/cyber/pen.png",
           },
           {
             title: "Security Audits & Compliance",
@@ -92,7 +92,7 @@ export default function CyberSecurity() {
               "Comprehensive assessments aligned with standards like ISO 27001, SOC 2, and GDPR to keep your organization compliant and protected.",
             gradient:
               "linear-gradient(145deg, #8b0000 0%, #b71c1c 55%, #c62828 100%)",
-            image: "/services/web/cloud.avif",
+            image: "/cyber/audit.png",
           },
           {
             title: "Threat Detection & Response",
@@ -125,7 +125,7 @@ export default function CyberSecurity() {
         subtitle="Enterprise-Grade Protection"
         subtitleHighlight="Protection"
         description="We deliver proactive, intelligent cybersecurity that defends your business against evolving threats, backed by certified experts and AI-driven defense."
-        image="/services/web/why.jpg"
+        image="/cyber/why.png"
         accentColor="#cc0000"
         features={[
           {

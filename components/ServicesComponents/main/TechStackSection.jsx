@@ -268,10 +268,10 @@ const defaultGroups = [
             icon: "/tech/security/splunk.png",
           },
           { name: "IBM QRadar", icon: "/tech/security/qradar.png" },
-          { name: "Wazuh", icon: "/services/graphics/wazuh.webp" },
+          { name: "Wazuh", icon: "/tech/security/wazuh.png" },
           {
             name: "Microsoft Sentinel",
-            icon: "/services/graphics/microsoft-sentinel.webp",
+            icon: "/tech/security/senti.png",
           },
         ],
       },
@@ -281,19 +281,19 @@ const defaultGroups = [
         tools: [
           {
             name: "CrowdStrike Falcon",
-            icon: "/services/graphics/crowdstrike.webp",
+            icon: "/tech/security/falcon.png",
           },
           {
             name: "Microsoft Defender for Endpoint",
-            icon: "/services/graphics/microsoft-defender.webp",
+            icon: "/tech/security/def.webp",
           },
           {
             name: "SentinelOne",
-            icon: "/services/graphics/sentinelone.webp",
+            icon: "/tech/security/sentione.png",
           },
           {
             name: "Sophos Intercept X",
-            icon: "/services/graphics/Sophos.webp",
+            icon: "/tech/security/sophos.png",
           },
         ],
       },
@@ -301,10 +301,10 @@ const defaultGroups = [
         label: "Digital Forensics",
         description: "Digital forensics & threat intelligence",
         tools: [
-          { name: "Wireshark", icon: "/services/graphics/wireshark.webp" },
-          { name: "Autopsy", icon: "/services/graphics/autospy.webp" },
-          { name: "Maltego", icon: "/services/graphics/maltego.webp" },
-          { name: "MISP", icon: "/services/graphics/misp.webp" },
+          { name: "Wireshark", icon: "/tech/security/shark.png" },
+          { name: "Autopsy", icon: "/tech/security/autospy.webp" },
+          { name: "Maltego", icon: "/tech/security/maltego.svg" },
+          { name: "MISP", icon: "/tech/security/misp.png" },
         ],
       },
     ],

@@ -86,7 +86,7 @@ export default function Operations() {
               "Deploy and configure SIEM platforms to centralize logs, correlate events, and provide actionable security insights across your environment.",
             gradient:
               "linear-gradient(155deg, #6d0000 0%, #a71010 55%, #c0392b 100%)",
-            image: "/services/web/siem.jpg",
+            image: "/cyber/siem.avif",
           },
           {
             title: "Log Management & Analysis",
@@ -94,7 +94,7 @@ export default function Operations() {
               "Collect, normalize, and analyze security logs from servers, applications, endpoints, and network devices for complete visibility.",
             gradient:
               "linear-gradient(145deg, #8b0000 0%, #b71c1c 55%, #c62828 100%)",
-            image: "/services/web/log.jpg",
+            image: "/cyber/log.avif",
           },
           {
             title: "Threat Monitoring & Detection",
@@ -102,7 +102,6 @@ export default function Operations() {
               "Establish proactive monitoring strategies with custom detection rules, threat intelligence integration, and real-time alerting.",
             gradient:
               "linear-gradient(145deg, #a71010 0%, #c62828 60%, #d32f2f 100%)",
-            image: "/services/cyber/threat-monitoring.jpg",
           },
           {
             title: "Incident Response Readiness",
@@ -129,7 +128,7 @@ export default function Operations() {
         subtitle="Enterprise-Grade Protection"
         subtitleHighlight="Protection"
         description="We deliver proactive, intelligent cybersecurity that defends your business against evolving threats, backed by certified experts and AI-driven defense."
-        image="/services/web/why.jpg"
+        image="/cyber/why.png"
         accentColor="#cc0000"
         features={[
           {

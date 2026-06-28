@@ -4,10 +4,38 @@ import { useEffect, useRef, useState } from "react";
 import { SectionHeader } from "../SharedComponents/SectionHeader";
 
 const stats = [
-  { number: "5+", label: "Awards &\nRecognition", dark: true, col: "left" },
-  { number: "15+", label: "Projects\nCompleted", dark: true, col: "right" },
-  { number: "10+", label: "Creative\nMinds", dark: true, col: "left" },
-  { number: "1+", label: "Years of\nExperience", dark: true, col: "right" },
+  {
+    number: "50+",
+    label: "Satified Business \nOwners",
+    dark: true,
+    col: "left",
+    image:
+      "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=600&q=80",
+  },
+  {
+    number: "15+",
+    label: "Projects\nCompleted",
+    dark: true,
+    col: "right",
+    image:
+      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&q=80",
+  },
+  {
+    number: "10+",
+    label: "Creative\nMinds",
+    dark: true,
+    col: "left",
+    image:
+      "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=80",
+  },
+  {
+    number: "1+",
+    label: "Years of\nExperience",
+    dark: true,
+    col: "right",
+    image:
+      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80",
+  },
 ];
 
 const PX_PER_CARD = 40;
@@ -15,23 +43,13 @@ const TOTAL_SCROLL_PX = stats.length * PX_PER_CARD;
 
 const EARLY_START_PX = 300;
 
-const cardImages = {
-  "50+":
-    "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80",
-  "900+":
-    "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&q=80",
-  "20+":
-    "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=80",
-  "5+": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=600&q=80",
-};
-
 function StatCard({ stat, progress }) {
   const rotate = (1 - progress) * (stat.col === "left" ? -45 : 45);
   const opacity = Math.min(1, progress * 1.5);
   const translateY = (1 - progress) * 60;
 
   const bgColor = stat.dark ? "#1a1a1f" : "#E01522";
-  const imgSrc = cardImages[stat.number];
+  const imgSrc = stat.image;
 
   return (
     <div

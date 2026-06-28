@@ -983,7 +983,7 @@ export default function TeamSection() {
           )}
 
           {teamMembers.length > 0 && (
-            <div className="relative max-w-[1500px] mx-auto overflow-hidden">
+            <div className="relative container mx-auto overflow-hidden">
               <span
                 aria-hidden
                 className="pointer-events-none select-none absolute -top-6 left-0 text-[18vw] leading-none font-bold text-gray-50 z-0"
@@ -1002,10 +1002,6 @@ export default function TeamSection() {
 
               <div className="relative z-10">
                 <div className="flex items-start gap-3 mb-10 px-2">
-                  <span className="text-xs font-bold tracking-[0.25em] uppercase text-gray-900 border border-gray-900 px-2 py-1">
-                    04
-                  </span>
-
                   <div>
                     <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
                       Development &amp; Creative
